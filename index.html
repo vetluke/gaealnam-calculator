@@ -217,6 +217,12 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 .contact-text strong{font-size:12.5px;color:var(--text);font-weight:700;}
 .contact-text span{font-size:12px;color:var(--cyan);font-family:var(--mono);letter-spacing:.3px;}
 
+/* Water block */
+.water-block{display:flex;align-items:center;justify-content:space-between;background:rgba(56,139,253,.1);border:1px solid rgba(56,139,253,.4);border-radius:var(--r-md);padding:13px 16px;margin-top:10px;}
+.water-block .wl{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:#79c0ff;}
+.water-block .wv{font-family:var(--mono);font-size:15px;font-weight:500;color:#79c0ff;}
+.water-block .ws{font-size:10px;color:rgba(121,192,255,.6);margin-top:1px;}
+
 /* Treat hint */
 .treat-hint{background:var(--surface2);border:1px solid var(--amber);border-radius:var(--r-md);padding:14px;margin-top:10px;}
 .treat-hint-title{font-size:11.5px;font-weight:700;color:var(--amber);margin-bottom:10px;}
@@ -721,7 +727,18 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
         <div class="feed-note">*간식 10% 제외 산출</div>
       </div>
 
-      <div class="treat-hint" id="treat-hint" style="display:none;"><div class="treat-hint-title">🍖 간식 <span id="treat-kcal-display">--</span> kcal 으로 살 수 있는 것</div><div class="treat-items" id="treat-items"></div><div class="treat-note">강아지 급여 가능 식품만 표시 · 조미 없는 것 기준</div></div>
+      <div class="water-block" id="water-block" style="display:none;">
+        <div class="wl">
+          <span>💧</span>
+          <div>
+            <div>권장 음수량</div>
+            <div class="ws">체중 × 60 ml/day 기준</div>
+          </div>
+        </div>
+        <div class="wv" id="r-water">-- ml</div>
+      </div>
+
+      <div class="treat-hint" id="treat-hint" style="display:none;"><div class="treat-hint-title">🍖 간식 <span id="treat-kcal-display">--</span> kcal 으로 먹을 수 있는 것</div><div class="treat-items" id="treat-items"></div><div class="treat-note">강아지 급여 가능 식품만 표시 · 조미 없는 것 기준</div></div>
 
 
       <div class="btn-row">
@@ -982,6 +999,11 @@ function calc(){
     set('r-each',Math.round(tg/ft).toLocaleString()+' g / 끼');
   }else{set('r-total','사료 칼로리 입력 필요');set('r-each','-- g / 끼');}
   updateTreatHint(treatK);
+
+  // 권장 음수량: 체중(calcW 아닌 실제 체중) × 60 ml
+  const waterMl = Math.round(weight * 60);
+  set('r-water', waterMl.toLocaleString() + ' ml');
+  $('water-block').style.display = 'flex';
 }
 
 
@@ -996,31 +1018,27 @@ function updateTreatHint(treatKcal){
 
   kcalDisp.textContent=Math.round(treatKcal);
 
-  // 간식 DB (100g당 kcal, 강아지 안전 식품만)
+  // 간식 DB — 국가표준식품성분표 / 식품안전처 DB 기준 (조미 없는 것)
   const snacks=[
-    { emoji:'🍗', name:'닭가슴살 (삶은 것)', kcalPer100g:165,  unit:'g',  note:'단백질 급원 간식 1순위' },
-    { emoji:'🥕', name:'당근',               kcalPer100g:41,   unit:'g',  note:'저칼로리, 베타카로틴 풍부' },
-    { emoji:'🫐', name:'블루베리',           kcalPer100g:57,   unit:'g',  note:'항산화 간식, 소량씩' },
-    { emoji:'🍎', name:'사과 (껍질 제거)',   kcalPer100g:54,   unit:'g',  note:'씨와 심 제거 필수' },
-    { emoji:'🍠', name:'고구마 (삶은 것)',   kcalPer100g:86,   unit:'g',  note:'식이섬유 풍부' },
+    { emoji:'🍗', name:'닭가슴살',  kcalPer100g:127, note:'삶은 것 기준 · 단백질 급원 1순위' },
+    { emoji:'🎃', name:'단호박',    kcalPer100g:85,  note:'찐 것 기준 · 껍질 제거 권장' },
+    { emoji:'🍠', name:'고구마',    kcalPer100g:163, note:'찐 것 기준 · 식이섬유 풍부' },
+    { emoji:'🫐', name:'블루베리',  kcalPer100g:57,  note:'생것 기준 · 항산화 간식, 소량씩' },
+    { emoji:'🥬', name:'양배추',    kcalPer100g:22,  note:'생것 기준 · 저칼로리, 잎만' },
   ];
 
   let html='';
   snacks.forEach(s=>{
     const grams = Math.round(treatKcal / s.kcalPer100g * 100);
-    // 직관적 표현: 10g 단위 반올림, 조각 표현
     let display;
     if(s.name.includes('블루베리')){
-      const pieces=Math.round(grams/5); // 블루베리 1알 ≈ 5g
+      const pieces=Math.round(grams/5); // 1알 ≈ 5g
       display=`약 ${pieces}알 (${grams}g)`;
-    } else if(s.name.includes('사과')){
-      const slices=Math.round(grams/25); // 사과 1조각 ≈ 25g
-      display=`약 ${slices}조각 (${grams}g)`;
-    } else if(s.name.includes('당근')){
-      const sticks=Math.round(grams/15); // 당근 스틱 1개 ≈ 15g
-      display=`약 ${sticks}개 스틱 (${grams}g)`;
     } else if(s.name.includes('닭가슴살')){
       display=`약 ${grams}g`;
+    } else if(s.name.includes('양배추')){
+      const leaves=Math.round(grams/30); // 잎 1장 ≈ 30g
+      display=leaves>=1 ? `약 ${leaves}장 (${grams}g)` : `약 ${grams}g`;
     } else {
       display=`약 ${grams}g`;
     }
@@ -1040,6 +1058,8 @@ function clearR(){
   set('r-der','--');set('r-rer','-- kcal');set('r-feed-kcal','-- kcal');set('r-treat-kcal','-- kcal');
   set('r-total','-- g');set('r-each','-- g / 끼');
   const cw=$('r-calcw');cw.textContent='--';cw.style.color='var(--cyan)';
+  set('r-water','-- ml');
+  const wb=$('water-block');if(wb)wb.style.display='none';
 }
 
 // ── 카톡 공유 모달 — textarea 폴백 방식 ─────────────
@@ -1073,6 +1093,7 @@ function buildReportText(){
 ■ 급여 가이드
 - 하루 총 사료 급여량: ${$('r-total').innerText}
 - 한 끼당 급여량: ${$('r-each').innerText}
+- 💧 권장 음수량: ${$('r-water').innerText} (체중 × 60 ml/day)
 
 👉 개알남 칼로리 계산기에서 직접 확인해보세요!`;
 }
