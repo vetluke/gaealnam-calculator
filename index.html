@@ -152,10 +152,7 @@ input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
 .feed-each{font-size:12px;color:#ff9e9e;margin-top:3px;font-weight:600;}
 .feed-note{font-size:11px;color:var(--text3);margin-top:3px;}
 
-/* Rec box — 구매버튼 없는 버전 */
-.rec-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;margin-top:12px;}
-.rec-tag{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);background:var(--green-dim);border:1px solid var(--green);padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:5px;}
-.rec-name{font-size:12.5px;font-weight:700;color:var(--text2);}
+
 
 /* Btn row */
 .btn-row{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:13px;}
@@ -612,7 +609,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
         <div class="flbl" style="margin-bottom:9px;">🔍 처방 사료 칼로리 <span class="src-tag">DB 수록</span></div>
         <div class="iw" style="margin-bottom:10px;">
           <select id="feed-preset" onchange="applyPreset()">
-            <option value="manual">사료 선택 또는 직접 입력 (선택사항)</option>
+            <option value="manual">사료 칼로리 직접 입력 (선택사항)</option>
             <optgroup label="로얄캐닌 (Royal Canin)">
               <option value="3850">로얄캐닌 유리너리 스몰독 (3,850 kcal/kg)</option>
               <option value="3909">로얄캐닌 헤파틱 (3,909 kcal/kg)</option>
@@ -663,9 +660,9 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
             </optgroup>
           </select>
         </div>
-        <div class="flbl" style="margin-bottom:7px;">🥣 사료 칼로리 직접 입력</div>
+        <div class="flbl" style="margin-bottom:7px;">🥣 또는 직접 입력 · 수정</div>
         <div class="iw">
-          <input type="number" id="feed-cal" placeholder="1kg당 대사에너지" min="0" inputmode="numeric" oninput="calc()">
+          <input type="number" id="feed-cal" placeholder="kcal/kg 직접 입력" min="0" inputmode="numeric" oninput="onFeedCalInput()">
           <span class="unit">kcal/kg</span>
         </div>
       </div>
@@ -674,8 +671,8 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
       <div class="fg">
         <div class="flbl">⏰ 하루 급여 횟수</div>
         <div class="rc-grid">
-          <label><input type="radio" name="ftimes" value="2" checked onchange="calc()"><div class="rc"><div class="rm">하루 2회</div><div class="rs">일반적</div></div></label>
-          <label><input type="radio" name="ftimes" value="3" onchange="calc()"><div class="rc"><div class="rm">하루 3회</div><div class="rs">소형견 권장</div></div></label>
+          <label><input type="radio" name="ftimes" value="2" checked onchange="calc()"><div class="rc"><div class="rm">하루 2회</div></div></label>
+          <label><input type="radio" name="ftimes" value="3" onchange="calc()"><div class="rc"><div class="rm">하루 3회</div></div></label>
         </div>
       </div>
 
@@ -725,10 +722,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
       </div>
 
       <div class="treat-hint" id="treat-hint" style="display:none;"><div class="treat-hint-title">🍖 간식 <span id="treat-kcal-display">--</span> kcal 으로 살 수 있는 것</div><div class="treat-items" id="treat-items"></div><div class="treat-note">강아지 급여 가능 식품만 표시 · 조미 없는 것 기준</div></div>
-<div class="rec-box">
-        <div class="rec-tag" id="rec-tag">개알남 추천</div>
-        <div class="rec-name" id="rec-name">강아지 맞춤 밸런스 식단</div>
-      </div>
+
 
       <div class="btn-row">
         <button class="btn-share" onclick="openShareModal()">💬 카톡 공유 복사</button>
@@ -754,18 +748,19 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
         성견 중성화 <code>× 1.6</code><br>
         성견 비중성화 <code>× 1.8</code><br>
         비활동성·비만위험 <code>× 1.2</code><br>
-        체중감량 처방 <code>× 1.0</code><br>
-        노령견 7세+ <code>× 1.4</code>
+        노령견 7세+ <code>× 1.4</code><br>
+        체중감량 처방 <code>이상체중 RER × 1.0</code><br>
+        <em style="font-size:10.5px;color:var(--text3);">※ 체중감량 처방은 팩터가 아닌 <strong style="color:var(--amber)">기준 체중(이상체중)</strong>이 달라지는 것이 핵심입니다.</em>
       </p>
     </div>
     <div class="ev-card">
       <div class="ev-num">03</div>
-      <h4>이상체중 적용 원칙 (Table 2)</h4>
+      <h4>이상체중 적용 원칙 (Table 2 + Box 1)</h4>
       <p>BCS 5/9 초과 시 1단계당 10% 과체중<br><code>이상체중 = BW ÷ (1+(BCS-5)×0.1)</code><br><br>
-      ⚠️ <strong style="color:var(--amber)">이중 보정 방지 원칙</strong><br>
-      이상체중 기반 RER은 <code>체중감량 처방(×1.0)</code> 모드에서만 적용.<br>
-      비활동성(×1.2) 등 나머지 팩터는 <strong>현재체중 기반 RER</strong>에 적용하여 이중 보정을 방지합니다.<br>
-      <em style="font-size:10.5px;color:var(--text3);">AAHA 2021 Box 1 원칙 준수</em></p>
+      <strong style="color:var(--amber)">체중감량 처방 모드</strong>에서만 이상체중 기반 RER 적용.<br>
+      성견 중성화·비중성화·비활동성·노령견 등 <strong>나머지 모든 생애단계는 현재체중 기반 RER</strong> 사용.<br>
+      ➡ AAHA 2021 원칙: 일반 유지 급여는 현재체중 기준으로 계산하고, 처방적 체중감량이 필요한 경우에만 이상체중을 기준 체중으로 전환합니다.<br>
+      <em style="font-size:10.5px;color:var(--text3);">AAHA 2021 Box 1 + Hospitalized patient feeding 원칙</em></p>
     </div>
     <div class="ev-card">
       <div class="ev-num">04</div>
@@ -826,15 +821,15 @@ const STAGE = {
 };
 
 const BCS_DATA = {
-  1:{ badge:'심각한 저체중', cls:'bcs-thin',  status:'극심한 저체중',       guide:'뼈가 도드라져 보이며 지방이 전혀 없습니다. 고단백 영양 보충이 시급합니다.',              rec:'[고단백 영양 강화 식단]' },
-  2:{ badge:'저체중',       cls:'bcs-thin',  status:'저체중',              guide:'갈비뼈와 골반뼈가 쉽게 눈에 띕니다. 피하지방 증량이 필요합니다.',                    rec:'[고단백 영양 강화 식단]' },
-  3:{ badge:'약간 마름',    cls:'bcs-thin',  status:'약간 마름',           guide:'갈비뼈가 쉽게 만져지며 피하지방이 부족합니다. 균형 잡힌 영양 공급이 필요합니다.',     rec:'[올인원 영양 밸런스 식단]' },
-  4:{ badge:'정상',         cls:'bcs-ideal', status:'정상 체형 (유지)',     guide:'갈비뼈가 얇은 지방층에 덮여 잘 만져집니다. 위에서 볼 때 허리선이 선명합니다.',       rec:'[프리미엄 유지 식단]' },
-  5:{ badge:'이상적',       cls:'bcs-ideal', status:'정상 체형 (완벽)',     guide:'가장 건강한 상태입니다. 갈비뼈가 과도한 지방 없이 잘 만져지며 허리 라인이 예쁩니다.', rec:'[프리미엄 유지 식단]' },
-  6:{ badge:'과체중 경계',  cls:'bcs-heavy', status:'과체중 초기',          guide:'약간의 지방 축적이 느껴지며 허리선이 희미해집니다. AAHA 기준 약 10% 과체중.',        rec:'[저지방 슬림 레시피]' },
-  7:{ badge:'과체중',       cls:'bcs-heavy', status:'감량 필요',            guide:'갈비뼈가 두꺼운 지방층에 덮여 잘 만져지지 않습니다. AAHA 기준 약 20% 과체중.',       rec:'[저지방 슬림 레시피]' },
-  8:{ badge:'비만',         cls:'bcs-heavy', status:'비만 (다이어트 필수)', guide:'세게 눌러야 갈비뼈가 겨우 느껴집니다. AAHA 기준 약 30% 과체중.',               rec:'[처방 체중조절 사료]' },
-  9:{ badge:'고도 비만',    cls:'bcs-heavy', status:'고도 비만',            guide:'전신에 거대한 지방층이 있습니다. AAHA 기준 약 40% 과체중. 즉각적 처방 관리 필요.',  rec:'[처방 체중조절 사료]' }
+  1:{ badge:'심각한 저체중', cls:'bcs-thin',  status:'극심한 저체중',       guide:'뼈가 도드라져 보이며 지방이 전혀 없습니다. 고단백 영양 보충이 시급합니다.' },
+  2:{ badge:'저체중',       cls:'bcs-thin',  status:'저체중',              guide:'갈비뼈와 골반뼈가 쉽게 눈에 띕니다. 피하지방 증량이 필요합니다.' },
+  3:{ badge:'약간 마름',    cls:'bcs-thin',  status:'약간 마름',           guide:'갈비뼈가 쉽게 만져지며 피하지방이 부족합니다. 균형 잡힌 영양 공급이 필요합니다.' },
+  4:{ badge:'정상',         cls:'bcs-ideal', status:'정상 체형 (유지)',     guide:'갈비뼈가 얇은 지방층에 덮여 잘 만져집니다. 위에서 볼 때 허리선이 선명합니다.' },
+  5:{ badge:'이상적',       cls:'bcs-ideal', status:'정상 체형 (완벽)',     guide:'가장 건강한 상태입니다. 갈비뼈가 과도한 지방 없이 잘 만져지며 허리 라인이 예쁩니다.' },
+  6:{ badge:'과체중 경계',  cls:'bcs-heavy', status:'과체중 초기',          guide:'약간의 지방 축적이 느껴지며 허리선이 희미해집니다. AAHA 기준 약 10% 과체중.' },
+  7:{ badge:'과체중',       cls:'bcs-heavy', status:'감량 필요',            guide:'갈비뼈가 두꺼운 지방층에 덮여 잘 만져지지 않습니다. AAHA 기준 약 20% 과체중.' },
+  8:{ badge:'비만',         cls:'bcs-heavy', status:'비만 (다이어트 필수)', guide:'세게 눌러야 갈비뼈가 겨우 느껴집니다. AAHA 기준 약 30% 과체중.' },
+  9:{ badge:'고도 비만',    cls:'bcs-heavy', status:'고도 비만',            guide:'전신에 거대한 지방층이 있습니다. AAHA 기준 약 40% 과체중. 즉각적 처방 관리 필요.' }
 };
 
 const $=id=>document.getElementById(id);
@@ -865,6 +860,7 @@ function checkWarn(){
   let msg='';
   if(bcs>=7&&s==='adult_intact') msg='⚠ BCS 7 이상 과체중 + 비중성화(×1.8)는 필요 이상의 칼로리를 산출합니다. "체중 감량 처방" 또는 "비활동성" 선택을 권장합니다.';
   else if(bcs>=7&&(s==='adult_neutered'||s==='adult_inactive')) msg='⚠ BCS 7 이상 과체중 상태입니다. 적극적인 감량이 필요하다면 "체중 감량 처방"을 선택해 주세요.';
+  else if(bcs>=6&&s==='senior') msg='⚠ 노령견 + 과체중 조합입니다. 노령견은 근육 손실(sarcopenia) 위험이 높아 급격한 감량보다 저칼로리 유지가 우선입니다. 반드시 주치 수의사와 상담 후 급여량을 결정하세요. (AAHA 2021)';
   if(msg){w.textContent=msg;w.classList.add('on');}else w.classList.remove('on');
 }
 
@@ -876,27 +872,16 @@ function onBcs(v){
   b.className = 'bcs-badge-el ' + d.cls;
   set('bcs-guide', d.guide);
   set('r-status', d.status);
-  set('rec-name', d.rec);
-  const rt = $('rec-tag');
-  if(+v >= 6){
-    rt.textContent = '개알남 추천 [다이어트]';
-    rt.style.cssText = 'color:var(--amber);background:var(--amber-dim);border:1px solid var(--amber);';
-  } else if(+v <= 3){
-    rt.textContent = '개알남 추천 [고단백]';
-    rt.style.cssText = 'color:#60a5fa;background:rgba(96,165,250,.12);border:1px solid #60a5fa;';
-  } else {
-    rt.textContent = '개알남 추천 [밸런스]';
-    rt.style.cssText = 'color:var(--green);background:var(--green-dim);border:1px solid var(--green);';
-  }
-  // BCS 6 이상 → 생애단계 자동 체중 감량 처방으로 변경
+  // BCS 7 이상(명백한 과체중) → 성견·노령견 한정 "체중 감량 처방" 자동 전환
+  // BCS 6는 경계 수준(약 10% 과체중)이므로 경고만 표시하고 사용자가 직접 선택
   const stageEl = document.getElementById('life-stage');
   const currentStage = stageEl.value;
-  const adultStages = ['adult_neutered','adult_intact','adult_inactive','weight_loss'];
-  if (+v >= 6 && adultStages.includes(currentStage) && currentStage !== 'weight_loss') {
+  const adultStages = ['adult_neutered','adult_intact','adult_inactive','weight_loss','senior'];
+  if (+v >= 7 && adultStages.includes(currentStage) && currentStage !== 'weight_loss') {
     stageEl.value = 'weight_loss';
     onStage(); // 안내 메시지 업데이트
     // 자동 변경 안내 토스트
-    showToast('⚠️ BCS ' + v + ' 과체중 — 생애단계를 "체중 감량 처방"으로 자동 변경했습니다.');
+    showToast('⚠️ BCS ' + v + ' — 생애단계를 "체중 감량 처방"으로 자동 변경했습니다.');
   } else if (+v <= 5 && currentStage === 'weight_loss') {
     // BCS 정상 복귀 시 중성화 성견으로 되돌림
     stageEl.value = 'adult_neutered';
@@ -907,7 +892,22 @@ function onBcs(v){
   calc();
 }
 
-function applyPreset(){ const v=$('feed-preset').value; if(v!=='manual'){$('feed-cal').value=v;calc();} }
+function applyPreset(){
+  const v=$('feed-preset').value;
+  if(v!=='manual'){
+    $('feed-cal').value=v;
+  } else {
+    $('feed-cal').value='';
+  }
+  calc();
+}
+
+// 입력창을 직접 수정하면 드롭다운을 '직접 입력' 항목으로 복귀
+function onFeedCalInput(){
+  const preset=$('feed-preset');
+  if(preset.value!=='manual') preset.value='manual';
+  calc();
+}
 
 // ── CORE CALC — AAHA 2021 Box 1 + Table 2 ────────────
 function calc(){
@@ -1119,34 +1119,43 @@ function showToast(msg) {
   window._toastTimer = setTimeout(() => t.classList.remove('on'), 3000);
 }
 
-// ── 사용자 카운터 (CountAPI 무료 서비스) ──────────────────────────
+// ── 사용자 카운터 (counterapi.dev V1 — 무료·등록불필요·CORS지원) ────
+// 구 countapi.xyz 서비스 종료(2023) → counterapi.dev 로 교체
+// namespace: gaealnam / name: calculator
+const _COUNTER_UP  = 'https://api.counterapi.dev/v1/gaealnam/calculator/up';
+const _COUNTER_GET = 'https://api.counterapi.dev/v1/gaealnam/calculator/';
+
 async function incrementCounter() {
   try {
-    const res = await fetch('https://api.countapi.xyz/hit/gaealnam.com/calculator');
+    const res  = await fetch(_COUNTER_UP);
+    if (!res.ok) throw new Error('counter up failed');
     const data = await res.json();
-    updateCounterDisplay(data.value);
+    // counterapi.dev 응답 구조: { count: Number }
+    updateCounterDisplay(data.count ?? data.value);
   } catch(e) {
-    // 네트워크 오류 시 로컬 추정값 표시
-    const local = parseInt(localStorage.getItem('gaealnam_count') || '0') + 1;
-    localStorage.setItem('gaealnam_count', local);
-    updateCounterDisplay(local);
+    // 네트워크 오류 시 세션 내 로컬값으로 대체 표시
+    try {
+      const local = parseInt(sessionStorage.getItem('gaealnam_count') || '0') + 1;
+      sessionStorage.setItem('gaealnam_count', local);
+      updateCounterDisplay(local);
+    } catch(_) {}
   }
 }
 
 async function fetchCounter() {
   try {
-    const res = await fetch('https://api.countapi.xyz/get/gaealnam.com/calculator');
+    const res  = await fetch(_COUNTER_GET);
+    if (!res.ok) throw new Error('counter get failed');
     const data = await res.json();
-    updateCounterDisplay(data.value);
+    updateCounterDisplay(data.count ?? data.value);
   } catch(e) {
-    const local = parseInt(localStorage.getItem('gaealnam_count') || '0');
-    if (local > 0) updateCounterDisplay(local);
+    // 조회 실패 시 '···' 그대로 유지 (스트립은 숨기지 않음)
   }
 }
 
 function updateCounterDisplay(count) {
   const el = document.getElementById('counter-num');
-  if (el && count) {
+  if (el && count != null && count > 0) {
     el.textContent = Number(count).toLocaleString();
   }
 }
