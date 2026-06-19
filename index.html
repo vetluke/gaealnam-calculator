@@ -90,6 +90,15 @@ input[type="radio"]:checked+.rc .rs{color:var(--cyan);opacity:.7;}
 .info-box.amber{background:var(--amber-dim);border:1px solid var(--amber);color:#f5c842;}
 .info-box.warn{background:var(--red-dim);border:1px solid var(--red);color:#ff8f8f;}
 
+/* MODE BANNER — 자동 판정 모드 표시 */
+.mode-banner{display:flex;align-items:center;gap:10px;border-radius:var(--r-md);padding:13px 15px;margin-bottom:18px;border:1px solid var(--cyan);background:var(--cyan-dim);}
+.mode-banner.loss{border-color:var(--amber);background:var(--amber-dim);}
+.mode-banner .mb-icon{font-size:20px;flex-shrink:0;}
+.mode-banner .mb-text{display:flex;flex-direction:column;gap:1px;}
+.mode-banner .mb-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);}
+.mode-banner .mb-value{font-size:13.5px;font-weight:900;color:var(--cyan);}
+.mode-banner.loss .mb-value{color:var(--amber);}
+
 /* PRESET BOX */
 .preset-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px;margin-bottom:18px;}
 
@@ -107,7 +116,7 @@ input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  padding: 0 4px; /* 양끝 thumb 중심과 맞추기 */
+  padding: 0 4px;
   font-family: var(--mono);
   font-size: 10px;
   color: var(--text3);
@@ -130,6 +139,8 @@ input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
 .der-lbl{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
 .der-val{font-family:var(--mono);font-size:38px;font-weight:500;color:var(--cyan);line-height:1.1;}
 .der-unit{font-size:12px;color:var(--text2);}
+.der-mid{font-size:11px;color:var(--text2);margin-top:6px;font-family:var(--mono);display:none;}
+.der-mid.on{display:block;}
 
 /* Split bars */
 .split-bar{background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;}
@@ -151,8 +162,6 @@ input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
 .feed-total{font-family:var(--mono);font-size:34px;color:var(--red);line-height:1.1;}
 .feed-each{font-size:12px;color:#ff9e9e;margin-top:3px;font-weight:600;}
 .feed-note{font-size:11px;color:var(--text3);margin-top:3px;}
-
-
 
 /* Btn row */
 .btn-row{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:13px;}
@@ -233,24 +242,6 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 .treat-item .ti-text strong{color:var(--text);font-weight:700;}
 .treat-note{font-size:10.5px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border2);padding-top:6px;}
 
-
-
-
-
-
-
-
-
-
-
-
-/* BCS 시각화 */
-
-
-
-
-
-
 /* 레인보우 슬라이더 */
 .bcs-slider-track-wrap {
   position: relative;
@@ -259,7 +250,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 }
 .bcs-slider-gradient {
   position: absolute;
-  top: 50%; left: 11px; right: 11px; /* 썸 반지름만큼 안쪽 여백 */
+  top: 50%; left: 11px; right: 11px;
   height: 8px;
   transform: translateY(-50%);
   border-radius: 4px;
@@ -396,18 +387,46 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
     <div class="panel">
       <div class="panel-title">입력 정보 <span>→ 결과 실시간 반영</span></div>
 
-      <!-- 이름 + 나이 -->
-      <div class="g2 fg">
-        <div>
-          <div class="flbl">✏️ 이름</div>
-          <div class="iw"><input type="text" id="pet-name" placeholder="예: 조아" oninput="updateName()"></div>
-        </div>
-        <div>
-          <div class="flbl">🎂 나이</div>
+      <!-- 이름 -->
+      <div class="fg">
+        <div class="flbl">✏️ 이름</div>
+        <div class="iw"><input type="text" id="pet-name" placeholder="예: 조아" oninput="updateName()"></div>
+      </div>
+
+      <!-- 나이 — 년 + 개월 분리 입력 -->
+      <div class="fg">
+        <div class="flbl">🎂 나이 <span class="src-tag">아는 만큼만 입력</span></div>
+        <div class="g2">
           <div class="iw">
-            <input type="number" id="pet-age" placeholder="예: 3" min="0" max="30" step="0.5" inputmode="decimal" oninput="onAge()">
-            <span class="unit">살</span>
+            <input type="number" id="pet-age-y" placeholder="0" min="0" max="30" step="1" inputmode="numeric" oninput="updateStage()">
+            <span class="unit">년</span>
           </div>
+          <div class="iw">
+            <input type="number" id="pet-age-m" placeholder="0" min="0" max="11" step="1" inputmode="numeric" oninput="updateStage()">
+            <span class="unit">개월</span>
+          </div>
+        </div>
+        <div style="font-size:10.5px;color:var(--text3);margin-top:6px;line-height:1.5;">예) 5개월 → 년 0 · 개월 5 &nbsp;|&nbsp; 3살 2개월 → 년 3 · 개월 2</div>
+      </div>
+
+      <!-- 중성화 여부 — 사실만 입력 -->
+      <div class="fg">
+        <div class="flbl">✂️ 중성화 여부 <span class="src-tag">AAHA 2021 Box 1</span></div>
+        <div class="rc-grid">
+          <label><input type="radio" name="neuter" value="yes" checked onchange="updateStage()"><div class="rc"><div class="rm">중성화 했어요</div><div class="rs">성견 기준 ×1.4~1.6</div></div></label>
+          <label><input type="radio" name="neuter" value="no" onchange="updateStage()"><div class="rc"><div class="rm">안 했어요</div><div class="rs">성견 기준 ×1.6~1.8</div></div></label>
+        </div>
+      </div>
+
+      <!-- 특수 생리 상태 -->
+      <div class="fg">
+        <div class="flbl">🤰 특수 생리 상태 <span class="src-tag">해당 시에만 선택</span></div>
+        <div class="iw">
+          <select id="special-state" onchange="updateStage()">
+            <option value="none" selected>해당 없음</option>
+            <option value="pregnant">임신 중 — 임신 후기 (MER × 3.0)</option>
+            <option value="lactating">수유 중 (MER × 3.0~6.0)</option>
+          </select>
         </div>
       </div>
 
@@ -442,35 +461,18 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
         </div>
       </div>
 
-      <!-- 통합 생애단계 -->
-      <div class="fg">
-        <div class="flbl">🌱 생애 주기 & 신체 상태 <span class="src-tag">AAHA 2021 Box 1</span></div>
-        <div class="iw">
-          <select id="life-stage" onchange="onStage()">
-            <optgroup label="── 자견 (Puppy) ──">
-              <option value="puppy_young">🐶 자견 — 4개월 미만 (MER × 3.0)</option>
-              <option value="puppy_old">🐕 자견 — 4개월 ~ 1세 (MER × 2.0)</option>
-            </optgroup>
-            <optgroup label="── 성견 (Adult) ──">
-              <option value="adult_neutered" selected>🦮 성견 — 중성화 완료 (MER × 1.6)</option>
-              <option value="adult_intact">🦮 성견 — 비중성화 (MER × 1.8)</option>
-              <option value="adult_inactive">🦮 성견 — 비활동성 / 비만위험 (MER × 1.2)</option>
-              <option value="weight_loss">🦮 성견 — 체중 감량 처방 (이상체중 RER × 1.0)</option>
-            </optgroup>
-            <optgroup label="── 특수 생리 상태 ──">
-              <option value="pregnant">🤰 임신견 — 임신 후기 (MER × 3.0)</option>
-              <option value="lactating">🍼 수유견 — 수유 중 (MER × 4.0~8.0)</option>
-            </optgroup>
-            <optgroup label="── 노령견 (Senior) ──">
-              <option value="senior">🐾 노령견 — 7세 이상 (MER × 1.4)</option>
-            </optgroup>
-          </select>
+      <!-- 자동 판정 모드 배너 + 안내 -->
+      <div class="mode-banner" id="mode-banner">
+        <span class="mb-icon" id="mb-icon">🦮</span>
+        <div class="mb-text">
+          <div class="mb-label">계산기 자동 판정 모드</div>
+          <div class="mb-value" id="mb-value">성견 · 중성화 (MER × 1.4~1.6)</div>
         </div>
-        <div class="info-box amber" id="stage-info"></div>
-        <div class="info-box warn" id="stage-warn"></div>
       </div>
+      <div class="info-box amber" id="stage-info"></div>
+      <div class="info-box warn" id="stage-warn"></div>
 
-      <!-- 품종 — 알파벳순 정렬, 전체 복원, 꼬똥 드 툴레아 포함, 한국어 표기 검수 -->
+      <!-- 품종 — 알파벳순 정렬 -->
       <div class="fg">
         <div class="flbl">🧬 품종 (알파벳순)</div>
         <div class="iw">
@@ -602,7 +604,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
       </div>
 
       <!-- 체중 -->
-      <div class="fg">
+      <div class="fg" style="margin-top:18px;">
         <div class="flbl">🐾 현재 체중</div>
         <div class="iw">
           <input type="number" id="weight" placeholder="0.0" min="0" step="0.1" inputmode="decimal" oninput="calc()">
@@ -689,13 +691,14 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
       <div class="result-hdr">
         <div class="result-name" id="r-name">우리 아이의 처방 리포트</div>
         <div style="font-size:10px;color:var(--text3);font-family:var(--mono);">PRESCRIPTION REPORT</div>
-        <div class="result-stage" id="r-stage">성견 (중성화)</div>
+        <div class="result-stage" id="r-stage">성견 · 중성화</div>
       </div>
 
       <div class="der-block">
         <div class="der-lbl">일일 권장 에너지 (DER)</div>
         <div class="der-val" id="r-der">--</div>
         <div class="der-unit">kcal / day</div>
+        <div class="der-mid" id="r-der-mid"></div>
       </div>
 
       <div class="split-bar">
@@ -724,7 +727,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
         <div style="font-size:10px;color:#ff9e9e;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">하루 총 급여량</div>
         <div class="feed-total" id="r-total">-- g</div>
         <div class="feed-each" id="r-each">-- g / 끼</div>
-        <div class="feed-note">*간식 10% 제외 산출</div>
+        <div class="feed-note">*간식 10% 제외 · 중간값 기준 산출</div>
       </div>
 
       <div class="water-block" id="water-block" style="display:none;">
@@ -748,7 +751,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
     </div>
   </div><!-- /calc-shell -->
 
-  <!-- EVIDENCE —— AAHA 2021 팩트체크 완료 버전 -->
+  <!-- EVIDENCE —— AAHA 2021 -->
   <div class="sec-label">계산 근거 — 2021 AAHA Nutrition & Weight Management Guidelines</div>
   <div class="ev-grid">
     <div class="ev-card">
@@ -762,22 +765,21 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
       <p>
         자견 ~4개월 <code>× 3.0</code><br>
         자견 4개월~1세 <code>× 2.0</code><br>
-        성견 중성화 <code>× 1.6</code><br>
-        성견 비중성화 <code>× 1.8</code><br>
-        비활동성·비만위험 <code>× 1.2</code><br>
+        성견 중성화 <code>× 1.4~1.6</code><br>
+        성견 비중성화 <code>× 1.6~1.8</code><br>
         노령견 7세+ <code>× 1.4</code><br>
         체중감량 처방 <code>이상체중 RER × 1.0</code><br>
-        <em style="font-size:10.5px;color:var(--text3);">※ 체중감량 처방은 팩터가 아닌 <strong style="color:var(--amber)">기준 체중(이상체중)</strong>이 달라지는 것이 핵심입니다.</em>
+        <em style="font-size:10.5px;color:var(--text3);">※ 생애단계는 입력하신 나이·중성화·BCS를 바탕으로 계산기가 자동 판정합니다. 성견은 AAHA 원문의 팩터 범위를 그대로 범위로 제시합니다.</em>
       </p>
     </div>
     <div class="ev-card">
       <div class="ev-num">03</div>
       <h4>이상체중 적용 원칙 (Table 2 + Box 1)</h4>
       <p>BCS 5/9 초과 시 1단계당 10% 과체중<br><code>이상체중 = BW ÷ (1+(BCS-5)×0.1)</code><br><br>
-      <strong style="color:var(--amber)">체중감량 처방 모드</strong>에서만 이상체중 기반 RER 적용.<br>
-      성견 중성화·비중성화·비활동성·노령견 등 <strong>나머지 모든 생애단계는 현재체중 기반 RER</strong> 사용.<br>
-      ➡ AAHA 2021 원칙: 일반 유지 급여는 현재체중 기준으로 계산하고, 처방적 체중감량이 필요한 경우에만 이상체중을 기준 체중으로 전환합니다.<br>
-      <em style="font-size:10.5px;color:var(--text3);">AAHA 2021 Box 1 + Hospitalized patient feeding 원칙</em></p>
+      <strong style="color:var(--amber)">BCS 6 이상</strong>의 성견·노령견은 계산기가 자동으로 <strong style="color:var(--amber)">체중 관리 모드</strong>(이상체중 기반 RER × 1.0)로 전환합니다. BCS 6은 경증 과체중, 7~9는 본격 감량 처방으로 강도를 구분합니다.<br>
+      BCS 5 이하의 모든 생애단계는 <strong>현재체중 기반 RER</strong>을 사용합니다.<br>
+      ➡ AAHA 2021 정의: 과체중 = 이상체중 10% 초과 또는 BCS ≥ 6/9. 일반 유지 급여는 현재체중 기준, 체중 관리가 필요한 경우 이상체중 기준으로 전환.<br>
+      <em style="font-size:10.5px;color:var(--text3);">AAHA 2021 Box 1 + Table 2</em></p>
     </div>
     <div class="ev-card">
       <div class="ev-num">04</div>
@@ -789,7 +791,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
   <!-- DISCLAIMER -->
   <div class="sec-label">주의사항 및 면책 조항</div>
   <div class="disc-grid">
-    <div class="disc-card"><h4>⚠ 수치의 한계</h4><p>AAHA 2021 및 WSAVA 공인 공식 기반이나, 유전적 요인·개별 대사율을 완벽히 대변하지 못하는 통계적 권장치입니다.</p></div>
+    <div class="disc-card"><h4>⚠ 수치의 한계</h4><p>AAHA 2021 및 WSAVA 공인 공식 기반이나, 유전적 요인·개별 대사율을 완벽히 대변하지 못하는 통계적 권장치입니다. 성견 결과는 범위로 제시되며, 실제 급여량은 체중·BCS 변화를 보며 조정하세요.</p></div>
     <div class="disc-card"><h4>⚠ 기저질환 보유견</h4><p>만성 신부전, 당뇨병, 췌장염, 단백소실성 장병증(PLE) 등 기저질환이 있는 경우 반드시 주치 수의사의 처방을 최우선으로 따르십시오.</p></div>
     <div class="disc-card"><h4>⚠ 변 상태 모니터링</h4><p>급여 후 분변을 관찰하세요. 연변 → 급여량 감소 / 건조·딱딱 → 급여량 또는 음수량 증가를 고려하십시오.</p></div>
     <div class="disc-card"><h4>⚠ 법적 면책</h4><p>본 산출 결과는 참고 자료이며 대면 수의학 진료를 대체하지 않습니다. 자의적 해석·적용으로 인한 결과에 법적 책임을 지지 않습니다.</p></div>
@@ -797,7 +799,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 
 </div>
 
-<!-- 카톡 공유 모달 — clipboard API 폴백 포함 -->
+<!-- 카톡 공유 모달 -->
 <div class="share-modal-overlay" id="share-modal" onclick="closeModalOutside(event)">
   <div class="share-modal">
     <h3>💬 카톡 공유용 리포트</h3>
@@ -814,28 +816,15 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 <footer>© 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원 &nbsp;·&nbsp; BASED ON 2021 AAHA NUTRITION AND WEIGHT MANAGEMENT GUIDELINES</footer>
 
 <script>
-// ── AAHA 2021 Box 1 팩트체크 완료 ─────────────────────
-// AAHA 2021 Box 1 — 팩트체크 완료
-// ※ useIdealBW: true인 경우만 이상체중 기준 RER 적용
-//   나머지 모든 팩터는 현재체중 기준 RER 사용 (AAHA 원칙)
-const STAGE = {
-  puppy_young:    { label:'자견 (~4개월)',      factor:3.0, useIdealBW:false,
-    info:'생후 4개월 이하 자견은 급격한 성장을 위해 성견 대비 약 3배의 에너지가 필요합니다. (AAHA 2021 Box 1 — MER × 3.0, 현재체중 기준)' },
-  puppy_old:      { label:'자견 (4개월~1세)',    factor:2.0, useIdealBW:false,
-    info:'골격 성장이 지속되므로 약 2배의 에너지가 필요합니다. 대형·초대형견은 1.5세까지 연장될 수 있습니다. (AAHA 2021 Box 1 — MER × 2.0, 현재체중 기준)' },
-  adult_neutered: { label:'성견 (중성화)',        factor:1.6, useIdealBW:false, info:'' },
-  adult_intact:   { label:'성견 (비중성화)',      factor:1.8, useIdealBW:false, info:'' },
-  adult_inactive: { label:'성견 (비활동성)',      factor:1.2, useIdealBW:false,
-    info:'비활동성 또는 비만 위험군 성견에 적용합니다. 현재체중 기반 RER에 낮은 팩터(×1.2)를 적용하는 방식으로, BCS 기반 이상체중과 별개로 계산됩니다. (AAHA 2021 Box 1)' },
-  weight_loss:    { label:'체중 감량 처방',       factor:1.0, useIdealBW:true,
-    info:'⚠️ 이 모드만 이상체중 기반 RER을 사용합니다. BCS 5 초과 시 이상체중 = 현재체중 ÷ (1+(BCS-5)×0.1) 로 RER 계산 후 ×1.0 적용. (AAHA 2021 Box 1)' },
-  pregnant:       { label:'임신견 (임신 후기)',    factor:3.0, useIdealBW:false,
-    info:'임신 후기(약 6주 이후) 암컷에 적용합니다. 현재체중 기반 RER × 3.0. 태아 성장에 따른 고에너지 요구 구간입니다. (AAHA 2021 Box 1)' },
-  lactating:      { label:'수유견',               factor:null, useIdealBW:false,
-    info:'수유 중인 어미견에 적용합니다. 새끼 수에 따라 RER × 4.0~8.0 범위로 차이가 크므로, 아래 결과는 중간값(×6.0)으로 산출되었습니다. 실제 급여량은 주치 수의사와 상담하세요. (AAHA 2021 Box 1)' },
-  senior:         { label:'노령견 (7세 이상)',     factor:1.4, useIdealBW:false,
-    info:'대사율 감소로 에너지 요구량이 줄어듭니다. 근육량 손실(sarcopenia) 위험에 주의하세요. 현재체중 기반 RER × 1.4. (AAHA 2021 — MER × 1.4)' }
-};
+// ═══════════════════════════════════════════════════════════════
+// 입력 축 분리 (PNA 스타일 + AAHA 2021 로직)
+// ─ 보호자는 "사실"만 입력: 나이 / 중성화 / 특수상태 / BCS
+// ─ 생애단계·팩터·계산모드는 계산기가 자동 판정 (deriveStage)
+// ─ 성견은 AAHA 원문 팩터 범위(중성화 1.4~1.6 / 비중성화 1.6~1.8)를
+//   그대로 범위로 제시. 그램 수는 중간값으로 산출.
+// ─ BCS 6+ 성견·노령견 → 체중감량 처방 모드 자동 전환(단일값 ×1.0)
+// ─ (활동량 입력 제거 — BCS가 결과로서의 활동량 부족을 이미 반영)
+// ═══════════════════════════════════════════════════════════════
 
 const BCS_DATA = {
   1:{ badge:'심각한 저체중', cls:'bcs-thin',  status:'극심한 저체중',       guide:'뼈가 도드라져 보이며 지방이 전혀 없습니다. 고단백 영양 보충이 시급합니다.' },
@@ -843,7 +832,7 @@ const BCS_DATA = {
   3:{ badge:'약간 마름',    cls:'bcs-thin',  status:'약간 마름',           guide:'갈비뼈가 쉽게 만져지며 피하지방이 부족합니다. 균형 잡힌 영양 공급이 필요합니다.' },
   4:{ badge:'정상',         cls:'bcs-ideal', status:'정상 체형 (유지)',     guide:'갈비뼈가 얇은 지방층에 덮여 잘 만져집니다. 위에서 볼 때 허리선이 선명합니다.' },
   5:{ badge:'이상적',       cls:'bcs-ideal', status:'정상 체형 (완벽)',     guide:'가장 건강한 상태입니다. 갈비뼈가 과도한 지방 없이 잘 만져지며 허리 라인이 예쁩니다.' },
-  6:{ badge:'과체중 경계',  cls:'bcs-heavy', status:'과체중 초기',          guide:'약간의 지방 축적이 느껴지며 허리선이 희미해집니다. AAHA 기준 약 10% 과체중.' },
+  6:{ badge:'과체중',       cls:'bcs-heavy', status:'경증 과체중 (관리 필요)',  guide:'약간의 지방 축적이 느껴지며 허리선이 희미해집니다. AAHA 기준 약 10% 과체중으로, 이미 체중 관리가 필요한 단계입니다.' },
   7:{ badge:'과체중',       cls:'bcs-heavy', status:'감량 필요',            guide:'갈비뼈가 두꺼운 지방층에 덮여 잘 만져지지 않습니다. AAHA 기준 약 20% 과체중.' },
   8:{ badge:'비만',         cls:'bcs-heavy', status:'비만 (다이어트 필수)', guide:'세게 눌러야 갈비뼈가 겨우 느껴집니다. AAHA 기준 약 30% 과체중.' },
   9:{ badge:'고도 비만',    cls:'bcs-heavy', status:'고도 비만',            guide:'전신에 거대한 지방층이 있습니다. AAHA 기준 약 40% 과체중. 즉각적 처방 관리 필요.' }
@@ -852,34 +841,140 @@ const BCS_DATA = {
 const $=id=>document.getElementById(id);
 const set=(id,v)=>{const e=$(id);if(e)e.innerText=v;};
 
-function updateName(){ const n=$('pet-name').value.trim(); set('r-name',n?`${n}의 처방 리포트`:'우리 아이의 처방 리포트'); }
-
-function onAge(){
-  const age=parseFloat($('pet-age').value);
-  if(!isNaN(age)&&age>=0){
-    // 임신·수유는 나이 자동 추천에서 제외 (보호자가 직접 선택)
-  const s=age<4/12?'puppy_young':age<1?'puppy_old':age<7?'adult_neutered':'senior';
-    $('life-stage').value=s; onStage();
+function getInputs(){
+  // 년 + 개월 → 살(소수) 단위로 환산. 둘 다 비어 있으면 null(성견 가정)
+  const yRaw = parseInt($('pet-age-y').value);
+  const mRaw = parseInt($('pet-age-m').value);
+  const hasY = !isNaN(yRaw) && yRaw >= 0;
+  const hasM = !isNaN(mRaw) && mRaw >= 0;
+  let age = null;
+  if (hasY || hasM) {
+    age = (hasY ? yRaw : 0) + (hasM ? mRaw : 0) / 12;
   }
+  return {
+    age: age, // null = 나이 미입력 → 성견 가정
+    bcs: parseInt($('bcs-slider').value),
+    neutered: document.querySelector('input[name="neuter"]:checked').value === 'yes',
+    special: $('special-state').value
+  };
+}
+
+// 나이 자연어 표기 — 공유 리포트용 ("5개월", "3살 2개월", "3살")
+function formatAge(){
+  const y = parseInt($('pet-age-y').value);
+  const m = parseInt($('pet-age-m').value);
+  const hasY = !isNaN(y) && y > 0;
+  const hasM = !isNaN(m) && m > 0;
+  if (!hasY && !hasM) return '미지정';
+  if (hasY && hasM) return y + '살 ' + m + '개월';
+  if (hasY) return y + '살';
+  return m + '개월';
+}
+
+// ── 핵심: 생애단계 + 계산모드 자동 판정 (AAHA 2021 Box 1) ──────
+// 우선순위: 특수상태 > 자견(성장기) > BCS 6+ 감량모드 > 노령견 > 성견(범위)
+function deriveStage(){
+  const i = getInputs();
+
+  // 1) 특수 생리 상태 최우선 — 감량모드 적용 금지
+  if (i.special === 'pregnant') return {
+    key:'pregnant', label:'임신견 (임신 후기)', icon:'🤰', factor:3.0, useIdealBW:false, loss:false,
+    info:'임신 후기(약 6주 이후) 암컷에 적용합니다. 현재체중 기반 RER × 3.0. 태아 성장에 따른 고에너지 요구 구간입니다. (AAHA 2021 Box 1)'
+  };
+  if (i.special === 'lactating') return {
+    key:'lactating', label:'수유견', icon:'🍼', factor:null, useIdealBW:false, loss:false,
+    info:'수유 중인 어미견에 적용합니다. 새끼 수에 따라 RER × 3.0~6.0 범위로 차이가 크며(새끼가 많으면 6.0을 넘을 수 있음), 아래 결과는 범위로 제시되며 급여량은 중간값(×4.5)으로 산출됩니다. 실제 급여량은 주치 수의사와 상담하세요. (AAHA 2021 Box 1)'
+  };
+
+  // 2) 자견 — 성장기에는 감량모드 적용 금지 (단일값)
+  if (i.age !== null && i.age < 4/12) return {
+    key:'puppy_young', label:'자견 (~4개월)', icon:'🐶', factor:3.0, useIdealBW:false, loss:false,
+    info:'생후 4개월 이하 자견은 급격한 성장을 위해 성견 대비 약 3배의 에너지가 필요합니다. (AAHA 2021 Box 1 — MER × 3.0, 현재체중 기준)'
+  };
+  if (i.age !== null && i.age < 1) return {
+    key:'puppy_old', label:'자견 (4개월~1세)', icon:'🐕', factor:2.0, useIdealBW:false, loss:false,
+    info:'골격 성장이 지속되므로 약 2배의 에너지가 필요합니다. 대형·초대형견은 1.5세까지 연장될 수 있습니다. (AAHA 2021 Box 1 — MER × 2.0, 현재체중 기준)'
+  };
+
+  const isSenior = i.age !== null && i.age >= 7;
+
+  // 3) BCS 6 이상 성견·노령견 → 체중감량 모드 자동 전환 (단일값 ×1.0)
+  //    ※ AAHA 정의: 과체중 = 이상체중 10% 초과 또는 BCS ≥ 6/9
+  //    강도 구분 — BCS 6: 경증(급여량 조절) / BCS 7~9: 본격 처방
+  if (i.bcs >= 6) {
+    const mild = i.bcs === 6;
+    return {
+      key:'weight_loss',
+      label: mild ? '체중 관리 (경증 과체중)' : '체중 감량 처방 (자동 적용)',
+      icon:'⚖️', factor:1.0, useIdealBW:true, loss:true,
+      info: mild
+        ? 'BCS 6 — AAHA 기준 경증 과체중(이상체중 약 10% 초과)으로 판정되었습니다. 처방 사료 전환보다 현재 사료의 급여량 조절이 우선이며, 이상체중 기반 RER × 1.0으로 계산했습니다. 간식을 줄이고 4~6주 단위로 체중을 재평가하세요. (AAHA 2021 — 과체중 = BCS ≥ 6/9)'
+        : 'BCS ' + i.bcs + ' — AAHA 기준 과체중으로 판정되어 체중 감량 처방 모드가 자동 적용되었습니다. 이상체중(현재체중 ÷ (1+(BCS−5)×0.1)) 기반 RER × 1.0으로 계산하며, 이 모드에서는 감량 처방 단일 팩터가 적용됩니다. (AAHA 2021 Box 1 + Table 2)'
+    };
+  }
+
+  // 4) 노령견 (7세 이상) — 단일값
+  if (isSenior) return {
+    key:'senior', label:'노령견 (7세 이상)', icon:'🐾', factor:1.4, useIdealBW:false, loss:false,
+    info:'대사율 감소로 에너지 요구량이 줄어듭니다. 근육량 손실(sarcopenia) 위험에 주의하세요. 현재체중 기반 RER × 1.4. (AAHA 2021 — MER × 1.4)'
+  };
+
+  // 5) 성견 — 중성화 유무 (AAHA 2021 Box 1 팩터를 범위로 제시)
+  //    중성화 1.4~1.6 / 비중성화 1.6~1.8 — 그램 수는 중간값으로 산출
+  return i.neutered
+    ? { key:'adult_neutered', label:'성견 · 중성화 (MER × 1.4~1.6)', icon:'🦮',
+        factorRange:[1.4, 1.5, 1.6], useIdealBW:false, loss:false, info:'' }
+    : { key:'adult_intact',   label:'성견 · 비중성화 (MER × 1.6~1.8)', icon:'🦮',
+        factorRange:[1.6, 1.7, 1.8], useIdealBW:false, loss:false, info:'' };
+}
+
+// 모드 변경 토스트용 추적
+let _prevStageKey = null;
+
+function updateStage(){
+  const cfg = deriveStage();
+
+  // 결과 패널 + 자동 판정 배너
+  set('r-stage', cfg.label);
+  set('mb-value', cfg.label);
+  set('mb-icon', cfg.icon);
+  const banner = $('mode-banner');
+  banner.classList.toggle('loss', cfg.loss);
+
+  // 안내 박스
+  const ib = $('stage-info');
+  if (cfg.info) { ib.textContent = cfg.info; ib.classList.add('on'); }
+  else ib.classList.remove('on');
+
+  // 모드 진입/해제 토스트
+  if (_prevStageKey !== null && _prevStageKey !== cfg.key) {
+    if (cfg.key === 'weight_loss') {
+      const bcs = getInputs().bcs;
+      showToast(bcs === 6
+        ? '⚖️ BCS 6 — 경증 과체중. 체중 관리 모드가 자동 적용되었습니다.'
+        : '⚖️ BCS ' + bcs + ' — 체중 감량 처방 모드가 자동 적용되었습니다.');
+    }
+    else if (_prevStageKey === 'weight_loss') showToast('✅ 체중 감량 모드 해제 — ' + cfg.label + ' 기준으로 계산합니다.');
+  }
+  _prevStageKey = cfg.key;
+
+  checkWarn(cfg);
   calc();
 }
 
-function onStage(){
-  const s=$('life-stage').value, cfg=STAGE[s];
-  set('r-stage',cfg.label);
-  const ib=$('stage-info');
-  if(cfg.info){ib.textContent=cfg.info;ib.classList.add('on');}else ib.classList.remove('on');
-  checkWarn(); calc();
+function checkWarn(cfg){
+  const i = getInputs(), w = $('stage-warn');
+  let msg = '';
+  if (i.bcs >= 6 && (cfg.key === 'puppy_young' || cfg.key === 'puppy_old'))
+    msg = '⚠ 성장기 자견의 과체중은 단순 감량 대상이 아닙니다. 성장 곡선 평가가 필요하니 반드시 주치 수의사와 상담하세요.';
+  else if (i.bcs >= 6 && (cfg.key === 'pregnant' || cfg.key === 'lactating'))
+    msg = '⚠ 임신·수유 중에는 체중 감량을 시도하지 않습니다. 과체중 관리는 이유(離乳) 후 주치 수의사와 상의하세요.';
+  else if (i.bcs >= 6 && i.age !== null && i.age >= 7)
+    msg = '⚠ 노령견 + 과체중 조합입니다. 노령견은 근육 손실(sarcopenia) 위험이 높아 급격한 감량보다 점진적 관리가 우선입니다. 반드시 주치 수의사와 상담 후 급여량을 결정하세요. (AAHA 2021)';
+  if (msg) { w.textContent = msg; w.classList.add('on'); } else w.classList.remove('on');
 }
 
-function checkWarn(){
-  const bcs=parseInt($('bcs-slider').value), s=$('life-stage').value, w=$('stage-warn');
-  let msg='';
-  if(bcs>=7&&s==='adult_intact') msg='⚠ BCS 7 이상 과체중 + 비중성화(×1.8)는 필요 이상의 칼로리를 산출합니다. "체중 감량 처방" 또는 "비활동성" 선택을 권장합니다.';
-  else if(bcs>=7&&(s==='adult_neutered'||s==='adult_inactive')) msg='⚠ BCS 7 이상 과체중 상태입니다. 적극적인 감량이 필요하다면 "체중 감량 처방"을 선택해 주세요.';
-  else if(bcs>=6&&s==='senior') msg='⚠ 노령견 + 과체중 조합입니다. 노령견은 근육 손실(sarcopenia) 위험이 높아 급격한 감량보다 저칼로리 유지가 우선입니다. 반드시 주치 수의사와 상담 후 급여량을 결정하세요. (AAHA 2021)';
-  if(msg){w.textContent=msg;w.classList.add('on');}else w.classList.remove('on');
-}
+function updateName(){ const n=$('pet-name').value.trim(); set('r-name',n?`${n}의 처방 리포트`:'우리 아이의 처방 리포트'); }
 
 function onBcs(v){
   const d = BCS_DATA[v];
@@ -889,24 +984,7 @@ function onBcs(v){
   b.className = 'bcs-badge-el ' + d.cls;
   set('bcs-guide', d.guide);
   set('r-status', d.status);
-  // BCS 7 이상(명백한 과체중) → 성견·노령견 한정 "체중 감량 처방" 자동 전환
-  // BCS 6는 경계 수준(약 10% 과체중)이므로 경고만 표시하고 사용자가 직접 선택
-  const stageEl = document.getElementById('life-stage');
-  const currentStage = stageEl.value;
-  const adultStages = ['adult_neutered','adult_intact','adult_inactive','weight_loss','senior'];
-  if (+v >= 7 && adultStages.includes(currentStage) && currentStage !== 'weight_loss') {
-    stageEl.value = 'weight_loss';
-    onStage(); // 안내 메시지 업데이트
-    // 자동 변경 안내 토스트
-    showToast('⚠️ BCS ' + v + ' — 생애단계를 "체중 감량 처방"으로 자동 변경했습니다.');
-  } else if (+v <= 5 && currentStage === 'weight_loss') {
-    // BCS 정상 복귀 시 중성화 성견으로 되돌림
-    stageEl.value = 'adult_neutered';
-    onStage();
-    showToast('✅ BCS 정상 범위 — 생애단계를 "성견 (중성화)"으로 복원했습니다.');
-  }
-  checkWarn();
-  calc();
+  updateStage(); // BCS 변화 → 모드 자동 재판정 (calc 포함)
 }
 
 function applyPreset(){
@@ -930,7 +1008,7 @@ function onFeedCalInput(){
 function calc(){
   const weight=parseFloat($('weight').value);
   const bcs=parseInt($('bcs-slider').value);
-  const cfg=STAGE[$('life-stage').value];
+  const cfg=deriveStage();
   const isOver = bcs > 5;
   // 이상체중 계산 (AAHA 2021 Table 2): 참고용 + 체중감량 처방 모드 전용
   const ideal = (isOver && weight > 0) ? weight / (1 + (bcs-5) * 0.1) : null;
@@ -956,35 +1034,52 @@ function calc(){
   }
 
   // ── AAHA 2021 Box 1 원칙 ──────────────────────────────────────
-  // 체중감량 처방(weight_loss)만 이상체중 기반 RER 적용
+  // 체중감량 처방(자동 판정)만 이상체중 기반 RER 적용
   // 나머지 모든 모드는 현재체중 기반 RER 사용 (이중 보정 방지)
   const calcW = (cfg.useIdealBW && isOver && ideal) ? ideal : weight;
 
   // RER: 70 × BW^0.75 (AAHA 2021 Box 1, WSAVA 공인)
   const rer = 70 * Math.pow(calcW, 0.75);
 
-  // 수유견: 팩터 범위 4.0~8.0 → 중간값 6.0 사용, 범위 함께 표시
-  let der, derDisplay;
-  if ($('life-stage').value === 'lactating') {
-    const derLow  = rer * 4.0;
-    const derHigh = rer * 8.0;
-    der = rer * 6.0; // 중간값으로 급여량 계산
-    derDisplay = Math.round(derLow).toLocaleString() + ' ~ ' + Math.round(derHigh).toLocaleString() + ' (중간값 ' + Math.round(der).toLocaleString() + ')';
+  // DER 산출:
+  //  - 수유견: 범위 3.0~6.0, 그램수는 중간값(4.5)
+  //  - 성견(factorRange): 범위 lo~hi, 그램수는 중간값(mid)
+  //  - 그 외(자견·노령·임신·감량): 단일 factor
+  let der, derDisplay, derMid = '';
+  if (cfg.key === 'lactating') {
+    const derLow  = rer * 3.0;
+    const derHigh = rer * 6.0;
+    der = rer * 4.5;
+    derDisplay = Math.round(derLow).toLocaleString() + ' ~ ' + Math.round(derHigh).toLocaleString();
+    derMid = '권장 시작점 약 ' + Math.round(der).toLocaleString() + ' kcal (중간값)';
+  } else if (cfg.factorRange) {
+    const [lo, mid, hi] = cfg.factorRange;
+    const derLow  = rer * lo;
+    const derHigh = rer * hi;
+    der = rer * mid; // 급여 그램 수는 중간값 기준
+    derDisplay = Math.round(derLow).toLocaleString() + ' ~ ' + Math.round(derHigh).toLocaleString();
+    derMid = '권장 시작점 약 ' + Math.round(der).toLocaleString() + ' kcal (중간값)';
   } else {
     der = rer * cfg.factor;
     derDisplay = Math.round(der).toLocaleString();
+    derMid = '';
   }
 
   const feedK = der * 0.9, treatK = der * 0.1;
 
   set('r-der', derDisplay);
+  const midEl = $('r-der-mid');
+  if (derMid) { midEl.textContent = derMid; midEl.classList.add('on'); }
+  else { midEl.textContent = ''; midEl.classList.remove('on'); }
+
   set('r-rer', Math.round(rer).toLocaleString() + ' kcal');
   set('r-feed-kcal', Math.round(feedK).toLocaleString() + ' kcal');
   set('r-treat-kcal', Math.round(treatK).toLocaleString() + ' kcal');
 
   const cw = $('r-calcw');
   if (calcW !== weight) {
-    cw.textContent = calcW.toFixed(1) + ' kg (이상체중 기준 — 체중감량 처방)';
+    const mode = (bcs === 6) ? '체중 관리' : '체중 감량';
+    cw.textContent = calcW.toFixed(1) + ' kg (이상체중 기준 — ' + mode + ')';
     cw.style.color = 'var(--green)';
   } else {
     cw.textContent = weight + ' kg (현재체중 기준)';
@@ -1000,16 +1095,15 @@ function calc(){
   }else{set('r-total','사료 칼로리 입력 필요');set('r-each','-- g / 끼');}
   updateTreatHint(treatK);
 
-  // 권장 음수량: 체중(calcW 아닌 실제 체중) × 60 ml
+  // 권장 음수량: 실제 체중 × 60 ml
   const waterMl = Math.round(weight * 60);
   set('r-water', waterMl.toLocaleString() + ' ml');
   $('water-block').style.display = 'flex';
 }
 
 
-// ── 간식 칼로리 직관화 ── 
-// 출처: 국가표준식품성분표 / 조미 없는 것 기준
-// 강아지 급여 가능 식품만 선정
+// ── 간식 칼로리 직관화 ──
+// 출처: 국가표준식품성분표 / 조미 없는 것 기준 / 강아지 급여 가능 식품만
 function updateTreatHint(treatKcal){
   const hint=document.getElementById('treat-hint');
   const itemsEl=document.getElementById('treat-items');
@@ -1018,7 +1112,6 @@ function updateTreatHint(treatKcal){
 
   kcalDisp.textContent=Math.round(treatKcal);
 
-  // 간식 DB — 국가표준식품성분표 / 식품안전처 DB 기준 (조미 없는 것)
   const snacks=[
     { emoji:'🍗', name:'닭가슴살',  kcalPer100g:127, note:'삶은 것 기준 · 단백질 급원 1순위' },
     { emoji:'🎃', name:'단호박',    kcalPer100g:85,  note:'찐 것 기준 · 껍질 제거 권장' },
@@ -1057,6 +1150,7 @@ function clearR(){
   const th=document.getElementById('treat-hint'); if(th) th.style.display='none';
   set('r-der','--');set('r-rer','-- kcal');set('r-feed-kcal','-- kcal');set('r-treat-kcal','-- kcal');
   set('r-total','-- g');set('r-each','-- g / 끼');
+  const midEl=$('r-der-mid');if(midEl){midEl.textContent='';midEl.classList.remove('on');}
   const cw=$('r-calcw');cw.textContent='--';cw.style.color='var(--cyan)';
   set('r-water','-- ml');
   const wb=$('water-block');if(wb)wb.style.display='none';
@@ -1065,20 +1159,25 @@ function clearR(){
 // ── 카톡 공유 모달 — textarea 폴백 방식 ─────────────
 function buildReportText(){
   const name=$('pet-name').value.trim()||'우리 아이';
-  const age=$('pet-age').value?$('pet-age').value+'살':'미지정';
+  const age=formatAge();
   const wt=$('weight').value?$('weight').value+'kg':'미지정';
   const breedEl=$('pet-breed');
   const breed=breedEl.value?breedEl.options[breedEl.selectedIndex].text:'미지정';
-  const stage=STAGE[$('life-stage').value].label;
+  const cfg=deriveStage();
+  const neuter=document.querySelector('input[name="neuter"]:checked').value==='yes'?'중성화 완료':'비중성화';
   const bcs=$('bcs-slider').value;
   const idealLine=$('row-ideal').style.display!=='none'?'\n- 목표 이상체중: '+$('r-ideal').innerText:'';
+  // DER 줄 — 범위 모드면 중간값 안내를 함께 표기
+  const derMidEl=$('r-der-mid');
+  const derMidLine=(derMidEl && derMidEl.classList.contains('on') && derMidEl.textContent)
+      ? '\n  · '+derMidEl.textContent : '';
   return `[🐾 개알남 맞춤 처방 급여 리포트]
 (AAHA 2021 Nutrition & Weight Management Guidelines 기반)
 
 ■ 기본 정보
 - 이름: ${name} / 품종: ${breed}
-- 나이: ${age} / 체중: ${wt}
-- 생애단계: ${stage}
+- 나이: ${age} / 체중: ${wt} / ${neuter}
+- 적용 모드: ${cfg.label}
 
 ■ BCS 진단
 - 비만도: BCS ${bcs}단계 (${$('r-status').innerText})${idealLine}
@@ -1086,7 +1185,7 @@ function buildReportText(){
 
 ■ 칼로리 처방
 - 기초 휴식 에너지(RER): ${$('r-rer').innerText}
-- 일일 권장 에너지(DER): ${$('r-der').innerText} kcal
+- 일일 권장 에너지(DER): ${$('r-der').innerText} kcal/day${derMidLine}
 - 사료 할당 칼로리 (90%): ${$('r-feed-kcal').innerText}
 - 간식 허용 칼로리 (10%): ${$('r-treat-kcal').innerText}
 
@@ -1112,7 +1211,6 @@ function copyText(){
   const ta=$('share-textarea');
   ta.select();
   ta.setSelectionRange(0,99999); // 모바일
-  // 1순위: Clipboard API
   if(navigator.clipboard&&window.isSecureContext){
     navigator.clipboard.writeText(ta.value)
       .then(()=>{ alert('복사되었습니다!\n카카오톡에 붙여넣기(Ctrl+V / 길게 누르기) 해주세요.'); closeModal(); })
@@ -1140,9 +1238,7 @@ function showToast(msg) {
   window._toastTimer = setTimeout(() => t.classList.remove('on'), 3000);
 }
 
-// ── 사용자 카운터 (counterapi.dev V1 — 무료·등록불필요·CORS지원) ────
-// 구 countapi.xyz 서비스 종료(2023) → counterapi.dev 로 교체
-// namespace: gaealnam / name: calculator
+// ── 사용자 카운터 (counterapi.dev V1) ────
 const _COUNTER_UP  = 'https://api.counterapi.dev/v1/gaealnam/calculator/up';
 const _COUNTER_GET = 'https://api.counterapi.dev/v1/gaealnam/calculator/';
 
@@ -1151,10 +1247,8 @@ async function incrementCounter() {
     const res  = await fetch(_COUNTER_UP);
     if (!res.ok) throw new Error('counter up failed');
     const data = await res.json();
-    // counterapi.dev 응답 구조: { count: Number }
     updateCounterDisplay(data.count ?? data.value);
   } catch(e) {
-    // 네트워크 오류 시 세션 내 로컬값으로 대체 표시
     try {
       const local = parseInt(sessionStorage.getItem('gaealnam_count') || '0') + 1;
       sessionStorage.setItem('gaealnam_count', local);
@@ -1169,9 +1263,7 @@ async function fetchCounter() {
     if (!res.ok) throw new Error('counter get failed');
     const data = await res.json();
     updateCounterDisplay(data.count ?? data.value);
-  } catch(e) {
-    // 조회 실패 시 '···' 그대로 유지 (스트립은 숨기지 않음)
-  }
+  } catch(e) {}
 }
 
 function updateCounterDisplay(count) {
@@ -1181,15 +1273,17 @@ function updateCounterDisplay(count) {
   }
 }
 function resetAll(){
-  ['weight','pet-name','pet-age','feed-cal'].forEach(id=>$(id).value='');
+  ['weight','pet-name','pet-age-y','pet-age-m','feed-cal'].forEach(id=>$(id).value='');
   $('pet-breed').value='';$('feed-preset').value='manual';
-  $('bcs-slider').value=5;$('life-stage').value='adult_neutered';
+  $('bcs-slider').value=5;$('special-state').value='none';
+  document.querySelector('input[name="neuter"][value="yes"]').checked=true;
   document.querySelector('input[name="ftimes"][value="2"]').checked=true;
-  updateName();onBcs(5);onStage();clearR();
+  _prevStageKey=null;
+  updateName();onBcs(5);clearR();
 }
 
-onStage();
-onBcs(5);  // BCS 기본값 5로 초기화
+// 초기화
+onBcs(5);   // BCS 기본값 → updateStage() → calc() 까지 연쇄 호출
 fetchCounter();
 </script>
 <div class="toast" id="toast"></div>
