@@ -206,7 +206,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
   .calc-shell .panel{flex:1;}
   .result-panel{width:360px;flex-shrink:0;position:sticky;top:20px;}
   .ev-grid{grid-template-columns:repeat(4,1fr);}
-  .disc-grid{grid-template-columns:repeat(4,1fr);}
+  .disc-grid{grid-template-columns:repeat(3,1fr);}
 }
 
 /* Mobile */
@@ -225,6 +225,10 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 .contact-text{display:flex;flex-direction:column;gap:2px;}
 .contact-text strong{font-size:12.5px;color:var(--text);font-weight:700;}
 .contact-text span{font-size:12px;color:var(--cyan);font-family:var(--mono);letter-spacing:.3px;}
+.contact-link{font-size:12px;color:var(--cyan);font-family:var(--mono);letter-spacing:.3px;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;}
+.contact-link:hover{border-bottom-color:var(--cyan);}
+.footer-link{color:var(--cyan);text-decoration:none;transition:opacity .2s;}
+.footer-link:hover{opacity:.7;text-decoration:underline;}
 
 /* Water block */
 .water-block{display:flex;align-items:center;justify-content:space-between;background:rgba(56,139,253,.1);border:1px solid rgba(56,139,253,.4);border-radius:var(--r-md);padding:13px 16px;margin-top:10px;}
@@ -794,6 +798,8 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
     <div class="disc-card"><h4>⚠ 수치의 한계</h4><p>AAHA 2021 및 WSAVA 공인 공식 기반이나, 유전적 요인·개별 대사율을 완벽히 대변하지 못하는 통계적 권장치입니다. 성견 결과는 범위로 제시되며, 실제 급여량은 체중·BCS 변화를 보며 조정하세요.</p></div>
     <div class="disc-card"><h4>⚠ 기저질환 보유견</h4><p>만성 신부전, 당뇨병, 췌장염, 단백소실성 장병증(PLE) 등 기저질환이 있는 경우 반드시 주치 수의사의 처방을 최우선으로 따르십시오.</p></div>
     <div class="disc-card"><h4>⚠ 변 상태 모니터링</h4><p>급여 후 분변을 관찰하세요. 연변 → 급여량 감소 / 건조·딱딱 → 급여량 또는 음수량 증가를 고려하십시오.</p></div>
+    <div class="disc-card"><h4>⚠ 성장기 강아지</h4><p>성장기 강아지는 발육에 충분한 에너지가 필요하며, 임의로 급여를 제한하면 발육 부전을 초래할 수 있습니다. 자견은 체중·성장 곡선을 정기적으로 확인하세요.</p></div>
+    <div class="disc-card"><h4>⚠ 점진적 사료 전환 · 재평가</h4><p>사료 변경은 4~7일에 걸쳐 기존 사료와 섞어 점진적으로 전환하세요. 모든 결과는 시작 기준이며, 4~8주 간격으로 체중·BCS를 재평가해 급여량을 조정해야 합니다.</p></div>
     <div class="disc-card"><h4>⚠ 법적 면책</h4><p>본 산출 결과는 참고 자료이며 대면 수의학 진료를 대체하지 않습니다. 자의적 해석·적용으로 인한 결과에 법적 책임을 지지 않습니다.</p></div>
   </div>
 
@@ -812,8 +818,8 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
   </div>
 </div>
 
-<div class="contact-strip"><span class="contact-icon">✉️</span><div class="contact-text"><strong>계산기 오류 신고 및 사료·품종 추가 요청</strong><span>vet_@naver.com 으로 보내주세요</span></div></div>
-<footer>© 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원 &nbsp;·&nbsp; BASED ON 2021 AAHA NUTRITION AND WEIGHT MANAGEMENT GUIDELINES</footer>
+<div class="contact-strip"><span class="contact-icon">✉️</span><div class="contact-text"><strong>계산기 오류 신고 및 사료·품종 추가 요청</strong><a href="mailto:vet_@naver.com?subject=%5B%EA%B0%9C%EC%95%8C%EB%82%A8%20%EA%B3%84%EC%82%B0%EA%B8%B0%5D%20%EC%98%A4%EB%A5%98%20%EC%8B%A0%EA%B3%A0%20%C2%B7%20%EC%82%AC%EB%A3%8C%2F%ED%92%88%EC%A2%85%20%EC%B6%94%EA%B0%80%20%EC%9A%94%EC%B2%AD" class="contact-link">vet_@naver.com 으로 보내주세요</a></div></div>
+<footer>© 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원 &nbsp;·&nbsp; <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener" class="footer-link">▶ 유튜브 채널 '개알남' 보러가기</a><br>BASED ON 2021 AAHA NUTRITION AND WEIGHT MANAGEMENT GUIDELINES</footer>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
