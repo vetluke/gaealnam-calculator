@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>개알남 | 반려견 정밀 영양 계산기</title>
+<!-- ▼▼▼ Google Analytics 4 (GA4) — 개알남 계산기 ▼▼▼ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-63FHYEGDJD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-63FHYEGDJD');
+</script>
+<!-- ▲▲▲ Google Analytics 4 끝 ▲▲▲ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
@@ -389,7 +398,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
   <!-- 사용 카운터 -->
   <div class="counter-strip">
     <span class="counter-icon">🐾</span>
-    <span class="counter-text">지금까지 <strong id="counter-num">···</strong>명이 개알남 계산기를 사용하였습니다</span>
+    <span class="counter-text">지금까지 <strong id="counter-num">···</strong>명이 개알남 계산기를 방문하였습니다</span>
   </div>
   <!-- CALCULATOR -->
   <div class="sec-label">맞춤형 칼로리 & 처방 급여량 계산기</div>
@@ -1082,12 +1091,6 @@ function calc(){
 
   if (!weight || weight <= 0) { clearR(); return; }
 
-  // 최초 유효 계산 시 카운터 증가
-  if (!_counted && weight > 0) {
-    _counted = true;
-    incrementCounter();
-  }
-
   // ── AAHA 2021 Box 1 원칙 ──────────────────────────────────────
   // 체중감량 처방(자동 판정)만 이상체중 기반 RER 적용
   // 나머지 모든 모드는 현재체중 기반 RER 사용 (이중 보정 방지)
@@ -1226,9 +1229,6 @@ function renderTreatGrams(){
 }
 
 
-// 계산 카운터 — 첫 유효 계산 시 1회만 집계
-let _counted = false;
-
 function clearR(){
   const th=document.getElementById('treat-hint'); if(th) th.style.display='none';
   set('r-der','--');set('r-rer','-- kcal');set('r-feed-kcal','-- kcal');set('r-treat-kcal','-- kcal');
@@ -1332,32 +1332,27 @@ function showToast(msg) {
   window._toastTimer = setTimeout(() => t.classList.remove('on'), 3000);
 }
 
-// ── 사용자 카운터 (counterapi.dev V1) ────
-const _COUNTER_UP  = 'https://api.counterapi.dev/v1/gaealnam/calculator/up';
-const _COUNTER_GET = 'https://api.counterapi.dev/v1/gaealnam/calculator/';
+// ── 방문자 카운터 (Abacus — 무료·등록불필요·CORS지원·안정적) ────
+// /hit/ 엔드포인트: 호출 시 +1 하면서 현재 총 방문수를 반환
+// namespace: gaealnam-com / key: visits
+// (counterapi.dev 대비 안정성이 높아 교체. 폴백은 그대로 유지)
+const _COUNTER_HIT = 'https://abacus.jasoncameron.dev/hit/gaealnam-com/visits';
 
-async function incrementCounter() {
+async function countVisit() {
   try {
-    const res  = await fetch(_COUNTER_UP);
-    if (!res.ok) throw new Error('counter up failed');
+    const res  = await fetch(_COUNTER_HIT);
+    if (!res.ok) throw new Error('counter hit failed');
     const data = await res.json();
-    updateCounterDisplay(data.count ?? data.value);
+    // Abacus 응답 구조: { value: Number }
+    updateCounterDisplay(data.value);
   } catch(e) {
+    // 네트워크/서비스 오류 시 로컬 폴백 (해당 기기 세션 내 표시용)
     try {
-      const local = parseInt(sessionStorage.getItem('gaealnam_count') || '0') + 1;
-      sessionStorage.setItem('gaealnam_count', local);
+      const local = parseInt(localStorage.getItem('gaealnam_visits') || '0') + 1;
+      localStorage.setItem('gaealnam_visits', local);
       updateCounterDisplay(local);
     } catch(_) {}
   }
-}
-
-async function fetchCounter() {
-  try {
-    const res  = await fetch(_COUNTER_GET);
-    if (!res.ok) throw new Error('counter get failed');
-    const data = await res.json();
-    updateCounterDisplay(data.count ?? data.value);
-  } catch(e) {}
 }
 
 function updateCounterDisplay(count) {
@@ -1381,7 +1376,7 @@ function resetAll(){
 
 // 초기화
 onBcs(5);   // BCS 기본값 → updateStage() → calc() 까지 연쇄 호출
-fetchCounter();
+countVisit(); // 페이지 방문 시 1회 집계 + 현재 방문수 표시
 </script>
 <div class="toast" id="toast"></div>
 </body>
