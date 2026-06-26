@@ -239,12 +239,19 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
 /* Treat hint */
 .treat-hint{background:var(--surface2);border:1px solid var(--amber);border-radius:var(--r-md);padding:14px;margin-top:10px;}
 .treat-hint-title{font-size:11.5px;font-weight:700;color:var(--amber);margin-bottom:10px;}
-.treat-items{display:flex;flex-direction:column;gap:6px;}
-.treat-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);}
-.treat-item .ti-emoji{font-size:16px;flex-shrink:0;}
-.treat-item .ti-text{line-height:1.45;}
-.treat-item .ti-text strong{color:var(--text);font-weight:700;}
 .treat-note{font-size:10.5px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border2);padding-top:6px;}
+/* Treat picker (간식 종류 선택 → g수 계산) */
+.treat-picker{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.treat-picker select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:var(--sans);font-size:13px;font-weight:600;padding:11px 38px 11px 12px;outline:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:13px;}
+.treat-picker select:focus{border-color:var(--amber);}
+.treat-manual-row{display:flex;align-items:center;gap:8px;}
+.treat-manual-lbl{font-size:10.5px;color:var(--text3);white-space:nowrap;}
+.treat-manual-row .iw input{font-size:13px;padding:10px 70px 10px 12px;}
+.treat-result{background:var(--amber-dim);border:1px solid var(--amber);border-radius:var(--r-sm);padding:13px 14px;text-align:center;margin-bottom:8px;}
+.treat-result-food{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:4px;}
+.treat-result-amt{font-family:var(--mono);font-size:30px;font-weight:500;color:var(--amber);line-height:1.1;}
+.treat-result-unit{font-size:13px;font-weight:400;margin-left:3px;}
+.treat-result-sub{font-size:10.5px;color:var(--text3);margin-top:4px;}
 
 /* 레인보우 슬라이더 */
 .bcs-slider-track-wrap {
@@ -745,7 +752,49 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
         <div class="wv" id="r-water">-- ml</div>
       </div>
 
-      <div class="treat-hint" id="treat-hint" style="display:none;"><div class="treat-hint-title">🍖 간식 <span id="treat-kcal-display">--</span> kcal 으로 먹을 수 있는 것</div><div class="treat-items" id="treat-items"></div><div class="treat-note">강아지 급여 가능 식품만 표시 · 조미 없는 것 기준</div></div>
+      <div class="treat-hint" id="treat-hint" style="display:none;">
+        <div class="treat-hint-title">🍖 간식 허용량 <span id="treat-kcal-display">--</span> kcal 으로 줄 수 있는 양</div>
+        <div class="treat-picker">
+          <select id="treat-select" onchange="onTreatSelect()">
+            <option value="">🥬 간식 종류를 선택하세요</option>
+            <optgroup label="채소 (저칼로리)">
+              <option value="15">오이 (15 kcal/100g)</option>
+              <option value="15">상추 (15 kcal/100g)</option>
+              <option value="18">토마토 · 잘 익은 것만 (18 kcal/100g)</option>
+              <option value="25">양배추 (25 kcal/100g)</option>
+              <option value="25">콜리플라워 (25 kcal/100g)</option>
+              <option value="31">그린빈/껍질콩 (31 kcal/100g)</option>
+              <option value="35">브로콜리 · 송이만 (35 kcal/100g)</option>
+              <option value="41">당근 · 익혀서 (41 kcal/100g)</option>
+              <option value="85">단호박 · 찐 것 (85 kcal/100g)</option>
+              <option value="145">고구마 · 찐 것 (145 kcal/100g)</option>
+            </optgroup>
+            <optgroup label="과일 (소량씩)">
+              <option value="30">수박 · 씨 제거 (30 kcal/100g)</option>
+              <option value="32">딸기 (32 kcal/100g)</option>
+              <option value="55">사과 · 씨 제거 (55 kcal/100g)</option>
+              <option value="57">블루베리 (57 kcal/100g)</option>
+              <option value="89">바나나 · 소량 (89 kcal/100g)</option>
+            </optgroup>
+            <optgroup label="단백질 간식">
+              <option value="127">닭가슴살 · 삶은 것 (127 kcal/100g)</option>
+            </optgroup>
+          </select>
+          <div class="treat-manual-row">
+            <span class="treat-manual-lbl">또는 직접 입력 →</span>
+            <div class="iw" style="flex:1;">
+              <input type="number" id="treat-manual-cal" placeholder="간식 kcal/100g" min="0" inputmode="numeric" oninput="onTreatManual()">
+              <span class="unit">kcal/100g</span>
+            </div>
+          </div>
+        </div>
+        <div class="treat-result" id="treat-result" style="display:none;">
+          <div class="treat-result-food" id="treat-result-food">--</div>
+          <div class="treat-result-amt"><span id="treat-result-g">--</span><span class="treat-result-unit">g 까지</span></div>
+          <div class="treat-result-sub" id="treat-result-sub">하루 간식 허용량 기준</div>
+        </div>
+        <div class="treat-note">USDA 표준 식품성분 기준 · 조미 없는 것 · 강아지 급여 가능 식품만 · 고구마·닭가슴살은 조리법에 따라 편차 있음</div>
+      </div>
 
 
       <div class="btn-row">
@@ -818,7 +867,7 @@ footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;f
   </div>
 </div>
 
-<div class="contact-strip"><span class="contact-icon">✉️</span><div class="contact-text"><strong>계산기 오류 신고 및 사료·품종 추가 요청</strong><a href="mailto:vet_@naver.com?subject=%5B%EA%B0%9C%EC%95%8C%EB%82%A8%20%EA%B3%84%EC%82%B0%EA%B8%B0%5D%20%EC%98%A4%EB%A5%98%20%EC%8B%A0%EA%B3%A0%20%C2%B7%20%EC%82%AC%EB%A3%8C%2F%ED%92%88%EC%A2%85%20%EC%B6%94%EA%B0%80%20%EC%9A%94%EC%B2%AD" class="contact-link">vet_@naver.com 으로 보내주세요</a></div></div>
+<div class="contact-strip"><span class="contact-icon">✉️</span><div class="contact-text"><strong>계산기 오류 신고와 수정 요청, 사료 · 간식 · 품종 추가 요청 언제든 환영합니다</strong><a href="mailto:vet_@naver.com?subject=%5B%EA%B0%9C%EC%95%8C%EB%82%A8%20%EA%B3%84%EC%82%B0%EA%B8%B0%5D%20%EC%98%A4%EB%A5%98%20%EC%8B%A0%EA%B3%A0%20%C2%B7%20%EC%88%98%EC%A0%95%20%EC%9A%94%EC%B2%AD%20/%20%EC%82%AC%EB%A3%8C%C2%B7%EA%B0%84%EC%8B%9D%C2%B7%ED%92%88%EC%A2%85%20%EC%B6%94%EA%B0%80%20%EC%9A%94%EC%B2%AD" class="contact-link">vet_@naver.com 으로 보내주세요</a></div></div>
 <footer>© 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원 &nbsp;·&nbsp; <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener" class="footer-link">▶ 유튜브 채널 '개알남' 보러가기</a><br>BASED ON 2021 AAHA NUTRITION AND WEIGHT MANAGEMENT GUIDELINES</footer>
 
 <script>
@@ -1108,44 +1157,72 @@ function calc(){
 }
 
 
-// ── 간식 칼로리 직관화 ──
-// 출처: 국가표준식품성분표 / 조미 없는 것 기준 / 강아지 급여 가능 식품만
+// ── 간식 허용량(10%)으로 줄 수 있는 g수 계산 ──
+// 출처: USDA 표준 식품성분 / 조미 없는 것 기준 / 강아지 급여 가능 식품만
+// 흐름: calc()가 treatK(허용 칼로리)를 _currentTreatKcal에 저장 →
+//       보호자가 간식 선택/직접입력 → onTreatSelect/onTreatManual이 g수 재계산
+let _currentTreatKcal = 0;
+
 function updateTreatHint(treatKcal){
   const hint=document.getElementById('treat-hint');
-  const itemsEl=document.getElementById('treat-items');
+  if(!hint||treatKcal<=0){
+    if(hint)hint.style.display='none';
+    _currentTreatKcal=0;
+    return;
+  }
+  _currentTreatKcal=treatKcal;
   const kcalDisp=document.getElementById('treat-kcal-display');
-  if(!hint||treatKcal<=0){if(hint)hint.style.display='none';return;}
-
-  kcalDisp.textContent=Math.round(treatKcal);
-
-  const snacks=[
-    { emoji:'🍗', name:'닭가슴살',  kcalPer100g:127, note:'삶은 것 기준 · 단백질 급원 1순위' },
-    { emoji:'🎃', name:'단호박',    kcalPer100g:85,  note:'찐 것 기준 · 껍질 제거 권장' },
-    { emoji:'🍠', name:'고구마',    kcalPer100g:163, note:'찐 것 기준 · 식이섬유 풍부' },
-    { emoji:'🫐', name:'블루베리',  kcalPer100g:57,  note:'생것 기준 · 항산화 간식, 소량씩' },
-    { emoji:'🥬', name:'양배추',    kcalPer100g:22,  note:'생것 기준 · 저칼로리, 잎만' },
-  ];
-
-  let html='';
-  snacks.forEach(s=>{
-    const grams = Math.round(treatKcal / s.kcalPer100g * 100);
-    let display;
-    if(s.name.includes('블루베리')){
-      const pieces=Math.round(grams/5); // 1알 ≈ 5g
-      display=`약 ${pieces}알 (${grams}g)`;
-    } else if(s.name.includes('닭가슴살')){
-      display=`약 ${grams}g`;
-    } else if(s.name.includes('양배추')){
-      const leaves=Math.round(grams/30); // 잎 1장 ≈ 30g
-      display=leaves>=1 ? `약 ${leaves}장 (${grams}g)` : `약 ${grams}g`;
-    } else {
-      display=`약 ${grams}g`;
-    }
-    html+=`<div class="treat-item"><span class="ti-emoji">${s.emoji}</span><div class="ti-text"><strong>${s.name}</strong> ${display} &nbsp;<span style="color:var(--text3);font-size:10.5px;">${s.note}</span></div></div>`;
-  });
-
-  itemsEl.innerHTML=html;
+  if(kcalDisp)kcalDisp.textContent=Math.round(treatKcal);
   hint.style.display='block';
+  // 이미 간식이 선택/입력된 상태면 g수도 갱신
+  renderTreatGrams();
+}
+
+// 드롭다운 선택 → 직접입력칸 비우고 g수 계산
+function onTreatSelect(){
+  const manual=$('treat-manual-cal');
+  if(manual)manual.value='';
+  renderTreatGrams();
+}
+
+// 직접입력 → 드롭다운 초기화하고 g수 계산
+function onTreatManual(){
+  const sel=$('treat-select');
+  if(sel)sel.value='';
+  renderTreatGrams();
+}
+
+// 현재 선택/입력된 간식 칼로리(kcal/100g)로 g수 산출 후 표시
+function renderTreatGrams(){
+  const resultEl=$('treat-result');
+  if(!resultEl)return;
+
+  // 직접입력 우선, 없으면 드롭다운 값
+  const manualVal=parseFloat($('treat-manual-cal').value);
+  const selEl=$('treat-select');
+  const selVal=parseFloat(selEl.value);
+
+  let kcalPer100g=null, foodLabel='';
+  if(manualVal>0){
+    kcalPer100g=manualVal;
+    foodLabel='입력하신 간식';
+  } else if(selVal>0){
+    kcalPer100g=selVal;
+    // 옵션 텍스트에서 식품명만 추출 (괄호 앞부분)
+    const txt=selEl.options[selEl.selectedIndex].text;
+    foodLabel=txt.split('(')[0].replace(/[🥬🍗]/g,'').trim();
+  }
+
+  if(!kcalPer100g || kcalPer100g<=0 || _currentTreatKcal<=0){
+    resultEl.style.display='none';
+    return;
+  }
+
+  const grams=Math.round(_currentTreatKcal / kcalPer100g * 100);
+  set('treat-result-food', foodLabel);
+  set('treat-result-g', grams.toLocaleString());
+  set('treat-result-sub', '하루 간식 허용량(' + Math.round(_currentTreatKcal) + ' kcal) 기준 · 이 양을 넘지 마세요');
+  resultEl.style.display='block';
 }
 
 
@@ -1177,6 +1254,16 @@ function buildReportText(){
   const derMidEl=$('r-der-mid');
   const derMidLine=(derMidEl && derMidEl.classList.contains('on') && derMidEl.textContent)
       ? '\n  · '+derMidEl.textContent : '';
+  // 간식 정보 — 보호자가 간식을 선택/입력한 경우에만 포함
+  let treatLine='';
+  const treatResultEl=$('treat-result');
+  if(treatResultEl && treatResultEl.style.display!=='none'){
+    const food=$('treat-result-food').innerText;
+    const grams=$('treat-result-g').innerText;
+    if(food && food!=='--' && grams && grams!=='--'){
+      treatLine='\n- 🍖 선택 간식: '+food+' → 하루 '+grams+'g 까지 (허용량 내)';
+    }
+  }
   return `[🐾 개알남 맞춤 처방 급여 리포트]
 (AAHA 2021 Nutrition & Weight Management Guidelines 기반)
 
@@ -1198,9 +1285,10 @@ function buildReportText(){
 ■ 급여 가이드
 - 하루 총 사료 급여량: ${$('r-total').innerText}
 - 한 끼당 급여량: ${$('r-each').innerText}
-- 💧 권장 음수량: ${$('r-water').innerText} (체중 × 60 ml/day)
+- 💧 권장 음수량: ${$('r-water').innerText} (체중 × 60 ml/day)${treatLine}
 
-👉 개알남 칼로리 계산기에서 직접 확인해보세요!`;
+👉 개알남 칼로리 계산기에서 직접 확인해보세요!
+https://gaealnam.com/`;
 }
 
 function openShareModal(){
@@ -1282,6 +1370,9 @@ function resetAll(){
   ['weight','pet-name','pet-age-y','pet-age-m','feed-cal'].forEach(id=>$(id).value='');
   $('pet-breed').value='';$('feed-preset').value='manual';
   $('bcs-slider').value=5;$('special-state').value='none';
+  const ts=$('treat-select');if(ts)ts.value='';
+  const tm=$('treat-manual-cal');if(tm)tm.value='';
+  _currentTreatKcal=0;
   document.querySelector('input[name="neuter"][value="yes"]').checked=true;
   document.querySelector('input[name="ftimes"][value="2"]').checked=true;
   _prevStageKey=null;
