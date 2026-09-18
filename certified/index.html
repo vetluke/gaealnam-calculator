@@ -88,6 +88,19 @@ a{color:inherit;text-decoration:none;}
 .fbtn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
 .fbtn .cnt{font-family:var(--mono);font-size:10px;opacity:.65;margin-left:3px;}
 
+/* 요약 바 */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 2px;}
+.sm{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-sm);
+  padding:11px 6px;text-align:center;cursor:pointer;transition:border-color .16s,background .16s;}
+.sm:hover{border-color:var(--text3);}
+.sm.on{border-color:var(--accent);background:var(--accent-dim);}
+.sm-n{font-family:var(--mono);font-size:17px;font-weight:500;line-height:1;}
+.sm-l{font-size:10px;color:var(--text3);margin-top:4px;font-weight:700;}
+.sm.k-all .sm-n{color:var(--text);}
+.sm.k-aaha .sm-n{color:var(--cyan);} .sm.k-ff .sm-n{color:var(--amber);}
+.sm.k-isfm .sm-n{color:var(--green);} .sm.k-veccs .sm-n{color:var(--red);}
+.sm.k-acu .sm-n{color:var(--purple);}
+@media(min-width:620px){.summary{grid-template-columns:repeat(6,1fr);}}
 /* ===== HOSPITAL LIST ===== */
 .count{font-size:11.5px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;}
 .hlist{display:grid;grid-template-columns:1fr;gap:10px;}
@@ -183,7 +196,8 @@ footer a{color:var(--cyan);}
   <div class="certs" id="ctiles"></div>
   <div class="cpanel" id="cpanel"></div>
 
-  <div class="sec-label">지도에서 찾기</div>
+  <div class="summary" id="summary"></div>
+  <div class="sec-label" id="maptop">지도에서 찾기</div>
   <div class="maparea">
     <div>
       <div class="mapbox">
@@ -211,6 +225,10 @@ footer a{color:var(--cyan);}
         <div class="filters" id="certfilters"></div>
       </div>
 
+      <div class="fgroup">
+        <div class="fglbl">정렬</div>
+        <div class="filters" id="sortbtns"></div>
+      </div>
       <div class="count" id="count"></div>
       <div class="hlist" id="hlist"></div>
     </div>
@@ -278,18 +296,38 @@ footer a{color:var(--cyan);}
 var HOSPITALS = [
   {name:'대구24시바른동물의료센터', loc:'대구 달서구', certs:['aaha','ff','isfm','acu'], note:'아시아 최초 Fear Free 인증 · 서울 외 지역 최초 AAHA 인증 · ISFM 캣프렌들리 골드 · 침치료 인증 수의사: 이세원 이정석', url:''},
   {name:'24시분당리더스동물의료원', loc:'경기 성남시 분당구', certs:['aaha','veccs','acu'], note:'VECCS Level II · 침치료 인증 수의사: 이정희 이선희', url:''},
+  {name:'24시사람앤동물메디컬센터', loc:'경기 용인시 수지구', certs:['aaha','isfm','acu'], note:'침치료 인증 수의사: 한연희', url:''},
+  {name:'경기동물의료원', loc:'경기 용인시 수지구', certs:['aaha','veccs','isfm'], note:'VECCS Level II', url:''},
   {name:'고려동물메디컬센터', loc:'충북 청주시 서원구', certs:['aaha','veccs','acu'], note:'VECCS Level II · 침치료 인증 수의사: 송창언', url:''},
-  {name:'24시사람앤동물메디컬센터', loc:'경기 용인시 수지구', certs:['aaha','acu'], note:'침치료 인증 수의사: 한연희', url:''},
+  {name:'본동물의료센터 수원점', loc:'경기 수원시 장안구', certs:['aaha','isfm','acu'], note:'침치료 인증 수의사: 최규석', url:''},
+  {name:'해마루동물병원', loc:'경기 성남시 분당구', certs:['aaha','veccs','isfm'], note:'VECCS Level II', url:''},
+  {name:'24시 동탄 이음동물의료센터', loc:'경기 화성시 동탄구', certs:['isfm','acu'], note:'침치료 인증 수의사: 박세철 · ISFM 캣프렌들리 골드', url:''},
+  {name:'VIP동물의료센터 서초점', loc:'서울 서초구', certs:['isfm','acu'], note:'침치료 인증 수의사: 김관중', url:''},
   {name:'건국대학교 동물병원', loc:'서울 광진구', certs:['veccs','acu'], note:'VECCS Level II · 침치료 인증 수의사: 김철규', url:''},
-  {name:'경기동물의료원', loc:'경기 용인시 수지구', certs:['aaha','veccs'], note:'VECCS Level II', url:''},
+  {name:'경인동물의료센터', loc:'서울 영등포구', certs:['isfm','acu'], note:'침치료 인증 수의사: 박정연', url:''},
+  {name:'김해 24시 르엘동물의료센터', loc:'경남 김해시', certs:['isfm','acu'], note:'침치료 인증 수의사: 김건우', url:''},
+  {name:'닥터펫동물의료센터', loc:'부산 부산진구', certs:['isfm','acu'], note:'침치료 인증 수의사: 권도형', url:''},
   {name:'로얄동물메디컬센터 강동', loc:'서울 강동구', certs:['aaha','acu'], note:'침치료 인증 수의사: 정유경', url:''},
-  {name:'본동물의료센터 수원점', loc:'경기 수원시 장안구', certs:['aaha','acu'], note:'침치료 인증 수의사: 최규석', url:''},
+  {name:'브이동물메디컬센터', loc:'제주 제주시', certs:['isfm','acu'], note:'침치료 인증 수의사: 강수연 이은지', url:''},
   {name:'일산동물의료원', loc:'경기 고양시 일산서구', certs:['aaha','veccs'], note:'VECCS Level II', url:''},
-  {name:'해마루동물병원', loc:'경기 성남시 분당구', certs:['aaha','veccs'], note:'VECCS Level II', url:''},
-  {name:'24시 동탄 이음동물의료센터', loc:'경기 화성시 동탄구', certs:['acu'], note:'침치료 인증 수의사: 박세철', url:''},
+  {name:'조이동물의료센터', loc:'경기 안산시 단원구', certs:['isfm','acu'], note:'침치료 인증 수의사: 장원정', url:''},
+  {name:'차이동물병원', loc:'부산 수영구', certs:['isfm','acu'], note:'침치료 인증 수의사: 변예은', url:''},
+  {name:'카인드동물병원', loc:'경기 화성시 병점구', certs:['isfm','acu'], note:'침치료 인증 수의사: 황태하', url:''},
+  {name:'헬릭스동물메디컬센터', loc:'서울 서초구', certs:['aaha','isfm'], note:'', url:''},
+  {name:'24시 The케어동물의료센터', loc:'경기 구리시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 다산 원동물의료센터', loc:'경기 남양주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 데이원동물의료센터', loc:'서울 동작구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 동탄리더스동물의료원', loc:'경기 화성시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 라이프동물메디컬센터', loc:'경기 안양시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'24시 라이프동물의료센터', loc:'대구 달서구', certs:['acu'], note:'침치료 인증 수의사: 류창헌', url:''},
+  {name:'24시 리드동물의료센터', loc:'대구 수성구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'24시 범어동물의료센터', loc:'대구 수성구', certs:['acu'], note:'침치료 인증 수의사: 박성필 박준석', url:''},
+  {name:'24시 봉담동물의료센터', loc:'경기 화성시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 봉선아이동물의료센터', loc:'광주 남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 서산 올 동물의료센터', loc:'충남 서산시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시 수영동물의료센터', loc:'부산 수영구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'24시 숨 동물의료센터', loc:'경기 수원시 권선구', certs:['acu'], note:'침치료 인증 수의사: 성윤정 이혜인', url:''},
+  {name:'24시 잠실온동물의료센터', loc:'서울 송파구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'24시 청주 이음동물의료센터', loc:'충북 청주시 흥덕구', certs:['acu'], note:'침치료 인증 수의사: 박세철', url:''},
   {name:'24시 타임동물메디컬센터', loc:'대전 서구', certs:['acu'], note:'침치료 인증 수의사: 승영신 한성현', url:''},
   {name:'24시 파티마동물의료센터', loc:'대구 동구', certs:['acu'], note:'침치료 인증 수의사: 김근영 김현지 박다솔 김수엽', url:''},
@@ -300,106 +338,179 @@ var HOSPITALS = [
   {name:'24시블루밍동물병원', loc:'광주 북구', certs:['acu'], note:'침치료 인증 수의사: 김승현', url:''},
   {name:'24시센트럴동물메디컬센터', loc:'서울 성동구', certs:['acu'], note:'침치료 인증 수의사: 강지훈', url:''},
   {name:'24시송도힐동물메디컬센터', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 배범주', url:''},
+  {name:'24시알파동물메디컬센터', loc:'대구 서구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'24시제주숨동물의료센터', loc:'제주 제주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'24시포항이음동물의료센터', loc:'경북 포항시 남구', certs:['acu'], note:'침치료 인증 수의사: 박세철', url:''},
   {name:'24아프리카동물메디컬센터', loc:'대전 서구', certs:['acu'], note:'침치료 인증 수의사: 권선정', url:''},
   {name:'ACE동물병원', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 홍은지', url:''},
+  {name:'AID동물병원', loc:'서울 강남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'FM동물메디컬센터 김포점', loc:'경기 김포시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'H동물의료센터', loc:'부산 금정구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'J동물의료센터', loc:'인천 남동구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'K&J수원동물의료센터', loc:'경기 수원시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'N동물의료센터 노원점', loc:'서울 노원구', certs:['acu'], note:'침치료 인증 수의사: 정효진', url:''},
   {name:'SD동물의료센터 서울점', loc:'서울 중구', certs:['acu'], note:'침치료 인증 수의사: 이응호 장주필', url:''},
-  {name:'VIP동물의료센터 서초점', loc:'서울 서초구', certs:['acu'], note:'침치료 인증 수의사: 김관중', url:''},
+  {name:'VIP동물의료센터 동대문점', loc:'서울 동대문구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'VIP동물의료센터 성북점', loc:'서울 성북구', certs:['acu'], note:'침치료 인증 수의사: 임수정 이병희', url:''},
-  {name:'VIP동물의료센터 청담', loc:'서울 강남구', certs:['veccs'], note:'VECCS Level II', url:''},
+  {name:'VIP동물의료센터 청담점', loc:'서울 강남구', certs:['veccs','ff'], note:'VECCS Level II · Fear Free 인증', url:''},
   {name:'VIP동물한방재활의학센터 by Dr.신사경', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 신사경 나상민 김수현 전은서', url:''},
+  {name:'가양동물의료센터', loc:'대전 동구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'강서늘봄동물병원', loc:'서울 강서구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'강일웅동물의료센터', loc:'울산 남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'건강하게동물병원', loc:'경기 하남시', certs:['acu'], note:'침치료 인증 수의사: 김성미', url:''},
   {name:'검단탑동물의료센터', loc:'인천 검단구', certs:['acu'], note:'침치료 인증 수의사: 권주희', url:''},
-  {name:'경인동물의료센터', loc:'서울 영등포구', certs:['acu'], note:'침치료 인증 수의사: 박정연', url:''},
+  {name:'계양SKY동물메디컬센터', loc:'인천 계양구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'고강동물병원', loc:'경기 부천시 오정구', certs:['acu'], note:'침치료 인증 수의사: 김동후', url:''},
+  {name:'고덕365동물의료센터', loc:'경기 평택시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'고래동물병원', loc:'경기 시흥시', certs:['acu'], note:'침치료 인증 수의사: 김담', url:''},
+  {name:'고척원동물의료센터', loc:'서울 구로구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'광명24아이디동물의료센터', loc:'경기 광명시', certs:['acu'], note:'침치료 인증 수의사: 이호현', url:''},
+  {name:'구월숲동물병원', loc:'인천 남동구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'굿파파 24시 반려동물건강검진센터', loc:'서울 동작구', certs:['acu'], note:'침치료 인증 수의사: 이혜윤', url:''},
+  {name:'그레이스고양이병원', loc:'서울 강남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'그린벨동물의료센터', loc:'충북 음성군', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'기운찬동물병원', loc:'경기 하남시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'김태화종합동물병원', loc:'서울 강동구', certs:['acu'], note:'침치료 인증 수의사: 허태민', url:''},
-  {name:'김해 24시 르엘동물의료센터', loc:'경남 김해시', certs:['acu'], note:'침치료 인증 수의사: 김건우', url:''},
+  {name:'깨비동물병원', loc:'서울 마포구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'나눔양한방동물병원', loc:'세종', certs:['acu'], note:'침치료 인증 수의사: 정대욱', url:''},
   {name:'나봄동물병원', loc:'충북 증평군', certs:['acu'], note:'침치료 인증 수의사: 전현성', url:''},
   {name:'나은동물병원', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 이세희', url:''},
   {name:'내손동물병원', loc:'경기 의왕시', certs:['acu'], note:'침치료 인증 수의사: 황정욱', url:''},
+  {name:'네스트동물의료센터', loc:'경기 오산시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'노원온동물병원', loc:'서울 노원구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'누리종합동물병원 원주 본점', loc:'강원 원주시', certs:['acu'], note:'침치료 인증 수의사: 김동균', url:''},
   {name:'뉴로동물의료센터 24시동물병원', loc:'부산 연제구', certs:['acu'], note:'침치료 인증 수의사: 임도우', url:''},
   {name:'늘봄동물병원', loc:'경기 용인시 수지구', certs:['acu'], note:'침치료 인증 수의사: 이준호', url:''},
   {name:'늘사랑양한방동물병원', loc:'전남 여수시', certs:['acu'], note:'침치료 인증 수의사: 김종수', url:''},
   {name:'다사랑동물병원', loc:'경기 안양시 동안구', certs:['acu'], note:'침치료 인증 수의사: 임희영 장혜영', url:''},
-  {name:'닥터펫동물의료센터', loc:'부산 부산진구', certs:['acu'], note:'침치료 인증 수의사: 권도형', url:''},
+  {name:'다솜고양이의료센터', loc:'부산 남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'다시봄 동물의료센터', loc:'경기 광명시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'달동물병원', loc:'충북 청주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'당신의 동물의료센터', loc:'경기 수원시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'더독동물병원', loc:'서울 은평구', certs:['acu'], note:'침치료 인증 수의사: 이응현', url:''},
   {name:'더독동물병원', loc:'경기 고양시 일산동구', certs:['acu'], note:'침치료 인증 수의사: 임배근', url:''},
+  {name:'더본동물의료센터', loc:'강원 춘천시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'더본외과동물의료센터', loc:'부산 남구', certs:['acu'], note:'침치료 인증 수의사: 오선주', url:''},
   {name:'더오래동물병원', loc:'경기 고양시 일산서구', certs:['acu'], note:'침치료 인증 수의사: 송지홍', url:''},
   {name:'더좋은동물병원', loc:'경기 시흥시', certs:['acu'], note:'침치료 인증 수의사: 조진연', url:''},
+  {name:'더허그동물의료센터', loc:'서울 송파구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'도그원 동물의료센터', loc:'서울 은평구', certs:['acu'], note:'침치료 인증 수의사: 이동열', url:''},
   {name:'동물병원 그린숲', loc:'서울 서초구', certs:['acu'], note:'침치료 인증 수의사: 이태형', url:''},
   {name:'동물병원 비헤이브', loc:'대전 서구', certs:['acu'], note:'침치료 인증 수의사: 이훈', url:''},
   {name:'동물병원산책 내과외과재활센터', loc:'서울 은평구', certs:['acu'], note:'침치료 인증 수의사: 김미연', url:''},
+  {name:'동물의료센터24인치', loc:'서울 영등포구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'동탄데이즈동물의료센터', loc:'경기 화성시 동탄구', certs:['acu'], note:'침치료 인증 수의사: 백수연', url:''},
+  {name:'동탄동물심장병원', loc:'경기 화성시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'두근동물병원', loc:'충북 청주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'든든동물의료센터', loc:'경남 창원시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'레이어 동물메디컬센터', loc:'경기 광주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'로얄동물메디컬센터 W', loc:'서울 마포구', certs:['aaha'], note:'', url:''},
   {name:'로얄동물메디컬센터 본원', loc:'서울 중랑구', certs:['aaha'], note:'', url:''},
+  {name:'로엔동물의료센터', loc:'경기 파주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'로운동물의료센터', loc:'서울 양천구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'루크동물병원', loc:'인천 서구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'리디아동물병원 압구정본점', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 김윤아 김정민', url:''},
   {name:'리브동물의료센터', loc:'인천 검단구', certs:['acu'], note:'침치료 인증 수의사: 김현지', url:''},
   {name:'리안동물병원', loc:'부산 해운대구', certs:['acu'], note:'침치료 인증 수의사: 안성아', url:''},
   {name:'마음을 읽어주는 마음동물병원', loc:'대구 수성구', certs:['acu'], note:'침치료 인증 수의사: 황채영', url:''},
   {name:'메이플동물의료센터', loc:'서울 강동구', certs:['acu'], note:'침치료 인증 수의사: 곽지윤', url:''},
   {name:'모두애동물병원', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 공정희', url:''},
+  {name:'모루동물병원', loc:'서울 중랑구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'모리네동물의료센터', loc:'충북 음성군', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'모모동물병원', loc:'서울 강서구', certs:['acu'], note:'침치료 인증 수의사: 최하진', url:''},
   {name:'모모동물의료센터', loc:'인천 부평구', certs:['acu'], note:'침치료 인증 수의사: 유재성', url:''},
   {name:'미소돌봄동물병원', loc:'경기 안산시 상록구', certs:['acu'], note:'침치료 인증 수의사: 황태하', url:''},
+  {name:'바로척동물의료센터', loc:'경북 경산시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'박동물병원', loc:'충북 충주시', certs:['acu'], note:'침치료 인증 수의사: 박헌무', url:''},
+  {name:'반포베이스동물의료센터', loc:'서울 서초구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'백산고양이병원', loc:'서울 강남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'베리떼동물병원', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 이미희', url:''},
+  {name:'베스트동물병원', loc:'광주 서구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'본동물의료센터 안양점', loc:'경기 안양시 동안구', certs:['aaha'], note:'', url:''},
   {name:'봄나래재활한방동물병원', loc:'경기 수원시 영통구', certs:['acu'], note:'침치료 인증 수의사: 이우철', url:''},
   {name:'봄날한방재활동물병원', loc:'울산 울주군', certs:['acu'], note:'침치료 인증 수의사: 서준영', url:''},
   {name:'봄봄동물병원', loc:'서울 동대문구', certs:['acu'], note:'침치료 인증 수의사: 이성준', url:''},
   {name:'부산 24시 연산동물의료센터', loc:'부산 연제구', certs:['acu'], note:'침치료 인증 수의사: 한경진', url:''},
-  {name:'브이동물메디컬센터', loc:'제주 제주시', certs:['acu'], note:'침치료 인증 수의사: 강수연 이은지', url:''},
+  {name:'블리스동물의료센터', loc:'경기 평택시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'비타민동물의료센터', loc:'경기 안양시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'빌리브동물병원', loc:'경기 성남시 분당구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'사랑애동물메디컬센터', loc:'인천 미추홀구', certs:['acu'], note:'침치료 인증 수의사: 김연국', url:''},
+  {name:'산곡나무동물의료센터', loc:'인천 부평구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'산본중앙동물병원', loc:'경기 군포시', certs:['acu'], note:'침치료 인증 수의사: 김성태', url:''},
+  {name:'살랑동물병원', loc:'경북 경주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'서울대학교 수의과대학 동물병원', loc:'서울 관악구', certs:['acu'], note:'침치료 인증 수의사: 이정하 김수환', url:''},
   {name:'서울동물메디컬센터', loc:'경기 광주시', certs:['acu'], note:'침치료 인증 수의사: 김수빈', url:''},
+  {name:'서울탑동물병원', loc:'서울 양천구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'서초이음동물병원', loc:'서울 서초구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'서해동물의료센터', loc:'인천 서구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'세종아름동물병원', loc:'세종', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'센트럴동물메디컬센터', loc:'전북 전주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'소현동물의료센터', loc:'경기 파주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'숲속동물병원', loc:'충남 아산시', certs:['acu'], note:'침치료 인증 수의사: 허상영', url:''},
+  {name:'심쿵내과동물병원', loc:'대구 남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'씽씽동물의료센터', loc:'경기 양주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'아스펜동물의료센터', loc:'서울 송파구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'아이본동물병원', loc:'서울 광진구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'아인동물의료센터', loc:'인천 연수구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'안심동물의료센터', loc:'경기 구리시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'앙리 동물병원', loc:'서울 성북구', certs:['acu'], note:'침치료 인증 수의사: 곡경문(문추칭)', url:''},
+  {name:'양산에스동물메디컬센터', loc:'경남 양산시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'양양동물병원', loc:'강원 양양군', certs:['acu'], note:'침치료 인증 수의사: 배주현', url:''},
+  {name:'양주24시 해든동물의료센터', loc:'경기 양주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'여기로양한방동물병원', loc:'경기 과천시', certs:['acu'], note:'침치료 인증 수의사: 최은영 최우', url:''},
   {name:'예은동물의료센터', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 민재연', url:''},
   {name:'오리엔탈타이거 동물병원', loc:'인천 검단구', certs:['acu'], note:'침치료 인증 수의사: 이승철', url:''},
   {name:'온솔양한방동물병원', loc:'대전 유성구', certs:['acu'], note:'침치료 인증 수의사: 이수빈', url:''},
   {name:'온심동물병원 심장&내과 클리닉', loc:'경기 김포시', certs:['acu'], note:'침치료 인증 수의사: 이응호', url:''},
   {name:'온정동물병원', loc:'부산 동래구', certs:['acu'], note:'침치료 인증 수의사: 방주환', url:''},
+  {name:'온즈동물의료센터', loc:'경기 안산시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'온하루동물의료센터', loc:'경기 용인시 수지구', certs:['acu'], note:'침치료 인증 수의사: 이승현', url:''},
   {name:'올리브동물병원', loc:'경기 고양시 일산동구', certs:['acu'], note:'침치료 인증 수의사: 김기철 이향숙', url:''},
   {name:'우리들외과동물의료센터', loc:'대구 중구', certs:['acu'], note:'침치료 인증 수의사: 배민지', url:''},
   {name:'울산 이승진동물병원', loc:'울산 남구', certs:['acu'], note:'침치료 인증 수의사: 천봉수', url:''},
   {name:'울산에스동물메디컬센터', loc:'울산 남구', certs:['acu'], note:'침치료 인증 수의사: 강재익 정준승', url:''},
+  {name:'원헬스동물의료센터', loc:'울산 남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'월드펫동물병원', loc:'경기 부천시 원미구', certs:['acu'], note:'침치료 인증 수의사: 홍석휘 최혜숙', url:''},
   {name:'위런한방재활동물병원', loc:'서울 용산구', certs:['acu'], note:'침치료 인증 수의사: 맹정우', url:''},
+  {name:'위례별동물의료센터', loc:'서울 송파구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'위브동물의료센터', loc:'경기 김포시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'윤은채재활한방동물병원', loc:'부산 해운대구', certs:['acu'], note:'침치료 인증 수의사: 윤은채', url:''},
   {name:'이든본스 외과 2차 동물의료원', loc:'경남 창원시 성산구', certs:['acu'], note:'침치료 인증 수의사: 황용현 정대현', url:''},
+  {name:'이솔동물의료센터', loc:'부산 사하구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'이은동물의료센터', loc:'인천 중구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'이을동물병원', loc:'서울 서초구', certs:['acu'], note:'침치료 인증 수의사: 황선희', url:''},
   {name:'인방동물의료센터', loc:'경기 안양시 동안구', certs:['acu'], note:'침치료 인증 수의사: 조인성', url:''},
   {name:'인천24시스카이동물메디컬센터', loc:'인천 남동구', certs:['acu'], note:'침치료 인증 수의사: 박설기 정태규 최아름 문종선', url:''},
   {name:'일곡동물병원', loc:'광주 북구', certs:['acu'], note:'침치료 인증 수의사: 송인종', url:''},
+  {name:'일산스마트동물메디컬센터', loc:'경기 고양시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'장평종합동물병원', loc:'서울 동대문구', certs:['acu'], note:'침치료 인증 수의사: 박욱진', url:''},
   {name:'정메디컬동물병원', loc:'경남 창원시 성산구', certs:['acu'], note:'침치료 인증 수의사: 정제형', url:''},
   {name:'정샘동물병원', loc:'경기 부천시 원미구', certs:['acu'], note:'침치료 인증 수의사: 정종수', url:''},
   {name:'제주대학교 아라캠퍼스 부설 동물병원', loc:'제주 제주시', certs:['acu'], note:'', url:''},
-  {name:'조이동물의료센터', loc:'경기 안산시 단원구', certs:['acu'], note:'침치료 인증 수의사: 장원정', url:''},
-  {name:'차이동물병원', loc:'부산 수영구', certs:['acu'], note:'침치료 인증 수의사: 변예은', url:''},
+  {name:'조앤박 동물병원', loc:'부산 해운대구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'진실로동물의료센터', loc:'경기 용인시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'천안SKY동물메디컬센터', loc:'충남 천안시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'최지영 재활한방 동물병원', loc:'경기 고양시 일산서구', certs:['acu'], note:'침치료 인증 수의사: 최지영', url:''},
   {name:'충남대학교 동물병원', loc:'대전 유성구', certs:['acu'], note:'침치료 인증 수의사: 권태형 김경빈', url:''},
-  {name:'카인드동물병원', loc:'경기 화성시 병점구', certs:['acu'], note:'침치료 인증 수의사: 황태하', url:''},
+  {name:'치료멍멍동물병원', loc:'서울 강남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'케어덴동물병원', loc:'서울 강남구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'코리아동물병원', loc:'경기 평택시', certs:['acu'], note:'침치료 인증 수의사: 조용도', url:''},
   {name:'쿨펫양한방동물병원', loc:'대전 유성구', certs:['acu'], note:'침치료 인증 수의사: 이수빈', url:''},
   {name:'큰마음동물메디컬센터', loc:'부산 해운대구', certs:['acu'], note:'침치료 인증 수의사: 배윤지', url:''},
+  {name:'클레어동물병원', loc:'서울 서초구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'클리어동물병원', loc:'경기 수원시 권선구', certs:['acu'], note:'침치료 인증 수의사: 이혜인', url:''},
+  {name:'탑스동물의료센터', loc:'경기 용인시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'파리스동물병원', loc:'서울 양천구', certs:['acu'], note:'침치료 인증 수의사: 진서강', url:''},
+  {name:'파이동물의료센터', loc:'경기 용인시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'포인트동물의료센터', loc:'인천 미추홀구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'포커스동물의료센터', loc:'서울 영등포구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
   {name:'하나로양한방동물병원', loc:'경기 김포시', certs:['acu'], note:'침치료 인증 수의사: 박정식', url:''},
   {name:'한걸음더 재활한방 동물병원', loc:'서울 송파구', certs:['acu'], note:'침치료 인증 수의사: 이은구', url:''},
-  {name:'헬릭스동물메디컬센터', loc:'서울 서초구', certs:['aaha'], note:'', url:''}
+  {name:'한남동물병원', loc:'서울 용산구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'해운대 플러스 동물병원', loc:'부산 해운대구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'해피워크동물병원', loc:'인천 서구', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'허그미동물병원', loc:'경기 여주시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''},
+  {name:'힐로동물의료센터', loc:'충남 천안시', certs:['isfm'], note:'ISFM 캣프렌들리 골드', url:''}
 ];
 
 /* ── 시·도 지도 좌표 (수정 불필요) ── */
@@ -419,7 +530,7 @@ var CERT_BTN = [
   ['veccs','🚨 VECCS'],['acu','🪡 침치료인증수의사']
 ];
 
-var certFilter = 'all', region = 'all';
+var certFilter = 'all', region = 'all', sortMode = 0;
 function $(id){ return document.getElementById(id); }
 function sido(loc){ return (loc||'').split(' ')[0]; }
 
@@ -463,7 +574,7 @@ function drawCertFilters(){
   });
 }
 
-function setCert(c){ certFilter = c; drawCertFilters(); drawMap(); render(); }
+function setCert(c){ certFilter = c; drawCerts(); drawSummary(); drawCertFilters(); drawMap(); render(); }
 function setRegion(r){
   region = r; drawMap(); render();
   if(r !== 'all'){ $('count').scrollIntoView({behavior:'smooth', block:'center'}); }
@@ -486,6 +597,7 @@ function render(){
     return true;
   });
 
+  sortHosp(arr);
   $('count').textContent = (region === 'all' ? '전국' : region) + ' · ' + arr.length + '곳';
 
   if(!arr.length){
@@ -540,18 +652,23 @@ var CERTS = [
   d:'위 인증들 외에도 <b>진료과별 전문의(Diplomate)</b> 보유 여부, 수련병원 지정, 특정 분야 인증 등이 병원 선택의 기준이 될 수 있습니다.',
   why:'💡 인증이 없다고 좋은 병원이 아닌 것은 결코 아닙니다. 인증은 <b>확인 가능한 최소 기준</b>일 뿐, 좋은 병원의 유일한 조건이 아닙니다.'}
 ];
-var certOpen = 'aaha';
+
 
 function drawCerts(){
   $('ctiles').innerHTML = CERTS.map(function(c){
-    return '<button class="ctile k-'+c.k+(certOpen===c.k?' on':'')+'" type="button" data-k="'+c.k+'">'
+    return '<button class="ctile k-'+c.k+(certFilter===c.k?' on':'')+'" type="button" data-k="'+c.k+'">'
          + '<span class="ci">'+c.ico+'</span><span class="cn">'+c.tile+'</span></button>';
   }).join('');
   Array.prototype.forEach.call($('ctiles').querySelectorAll('.ctile'), function(b){
-    b.addEventListener('click', function(){ certOpen = b.getAttribute('data-k'); drawCerts(); });
+    b.addEventListener('click', function(){
+      var k = b.getAttribute('data-k');
+      setCert(certFilter === k ? 'all' : k);
+      document.getElementById('maptop').scrollIntoView({behavior:'smooth',block:'start'});
+    });
   });
   var c = null;
-  for(var i=0;i<CERTS.length;i++){ if(CERTS[i].k===certOpen){ c=CERTS[i]; break; } }
+  var key = (certFilter==='all') ? 'aaha' : certFilter;
+  for(var i=0;i<CERTS.length;i++){ if(CERTS[i].k===key){ c=CERTS[i]; break; } }
   if(!c) return;
   $('cpanel').className = 'cpanel k-'+c.k;
   $('cpanel').innerHTML =
@@ -562,7 +679,52 @@ function drawCerts(){
     + '<div class="cp-why">'+c.why+'</div>';
 }
 
+/* ── ③ 요약 바 (누르면 해당 인증으로 필터) ── */
+var SUM_KEYS = [['all','전체'],['aaha','AAHA'],['veccs','VECCS'],
+                ['isfm','ISFM'],['acu','침치료'],['ff','Fear Free']];
+function drawSummary(){
+  var el = $('summary'); if(!el) return;
+  el.innerHTML = SUM_KEYS.map(function(s){
+    var k = s[0];
+    var n = (k === 'all') ? HOSPITALS.length
+          : HOSPITALS.filter(function(h){ return h.certs.indexOf(k) !== -1; }).length;
+    return '<div class="sm k-'+k+(certFilter===k?' on':'')+'" data-k="'+k+'">'
+         + '<div class="sm-n">'+n+'</div><div class="sm-l">'+s[1]+'</div></div>';
+  }).join('');
+  Array.prototype.forEach.call(el.querySelectorAll('.sm'), function(b){
+    b.addEventListener('click', function(){ setCert(b.getAttribute('data-k')); });
+  });
+}
+
+/* ── ② 정렬 ── */
+var SORTS = [['인증 많은순'],['가나다순'],['지역순']];
+function drawSortBtns(){
+  var el = $('sortbtns'); if(!el) return;
+  el.innerHTML = SORTS.map(function(s,i){
+    return '<button class="fbtn'+(sortMode===i?' on':'')+'" data-i="'+i+'">'+s[0]+'</button>';
+  }).join('');
+  Array.prototype.forEach.call(el.querySelectorAll('.fbtn'), function(b){
+    b.addEventListener('click', function(){
+      sortMode = parseInt(b.getAttribute('data-i'));
+      drawSortBtns(); render();
+    });
+  });
+}
+function sortHosp(arr){
+  if(sortMode === 1) return arr.sort(function(a,b){ return a.name.localeCompare(b.name,'ko'); });
+  if(sortMode === 2) return arr.sort(function(a,b){
+    var r = a.loc.localeCompare(b.loc,'ko');
+    return r !== 0 ? r : a.name.localeCompare(b.name,'ko');
+  });
+  return arr.sort(function(a,b){
+    var d = b.certs.length - a.certs.length;
+    return d !== 0 ? d : a.name.localeCompare(b.name,'ko');
+  });
+}
+
 drawCerts();
+drawSummary();
+drawSortBtns();
 drawCertFilters();
 drawMap();
 render();
