@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>견종별 기대수명 156종 | 개알남</title>
+<meta name="description" content="영국 반려견 58만 마리 분석 데이터 기반 견종별 중앙수명 156종. 우리 아이 견종의 기대수명과 순위를 확인하세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-63FHYEGDJD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-63FHYEGDJD');
+</script>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--border:#30363d;--border2:#21262d;
+--cyan:#00d4c8;--cyan-dim:rgba(0,212,200,.12);--amber:#f5a623;--amber-dim:rgba(245,166,35,.12);
+--red:#ff6b6b;--red-dim:rgba(255,107,107,.12);--green:#56d17e;--green-dim:rgba(86,209,126,.12);
+--text:#e6edf3;--text2:#8b949e;--text3:#484f58;
+--mono:'DM Mono',monospace;--sans:'Noto Sans KR',sans-serif;--display:'Bebas Neue',sans-serif;
+--r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;word-break:keep-all;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+.gnav{position:sticky;top:0;z-index:500;background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border2);}
+.gnav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:0 12px;height:52px;overflow-x:auto;scrollbar-width:none;}
+.gnav-inner::-webkit-scrollbar{display:none;}
+.gnav-logo{font-family:var(--display);font-size:22px;letter-spacing:1px;color:var(--cyan);white-space:nowrap;margin-right:8px;flex-shrink:0;}
+.gnav a.gn{font-size:12.5px;font-weight:700;color:var(--text2);padding:7px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;transition:background .18s,color .18s;}
+.gnav a.gn:hover{color:var(--text);background:var(--surface2);}
+.gnav a.gn.on{color:var(--cyan);background:var(--cyan-dim);}
+.hero{padding:38px 20px 30px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,166,35,.13),transparent 62%);pointer-events:none;}
+.hero-in{position:relative;max-width:720px;margin:0 auto;}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:var(--display);font-size:clamp(34px,7vw,56px);letter-spacing:1px;line-height:1.05;color:#fff;}
+.hero-title span{color:var(--amber);}
+.hero-sub{font-size:13px;color:var(--text2);margin-top:10px;line-height:1.7;}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 60px;}
+.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin:26px 0 12px;display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.searchbox{position:relative;margin-bottom:10px;}
+.searchbox input{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);color:var(--text);font-family:var(--sans);font-size:16px;font-weight:600;padding:15px 46px 15px 44px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.searchbox input:focus{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-dim);}
+.searchbox input::placeholder{color:var(--text3);font-weight:400;}
+.s-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.s-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--surface2);border:1px solid var(--border);color:var(--text2);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;line-height:1;display:none;}
+.s-clear.on{display:block;}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fbtn{font-size:11.5px;font-weight:700;padding:8px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .18s;font-family:var(--sans);}
+.fbtn:hover{border-color:var(--text3);}
+.fbtn.on{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+.pick{background:linear-gradient(135deg,rgba(245,166,35,.1),rgba(245,166,35,.04));border:1px solid var(--amber);border-radius:var(--r-lg);padding:22px;margin-bottom:16px;display:none;}
+.pick.on{display:block;}
+.pick-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.pick-name{font-size:20px;font-weight:900;color:#fff;line-height:1.25;}
+.pick-en{font-family:var(--mono);font-size:11.5px;color:var(--text2);margin-top:2px;}
+.pick-rank{margin-left:auto;text-align:right;flex-shrink:0;}
+.pick-rank-n{font-family:var(--display);font-size:32px;color:var(--amber);line-height:1;}
+.pick-rank-l{font-size:10px;color:var(--text3);font-family:var(--mono);}
+.pick-life{text-align:center;padding:16px 0 14px;}
+.pick-life-n{font-family:var(--mono);font-size:52px;font-weight:500;color:var(--amber);line-height:1;}
+.pick-life-u{font-size:15px;color:var(--text2);margin-left:3px;}
+.pick-life-l{font-size:11px;color:var(--text3);margin-top:5px;}
+.pick-bar-wrap{margin:6px 0 14px;}
+.pick-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;position:relative;}
+.pick-bar-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));border-radius:4px;transition:width .5s cubic-bezier(.2,.8,.2,1);}
+.pick-bar-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--text3);margin-top:4px;}
+.pick-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pm{background:var(--surface2);border-radius:var(--r-sm);padding:10px 12px;}
+.pm-l{font-size:10px;color:var(--text3);font-weight:700;margin-bottom:2px;}
+.pm-v{font-family:var(--mono);font-size:12.5px;color:var(--text);}
+.pick-note{font-size:11.5px;color:var(--text3);margin-top:12px;line-height:1.6;border-top:1px solid var(--border2);padding-top:10px;}
+.count{font-size:11.5px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;}
+.list{display:flex;flex-direction:column;gap:5px;}
+.row{display:flex;align-items:center;gap:11px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-sm);padding:12px 14px;cursor:pointer;transition:border-color .16s,background .16s;}
+.row:hover{border-color:var(--amber);background:var(--surface2);}
+.row.sel{border-color:var(--amber);background:var(--amber-dim);}
+.r-rank{font-family:var(--mono);font-size:11px;color:var(--text3);width:30px;flex-shrink:0;text-align:right;}
+.r-name{flex:1;min-width:0;}
+.r-ko{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.35;}
+.r-en{font-family:var(--mono);font-size:10px;color:var(--text3);display:block;}
+.r-pop{display:inline-block;font-size:9px;font-weight:700;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--cyan);border-radius:20px;padding:1px 6px;margin-left:5px;vertical-align:middle;}
+.r-life{font-family:var(--mono);font-size:16px;font-weight:500;flex-shrink:0;}
+.r-yr{font-size:10px;color:var(--text3);margin-left:1px;}
+.l-hi{color:var(--green);}.l-mid{color:var(--amber);}.l-lo{color:var(--red);}
+.empty{text-align:center;padding:36px 20px;color:var(--text3);font-size:13px;}
+.notes{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;}
+.note{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-md);padding:16px;}
+.note h4{font-size:12.5px;font-weight:700;color:var(--amber);margin-bottom:6px;}
+.note p{font-size:12px;color:var(--text2);line-height:1.7;}
+.note b{color:var(--text);}
+.src{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:15px;margin-top:12px;}
+.src h4{font-size:11.5px;font-weight:700;color:var(--text2);margin-bottom:6px;}
+.src p{font-size:11px;color:var(--text3);line-height:1.7;font-family:var(--mono);}
+.cta{display:block;background:var(--cyan-dim);border:1px solid var(--cyan);border-radius:var(--r-md);padding:16px 18px;margin-top:14px;text-align:center;transition:background .2s;}
+.cta:hover{background:rgba(0,212,200,.2);}
+.cta-h{font-size:13.5px;font-weight:900;color:var(--cyan);margin-bottom:3px;}
+.cta-d{font-size:11.5px;color:var(--text2);line-height:1.6;}
+footer{border-top:1px solid var(--border2);padding:24px 16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;line-height:2;}
+footer a{color:var(--cyan);}
+@media(min-width:760px){.notes{grid-template-columns:1fr 1fr;}.pick-meta{grid-template-columns:repeat(4,1fr);}}
+</style>
+</head>
+<body>
+<nav class="gnav"><div class="gnav-inner">
+  <a href="/" class="gnav-logo">개알남</a>
+  <a href="/" class="gn">홈</a>
+  <a href="/calorie/" class="gn">칼로리 계산기</a>
+  <a href="/lifespan/" class="gn on">견종별 수명</a>
+  <a href="/certified/" class="gn">인증 병원</a>
+</div></nav>
+
+<div class="hero"><div class="hero-in">
+  <div class="hero-eyebrow">CANINE LIFE EXPECTANCY · 156 BREEDS</div>
+  <div class="hero-title">견종별 <span>기대수명</span></div>
+  <div class="hero-sub">영국 반려견 <b>584,734마리</b>를 추적한 대규모 연구 데이터입니다<br>우리 아이 견종을 검색해 보세요</div>
+</div></div>
+
+<div class="wrap">
+  <div class="searchbox">
+    <span class="s-ico">🔍</span>
+    <input type="text" id="q" placeholder="견종 검색 (예: 말티즈, poodle)" autocomplete="off" oninput="render()">
+    <button class="s-clear" id="qclear" onclick="clearQ()">✕</button>
+  </div>
+  <div class="filters">
+    <button class="fbtn on" id="f-all" onclick="setF('all')">전체</button>
+    <button class="fbtn" id="f-pop" onclick="setF('pop')">⭐ 국내 인기견종</button>
+    <button class="fbtn" id="f-top" onclick="setF('top')">🏆 장수 TOP 20</button>
+    <button class="fbtn" id="f-sort" onclick="toggleSort()">↕ 수명 높은순</button>
+  </div>
+
+  <div class="pick" id="pick">
+    <div class="pick-top">
+      <div>
+        <div class="pick-name" id="p-ko">--</div>
+        <div class="pick-en" id="p-en">--</div>
+      </div>
+      <div class="pick-rank">
+        <div class="pick-rank-n" id="p-rank">--</div>
+        <div class="pick-rank-l">/ 156종 중</div>
+      </div>
+    </div>
+    <div class="pick-life">
+      <span class="pick-life-n" id="p-life">--</span><span class="pick-life-u">세</span>
+      <div class="pick-life-l">중앙수명 — 절반이 이 나이를 넘깁니다</div>
+    </div>
+    <div class="pick-bar-wrap">
+      <div class="pick-bar"><div class="pick-bar-fill" id="p-bar" style="width:0%"></div></div>
+      <div class="pick-bar-lbl"><span>5년</span><span>전체 156종 중 위치</span><span>16년</span></div>
+    </div>
+    <div class="pick-meta">
+      <div class="pm"><div class="pm-l">95% 신뢰구간</div><div class="pm-v" id="p-ci">--</div></div>
+      <div class="pm"><div class="pm-l">분석 두수</div><div class="pm-v" id="p-n">--</div></div>
+      <div class="pm"><div class="pm-l">사망 두수</div><div class="pm-v" id="p-d">--</div></div>
+      <div class="pm"><div class="pm-l">전체 평균 대비</div><div class="pm-v" id="p-diff">--</div></div>
+    </div>
+    <div class="pick-note" id="p-note"></div>
+  </div>
+
+  <div class="count" id="count">156종 표시 중</div>
+  <div class="list" id="list"></div>
+
+  <a href="/calorie/" class="cta">
+    <div class="cta-h">🔥 수명은 정해진 값이 아닙니다</div>
+    <div class="cta-d">적정 체중 유지만으로 중앙수명이 1.8년 길어진 연구가 있습니다<br>칼로리 계산기로 우리 아이 적정 급여량을 확인해 보세요 →</div>
+  </a>
+
+  <div class="sec-label">꼭 알아두실 점</div>
+  <div class="notes">
+    <div class="note"><h4>📊 '중앙수명'이란</h4><p>절반이 이 나이를 <b>넘긴</b> 시점입니다. 평균이 아니라 중앙값이라, 우리 아이가 이 나이까지만 산다는 뜻이 결코 아닙니다.</p></div>
+    <div class="note"><h4>🇬🇧 영국 데이터입니다</h4><p>국내 사육 환경과 다를 수 있습니다. 절대 수치보다 <b>견종 사이의 순위</b>로 보시는 것이 정확합니다.</p></div>
+    <div class="note"><h4>📉 분석 두수를 함께 보세요</h4><p>신뢰구간이 넓은 견종은 분석된 개체 수가 적어 값이 흔들릴 수 있습니다. '상한 미산출'은 표본이 적어 원문에서 상한값이 계산되지 않은 경우입니다.</p></div>
+    <div class="note"><h4>🐕 수명은 바꿀 수 있습니다</h4><p>이 연구는 <b>중성화 여부를 분석에서 제외</b>했습니다. 그리고 적정 체중 유지만으로 중앙수명이 1.8년 길어진 별도 연구도 있습니다.</p></div>
+  </div>
+
+  <div class="src">
+    <h4>📚 출처</h4>
+    <p>McMillan KM, Bielby J, Williams CL, Upjohn MM, Casey RA, Christley RM.<br>
+    Longevity of companion dog breeds: those at risk from early death.<br>
+    <b>Scientific Reports</b> 2024;14:531. DOI 10.1038/s41598-023-50458-w<br>
+    · Dogs Trust 공식 수명표 · 영국 반려견 584,734마리(사망 284,734마리 포함) 분석<br>
+    · 체중 관리 효과: Kealy RD et al. JAVMA 2002;220:1315-1320</p>
+  </div>
+</div>
+
+<footer>
+  © 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원<br>
+  <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener">▶ 유튜브 채널 '개알남' 보러가기</a>
+</footer>
+
+<script>
+const B = [{"rank":1,"ko":"랭커셔 힐러","en":"Lancashire Heeler","life":15.4,"ci":"14.7 – 15.9","n":241,"deaths":110,"pop":0},{"rank":2,"ko":"티베탄 스패니얼","en":"Tibetan Spaniel","life":15.2,"ci":"14.8 – 15.7","n":351,"deaths":137,"pop":0},{"rank":3,"ko":"볼로네즈","en":"Bolognese","life":14.9,"ci":"14.0 – 상한 미산출","n":182,"deaths":32,"pop":0},{"rank":4,"ko":"시바견","en":"Shiba Inu","life":14.6,"ci":"14.0 – 15.1","n":423,"deaths":91,"pop":1},{"rank":5,"ko":"파피용","en":"Papillon","life":14.5,"ci":"14.1 – 14.9","n":1115,"deaths":427,"pop":1},{"rank":5,"ko":"하바니즈","en":"Havanese","life":14.5,"ci":"14.1 – 상한 미산출","n":381,"deaths":56,"pop":0},{"rank":7,"ko":"레이크랜드 테리어","en":"Lakeland Terrier","life":14.2,"ci":"13.9 – 14.5","n":1068,"deaths":601,"pop":0},{"rank":7,"ko":"보더 테리어","en":"Border Terrier","life":14.2,"ci":"14.1 – 14.3","n":9387,"deaths":2427,"pop":0},{"rank":7,"ko":"스키퍼키","en":"Schipperke","life":14.2,"ci":"12.7 – 15.8","n":76,"deaths":28,"pop":0},{"rank":7,"ko":"코통 드 툴레아","en":"Coton de Tulear","life":14.2,"ci":"13.1 – 상한 미산출","n":319,"deaths":44,"pop":0},{"rank":11,"ko":"라지 뮌스터랜더","en":"Large Munsterlander","life":14.1,"ci":"13.5 – 상한 미산출","n":139,"deaths":26,"pop":0},{"rank":12,"ko":"노리치 테리어","en":"Norwich Terrier","life":14.0,"ci":"13.5 – 15.1","n":190,"deaths":45,"pop":0},{"rank":12,"ko":"라사 압소","en":"Lhasa Apso","life":14.0,"ci":"13.9 – 14.2","n":7216,"deaths":2723,"pop":0},{"rank":12,"ko":"미니어처 닥스훈트","en":"Miniature Dachshund","life":14.0,"ci":"13.7 – 14.2","n":7342,"deaths":1655,"pop":1},{"rank":12,"ko":"스웨디시 발훈트","en":"Swedish Vallhund","life":14.0,"ci":"12.5 – 상한 미산출","n":61,"deaths":22,"pop":0},{"rank":12,"ko":"오스트레일리안 캐틀 독","en":"Australian Cattle Dog","life":14.0,"ci":"13.2 – 15.1","n":117,"deaths":50,"pop":0},{"rank":12,"ko":"웰시 스프링거 스패니얼","en":"Welsh Springer Spaniel","life":14.0,"ci":"13.3 – 14.3","n":572,"deaths":162,"pop":0},{"rank":12,"ko":"이탈리안 그레이하운드","en":"Italian Greyhound","life":14.0,"ci":"13.2 – 15.1","n":389,"deaths":70,"pop":0},{"rank":12,"ko":"저먼 스피츠 미텔","en":"German Spitz Mittel","life":14.0,"ci":"13.3 – 14.6","n":211,"deaths":96,"pop":0},{"rank":12,"ko":"케언 테리어","en":"Cairn Terrier","life":14.0,"ci":"13.8 – 14.3","n":2585,"deaths":1139,"pop":0},{"rank":12,"ko":"푸들","en":"Poodle","life":14.0,"ci":"13.8 – 14.1","n":6427,"deaths":2399,"pop":1},{"rank":22,"ko":"로첸","en":"Lowchen","life":13.9,"ci":"13.3 – 15.7","n":143,"deaths":50,"pop":0},{"rank":22,"ko":"비어디드 콜리","en":"Bearded Collie","life":13.9,"ci":"13.7 – 14.0","n":1165,"deaths":570,"pop":0},{"rank":24,"ko":"벨지안 테뷰런","en":"Belgian Tervuren","life":13.8,"ci":"12.7 – 14.8","n":208,"deaths":55,"pop":0},{"rank":24,"ko":"브라코 이탈리아노","en":"Bracco Italiano","life":13.8,"ci":"11.8 – 상한 미산출","n":106,"deaths":22,"pop":0},{"rank":24,"ko":"웰시 테리어","en":"Welsh Terrier","life":13.8,"ci":"13.5 – 14.6","n":570,"deaths":146,"pop":0},{"rank":24,"ko":"티베탄 테리어","en":"Tibetan Terrier","life":13.8,"ci":"13.5 – 14.2","n":1947,"deaths":583,"pop":0},{"rank":24,"ko":"파슨 러셀 테리어","en":"Parson Russell Terrier","life":13.8,"ci":"13.5 – 14.0","n":2600,"deaths":1176,"pop":0},{"rank":24,"ko":"피니시 라프훈트","en":"Finnish Lapphund","life":13.8,"ci":"13.5 – 상한 미산출","n":105,"deaths":23,"pop":0},{"rank":30,"ko":"미니어처 핀셔","en":"Miniature Pinscher","life":13.7,"ci":"13.1 – 14.2","n":660,"deaths":167,"pop":0},{"rank":30,"ko":"베들링턴 테리어","en":"Bedlington Terrier","life":13.7,"ci":"13.4 – 14.0","n":1294,"deaths":549,"pop":0},{"rank":30,"ko":"소프트 코티드 휘튼 테리어","en":"Soft Coated Wheaten Terrier","life":13.7,"ci":"13.2 – 14.4","n":620,"deaths":173,"pop":0},{"rank":30,"ko":"스패니시 워터 독","en":"Spanish Water Dog","life":13.7,"ci":"13.3 – 상한 미산출","n":265,"deaths":37,"pop":0},{"rank":30,"ko":"오스트레일리안 셰퍼드","en":"Australian Shepherd","life":13.7,"ci":"12.8 – 14.6","n":224,"deaths":62,"pop":0},{"rank":30,"ko":"프티 바셋 그리퐁 방데앙","en":"Petite Basset Griffon Vendeen","life":13.7,"ci":"13.2 – 14.0","n":496,"deaths":148,"pop":0},{"rank":36,"ko":"노퍽 테리어","en":"Norfolk Terrier","life":13.5,"ci":"13.1 – 13.8","n":905,"deaths":297,"pop":0},{"rank":36,"ko":"비즐라","en":"Vizsla","life":13.5,"ci":"13.2 – 13.9","n":2965,"deaths":503,"pop":0},{"rank":36,"ko":"서식스 스패니얼","en":"Sussex Spaniel","life":13.5,"ci":"12.6 – 15.1","n":108,"deaths":34,"pop":0},{"rank":36,"ko":"아이리시 테리어","en":"Irish Terrier","life":13.5,"ci":"13.1 – 14.0","n":535,"deaths":146,"pop":0},{"rank":36,"ko":"와이어 폭스 테리어","en":"Wire Fox Terrier","life":13.5,"ci":"13.3 – 13.7","n":1413,"deaths":521,"pop":0},{"rank":36,"ko":"잉글리시 스프링거 스패니얼","en":"English Springer Spaniel","life":13.5,"ci":"13.4 – 13.6","n":17905,"deaths":6221,"pop":0},{"rank":42,"ko":"셰틀랜드 쉽독","en":"Shetland Sheepdog","life":13.4,"ci":"13.1 – 13.6","n":1905,"deaths":793,"pop":0},{"rank":42,"ko":"웨스트 하이랜드 화이트 테리어","en":"West Highland White Terrier","life":13.4,"ci":"13.3 – 13.5","n":11932,"deaths":6730,"pop":0},{"rank":42,"ko":"저먼 숏헤어드 포인터","en":"German Shorthaired Pointer","life":13.4,"ci":"13.3 – 13.6","n":3313,"deaths":947,"pop":0},{"rank":42,"ko":"차이니즈 크레스티드","en":"Chinese Crested","life":13.4,"ci":"13.0 – 13.8","n":928,"deaths":394,"pop":0},{"rank":42,"ko":"휘핏","en":"Whippet","life":13.4,"ci":"13.2 – 13.7","n":4971,"deaths":1483,"pop":0},{"rank":47,"ko":"미니어처 슈나우저","en":"Miniature Schnauzer","life":13.3,"ci":"13.2 – 13.5","n":7693,"deaths":1977,"pop":1},{"rank":47,"ko":"브뤼셀 그리퐁","en":"Brussels Griffon","life":13.3,"ci":"12.7 – 13.9","n":315,"deaths":102,"pop":0},{"rank":47,"ko":"살루키","en":"Saluki","life":13.3,"ci":"12.3 – 14.0","n":428,"deaths":169,"pop":0},{"rank":47,"ko":"실키 테리어","en":"Silky Terrier","life":13.3,"ci":"11.7 – 14.2","n":105,"deaths":45,"pop":0},{"rank":47,"ko":"아메리칸 코커 스패니얼","en":"American Cocker Spaniel","life":13.3,"ci":"13.0 – 13.7","n":657,"deaths":293,"pop":1},{"rank":47,"ko":"요크셔 테리어","en":"Yorkshire Terrier","life":13.3,"ci":"13.3 – 13.4","n":14579,"deaths":9509,"pop":1},{"rank":47,"ko":"잉글리시 코커 스패니얼","en":"English Cocker Spaniel","life":13.3,"ci":"13.2 – 13.3","n":26303,"deaths":7584,"pop":1},{"rank":47,"ko":"잭 러셀 테리어","en":"Jack Russell Terrier","life":13.3,"ci":"13.2 – 13.3","n":19166,"deaths":13497,"pop":1},{"rank":47,"ko":"콜리","en":"Collie","life":13.3,"ci":"13.3 – 13.6","n":2171,"deaths":1104,"pop":0},{"rank":47,"ko":"티베탄 마스티프","en":"Tibetan Mastiff","life":13.3,"ci":"10.9 – 상한 미산출","n":117,"deaths":22,"pop":0},{"rank":47,"ko":"페키니즈","en":"Pekingese","life":13.3,"ci":"13.0 – 13.8","n":695,"deaths":339,"pop":0},{"rank":47,"ko":"풀리","en":"Puli","life":13.3,"ci":"12.8 – 14.4","n":122,"deaths":39,"pop":0},{"rank":59,"ko":"골든 리트리버","en":"Golden Retriever","life":13.2,"ci":"13.1 – 13.2","n":11506,"deaths":4252,"pop":1},{"rank":59,"ko":"노바 스코샤 덕 톨링 리트리버","en":"Nova Scotia Duck Tolling Retriever","life":13.2,"ci":"12.2 – 상한 미산출","n":286,"deaths":47,"pop":0},{"rank":59,"ko":"닥스훈트 (스탠다드)","en":"Dachshund","life":13.2,"ci":"13.0 – 13.5","n":2305,"deaths":926,"pop":1},{"rank":59,"ko":"달마시안","en":"Dalmatian","life":13.2,"ci":"13.0 – 13.3","n":3126,"deaths":1443,"pop":1},{"rank":59,"ko":"펨브로크 웰시 코기","en":"Pembroke Welsh Corgi","life":13.2,"ci":"12.7 – 13.6","n":643,"deaths":221,"pop":1},{"rank":59,"ko":"폴리시 로우랜드 시프독","en":"Polish Lowland Sheepdog","life":13.2,"ci":"12.3 – 14.8","n":83,"deaths":24,"pop":0},{"rank":65,"ko":"래브라도 리트리버","en":"Labrador Retriever","life":13.1,"ci":"13.0 – 13.1","n":43428,"deaths":16155,"pop":1},{"rank":65,"ko":"말티즈","en":"Maltese","life":13.1,"ci":"12.6 – 13.5","n":2021,"deaths":666,"pop":1},{"rank":65,"ko":"보더 콜리","en":"Border Collie","life":13.1,"ci":"13.0 – 13.2","n":12917,"deaths":7969,"pop":1},{"rank":65,"ko":"사모예드","en":"Samoyed","life":13.1,"ci":"12.7 – 13.5","n":723,"deaths":336,"pop":1},{"rank":65,"ko":"실리햄 테리어","en":"Sealyham Terrier","life":13.1,"ci":"12.3 – 16.0","n":125,"deaths":33,"pop":0},{"rank":65,"ko":"잉글리시 세터","en":"English Setter","life":13.1,"ci":"12.7 – 13.6","n":596,"deaths":238,"pop":0},{"rank":65,"ko":"카디건 웰시 코기","en":"Cardigan Welsh Corgi","life":13.1,"ci":"12.5 – 14.4","n":203,"deaths":69,"pop":1},{"rank":65,"ko":"필드 스패니얼","en":"Field Spaniel","life":13.1,"ci":"12.5 – 13.4","n":242,"deaths":136,"pop":0},{"rank":73,"ko":"스탠다드 슈나우저","en":"Standard Schnauzer","life":13.0,"ci":"12.7 – 13.2","n":826,"deaths":435,"pop":0},{"rank":73,"ko":"재패니즈 스피츠","en":"Japanese Spitz","life":13.0,"ci":"12.3 – 13.7","n":336,"deaths":117,"pop":1},{"rank":73,"ko":"저먼 와이어헤어드 포인터","en":"German Wirehaired Pointer","life":13.0,"ci":"12.5 – 13.6","n":562,"deaths":138,"pop":0},{"rank":73,"ko":"토이 맨체스터 테리어","en":"Toy Manchester Terrier","life":13.0,"ci":"12.0 – 13.6","n":339,"deaths":138,"pop":0},{"rank":73,"ko":"포르투기즈 워터 독","en":"Portuguese Water Dog","life":13.0,"ci":"11.5 – 14.9","n":179,"deaths":36,"pop":0},{"rank":73,"ko":"폭스하운드","en":"Foxhound","life":13.0,"ci":"11.4 – 16.9","n":71,"deaths":31,"pop":0},{"rank":79,"ko":"노르웨이언 엘크하운드","en":"Norwegian Elkhound","life":12.9,"ci":"12.4 – 14.1","n":145,"deaths":64,"pop":0},{"rank":79,"ko":"아이리시 세터","en":"Irish Setter","life":12.9,"ci":"12.6 – 13.1","n":1487,"deaths":547,"pop":0},{"rank":79,"ko":"토이 폭스 테리어","en":"Toy Fox Terrier","life":12.9,"ci":"12.3 – 13.8","n":163,"deaths":52,"pop":0},{"rank":82,"ko":"댄디 딘몬트 테리어","en":"Dandie Dinmont Terrier","life":12.8,"ci":"12.2 – 14.6","n":179,"deaths":66,"pop":0},{"rank":82,"ko":"바이마라너","en":"Weimaraner","life":12.8,"ci":"12.6 – 13.0","n":2990,"deaths":1229,"pop":0},{"rank":82,"ko":"시추","en":"Shih Tzu","life":12.8,"ci":"12.6 – 12.9","n":12007,"deaths":5894,"pop":1},{"rank":85,"ko":"스코티시 테리어","en":"Scottish Terrier","life":12.7,"ci":"12.5 – 12.9","n":1747,"deaths":869,"pop":0},{"rank":86,"ko":"브리아드","en":"Briard","life":12.6,"ci":"11.3 – 13.4","n":201,"deaths":76,"pop":0},{"rank":87,"ko":"바셋 하운드","en":"Basset Hound","life":12.5,"ci":"12.2 – 12.7","n":2013,"deaths":883,"pop":0},{"rank":87,"ko":"비글","en":"Beagle","life":12.5,"ci":"12.3 – 12.7","n":4678,"deaths":1552,"pop":1},{"rank":87,"ko":"비숑 프리제","en":"Bichon Frise","life":12.5,"ci":"12.3 – 12.7","n":5902,"deaths":2900,"pop":1},{"rank":87,"ko":"아메리칸 스태퍼드셔 테리어","en":"American Staffordshire Terrier","life":12.5,"ci":"11.4 – 13.1","n":142,"deaths":94,"pop":0},{"rank":87,"ko":"재패니즈 친","en":"Japanese Chin","life":12.5,"ci":"12.2 – 13.3","n":373,"deaths":142,"pop":0},{"rank":92,"ko":"고든 세터","en":"Gordon Setter","life":12.4,"ci":"12.1 – 12.8","n":393,"deaths":138,"pop":0},{"rank":92,"ko":"스카이 테리어","en":"Skye Terrier","life":12.4,"ci":"11.6 – 13.9","n":91,"deaths":39,"pop":0},{"rank":92,"ko":"케리 블루 테리어","en":"Kerry Blue Terrier","life":12.4,"ci":"11.9 – 13.0","n":368,"deaths":168,"pop":0},{"rank":95,"ko":"클럼버 스패니얼","en":"Clumber Spaniel","life":12.3,"ci":"11.7 – 13.9","n":300,"deaths":85,"pop":0},{"rank":95,"ko":"키스혼드","en":"Keeshond","life":12.3,"ci":"11.6 – 13.8","n":171,"deaths":55,"pop":0},{"rank":97,"ko":"미니어처 불 테리어","en":"Miniature Bull Terrier","life":12.2,"ci":"11.0 – 13.8","n":268,"deaths":94,"pop":0},{"rank":97,"ko":"컬리 코티드 리트리버","en":"Curly Coated Retriever","life":12.2,"ci":"11.2 – 12.8","n":152,"deaths":66,"pop":0},{"rank":97,"ko":"포메라니안","en":"Pomeranian","life":12.2,"ci":"12.0 – 12.5","n":2941,"deaths":1170,"pop":1},{"rank":100,"ko":"글렌 오브 이말 테리어","en":"Glen Of Imaal Terrier","life":12.1,"ci":"11.6 – 13.5","n":113,"deaths":40,"pop":0},{"rank":100,"ko":"바센지","en":"Basenji","life":12.1,"ci":"11.3 – 15.8","n":92,"deaths":30,"pop":0},{"rank":100,"ko":"올드 잉글리시 시프독","en":"Old English Sheepdog","life":12.1,"ci":"11.9 – 12.5","n":1210,"deaths":604,"pop":0},{"rank":100,"ko":"자이언트 슈나우저","en":"Giant Schnauzer","life":12.1,"ci":"11.5 – 12.8","n":369,"deaths":126,"pop":0},{"rank":100,"ko":"차우차우","en":"Chow Chow","life":12.1,"ci":"11.7 – 12.5","n":940,"deaths":395,"pop":0},{"rank":105,"ko":"로디지안 리지백","en":"Rhodesian Ridgeback","life":12.0,"ci":"11.9 – 12.2","n":2108,"deaths":883,"pop":0},{"rank":null,"ko":"믹스견 (교배종)","en":"Crossbreed","life":12.0,"ci":"12.0 – 12.1","n":111053,"deaths":72445,"pop":0},{"rank":105,"ko":"벨지안 말리노이즈","en":"Belgian Malinois","life":12.0,"ci":"11.5 – 12.6","n":606,"deaths":337,"pop":0},{"rank":105,"ko":"보르조이","en":"Borzoi","life":12.0,"ci":"10.8 – 상한 미산출","n":142,"deaths":43,"pop":0},{"rank":105,"ko":"불 테리어","en":"Bull Terrier","life":12.0,"ci":"11.9 – 12.2","n":4503,"deaths":2151,"pop":0},{"rank":105,"ko":"스태퍼드셔 불 테리어","en":"Staffordshire Bull Terrier","life":12.0,"ci":"12.0 – 12.1","n":36216,"deaths":25332,"pop":0},{"rank":105,"ko":"에어데일 테리어","en":"Airedale Terrier","life":12.0,"ci":"11.8 – 12.3","n":1270,"deaths":556,"pop":0},{"rank":105,"ko":"카난 독","en":"Canaan Dog","life":12.0,"ci":"9.5 – 14.7","n":45,"deaths":28,"pop":0},{"rank":105,"ko":"켈피","en":"Kelpie","life":12.0,"ci":"11.6 – 13.5","n":97,"deaths":49,"pop":0},{"rank":114,"ko":"스피노네 이탈리아노","en":"Spinone Italiano","life":11.9,"ci":"11.6 – 12.4","n":693,"deaths":215,"pop":0},{"rank":114,"ko":"시베리안 허스키","en":"Siberian Husky","life":11.9,"ci":"11.7 – 12.0","n":4453,"deaths":1947,"pop":1},{"rank":116,"ko":"보스턴 테리어","en":"Boston Terrier","life":11.8,"ci":"11.0 – 12.2","n":1984,"deaths":443,"pop":1},{"rank":116,"ko":"치와와","en":"Chihuahua","life":11.8,"ci":"11.5 – 11.9","n":10788,"deaths":3848,"pop":1},{"rank":116,"ko":"카발리에 킹 찰스 스패니얼","en":"Cavalier King Charles Spaniel","life":11.8,"ci":"11.7 – 11.9","n":13782,"deaths":6879,"pop":0},{"rank":119,"ko":"플랫 코티드 리트리버","en":"Flat Coated Retriever","life":11.7,"ci":"11.5 – 11.9","n":2148,"deaths":784,"pop":0},{"rank":120,"ko":"체서피크 베이 리트리버","en":"Chesapeake Bay Retriever","life":11.6,"ci":"10.5 – 상한 미산출","n":126,"deaths":42,"pop":0},{"rank":120,"ko":"퍼그","en":"Pug","life":11.6,"ci":"11.4 – 11.8","n":10026,"deaths":2782,"pop":1},{"rank":122,"ko":"그레이하운드","en":"Greyhound","life":11.5,"ci":"11.4 – 11.6","n":3964,"deaths":3025,"pop":0},{"rank":123,"ko":"아키타","en":"Akita","life":11.4,"ci":"11.1 – 11.6","n":3828,"deaths":2358,"pop":0},{"rank":124,"ko":"복서","en":"Boxer","life":11.3,"ci":"11.3 – 11.5","n":11294,"deaths":5925,"pop":0},{"rank":124,"ko":"부비에 데 플랑드르","en":"Bouvier des Flandres","life":11.3,"ci":"10.4 – 11.9","n":151,"deaths":79,"pop":0},{"rank":124,"ko":"아메리칸 에스키모 독","en":"American Eskimo Dog","life":11.3,"ci":"10.0 – 12.0","n":36,"deaths":22,"pop":0},{"rank":124,"ko":"알래스칸 말라뮤트","en":"Alaskan Malamute","life":11.3,"ci":"11.1 – 11.8","n":1980,"deaths":842,"pop":0},{"rank":124,"ko":"저먼 셰퍼드","en":"German Shepherd Dog","life":11.3,"ci":"11.3 – 11.4","n":19908,"deaths":10773,"pop":1},{"rank":129,"ko":"도베르만 핀셔","en":"Doberman Pinscher","life":11.2,"ci":"11.0 – 11.5","n":3531,"deaths":1623,"pop":1},{"rank":130,"ko":"도그 드 보르도","en":"Dogue de Bordeaux","life":11.1,"ci":"10.6 – 11.7","n":3427,"deaths":1204,"pop":0},{"rank":130,"ko":"브리타니 스패니얼","en":"Brittany","life":11.1,"ci":"10.9 – 11.3","n":991,"deaths":734,"pop":0},{"rank":130,"ko":"아프간 하운드","en":"Afghan Hound","life":11.1,"ci":"10.5 – 11.8","n":380,"deaths":238,"pop":0},{"rank":133,"ko":"뉴펀들랜드","en":"Newfoundland","life":11.0,"ci":"10.9 – 11.6","n":1529,"deaths":633,"pop":0},{"rank":134,"ko":"그레이트 피레니즈","en":"Great Pyrenees","life":10.9,"ci":"10.5 – 11.3","n":260,"deaths":128,"pop":0},{"rank":134,"ko":"블랙 러시안 테리어","en":"Black Russian Terrier","life":10.9,"ci":"10.2 – 12.3","n":163,"deaths":71,"pop":0},{"rank":136,"ko":"아이리시 워터 스패니얼","en":"Irish Water Spaniel","life":10.8,"ci":"10.4 – 11.9","n":174,"deaths":68,"pop":0},{"rank":137,"ko":"그레이트 데인","en":"Great Dane","life":10.6,"ci":"10.4 – 11.0","n":1986,"deaths":864,"pop":0},{"rank":137,"ko":"로트와일러","en":"Rottweiler","life":10.6,"ci":"10.4 – 10.7","n":6275,"deaths":3442,"pop":1},{"rank":137,"ko":"샤페이","en":"Chinese Shar Pei","life":10.6,"ci":"10.3 – 10.9","n":4326,"deaths":2028,"pop":0},{"rank":140,"ko":"스코티시 디어하운드","en":"Scottish Deerhound","life":10.5,"ci":"9.7 – 11.3","n":426,"deaths":191,"pop":0},{"rank":141,"ko":"불마스티프","en":"Bullmastiff","life":10.2,"ci":"9.9 – 10.5","n":2188,"deaths":1169,"pop":0},{"rank":142,"ko":"버니즈 마운틴 독","en":"Bernese Mountain Dog","life":10.1,"ci":"9.8 – 10.4","n":1116,"deaths":449,"pop":0},{"rank":142,"ko":"아나톨리안 셰퍼드","en":"Anatolian Shepherd","life":10.1,"ci":"7.6 – 11.2","n":70,"deaths":40,"pop":0},{"rank":144,"ko":"레온베르거","en":"Leonberger","life":10.0,"ci":"9.5 – 10.3","n":676,"deaths":321,"pop":0},{"rank":144,"ko":"파라오 하운드","en":"Pharaoh Hound","life":10.0,"ci":"6.9 – 13.3","n":36,"deaths":23,"pop":0},{"rank":146,"ko":"아이리시 울프하운드","en":"Irish Wolfhound","life":9.9,"ci":"9.2 – 11.0","n":509,"deaths":210,"pop":0},{"rank":147,"ko":"불독","en":"Bulldog","life":9.8,"ci":"9.7 – 10.0","n":11065,"deaths":4743,"pop":1},{"rank":147,"ko":"프렌치 불독","en":"French Bulldog","life":9.8,"ci":"9.4 – 10.1","n":11821,"deaths":2495,"pop":1},{"rank":149,"ko":"네아폴리탄 마스티프","en":"Neapolitan Mastiff","life":9.3,"ci":"8.8 – 10.2","n":367,"deaths":210,"pop":0},{"rank":149,"ko":"블러드하운드","en":"Bloodhound","life":9.3,"ci":"8.6 – 11.0","n":134,"deaths":71,"pop":0},{"rank":149,"ko":"세인트 버나드","en":"St Bernard","life":9.3,"ci":"9.0 – 9.8","n":1129,"deaths":509,"pop":0},{"rank":149,"ko":"아펜핀셔","en":"Affenpinscher","life":9.3,"ci":"7.4 – 10.8","n":338,"deaths":204,"pop":0},{"rank":153,"ko":"마스티프","en":"Mastiff","life":9.0,"ci":"8.9 – 9.2","n":1840,"deaths":1419,"pop":0},{"rank":154,"ko":"케인 코르소","en":"Cane Corso","life":8.1,"ci":"6.5 – 9.5","n":202,"deaths":101,"pop":0},{"rank":155,"ko":"프레사 카나리오","en":"Presa Canario","life":7.7,"ci":"7.0 – 9.5","n":144,"deaths":98,"pop":0},{"rank":156,"ko":"코카서스 셰퍼드","en":"Caucasian Shepherd Dog","life":5.4,"ci":"4.6 – 상한 미산출","n":52,"deaths":22,"pop":0}];
+const AVG = B.reduce(function(s,x){return s+x.life;},0)/B.length;
+var filter='all', sortDesc=true, selected=null;
+
+function $(id){return document.getElementById(id);}
+function lifeCls(v){ return v>=13.5?'l-hi':(v>=11.5?'l-mid':'l-lo'); }
+
+function setF(f){
+  filter=f; selected=null; $('pick').classList.remove('on');
+  ['all','pop','top'].forEach(function(k){ $('f-'+k).classList.toggle('on',k===f); });
+  render();
+}
+function toggleSort(){
+  sortDesc=!sortDesc;
+  $('f-sort').textContent = sortDesc?'↕ 수명 높은순':'↕ 수명 낮은순';
+  render();
+}
+function clearQ(){ $('q').value=''; render(); }
+
+function render(){
+  var q=$('q').value.trim().toLowerCase();
+  $('qclear').classList.toggle('on', q.length>0);
+  var arr=B.slice();
+  if(filter==='pop') arr=arr.filter(function(x){return x.pop===1;});
+  if(filter==='top') arr=arr.slice().sort(function(a,b){return b.life-a.life;}).slice(0,20);
+  if(q) arr=arr.filter(function(x){return x.ko.toLowerCase().indexOf(q)!==-1||x.en.toLowerCase().indexOf(q)!==-1;});
+  arr.sort(function(a,b){ return sortDesc? b.life-a.life : a.life-b.life; });
+
+  $('count').textContent = arr.length+'종 표시 중';
+  if(!arr.length){ $('list').innerHTML='<div class="empty">검색 결과가 없습니다.<br>다른 이름으로 찾아보세요 (한글 또는 영문)</div>'; return; }
+
+  var html='';
+  arr.forEach(function(x){
+    var sel=(selected&&selected.en===x.en)?' sel':'';
+    html+='<div class="row'+sel+'" data-en="'+x.en.replace(/"/g,'&quot;')+'">'+
+      '<span class="r-rank">'+(x.rank||'-')+'</span>'+
+      '<span class="r-name"><span class="r-ko">'+x.ko+(x.pop?'<span class="r-pop">인기</span>':'')+'</span>'+
+      '<span class="r-en">'+x.en+'</span></span>'+
+      '<span class="r-life '+lifeCls(x.life)+'">'+x.life.toFixed(1)+'<span class="r-yr">세</span></span>'+
+    '</div>';
+  });
+  $('list').innerHTML=html;
+  Array.prototype.forEach.call($('list').querySelectorAll('.row'), function(el){
+    el.addEventListener('click', function(){ pick(el.getAttribute('data-en')); });
+  });
+}
+
+function pick(en){
+  var x=null;
+  for(var i=0;i<B.length;i++){ if(B[i].en===en){ x=B[i]; break; } }
+  if(!x) return;
+  selected=x;
+  $('p-ko').textContent=x.ko;
+  $('p-en').textContent=x.en;
+  $('p-rank').textContent=x.rank||'-';
+  $('p-life').textContent=x.life.toFixed(1);
+  $('p-ci').textContent=x.ci;
+  $('p-n').textContent=x.n.toLocaleString()+'마리';
+  $('p-d').textContent=x.deaths.toLocaleString()+'마리';
+  var diff=x.life-AVG;
+  $('p-diff').textContent=(diff>=0?'+':'')+diff.toFixed(1)+'년';
+  $('p-diff').style.color = diff>=0?'var(--green)':'var(--red)';
+  var pct=Math.max(2,Math.min(100,((x.life-5)/(16-5))*100));
+  $('p-bar').style.width=pct+'%';
+
+  var note='';
+  if(x.n<200) note='⚠ 분석 두수가 '+x.n+'마리로 적은 편입니다. 신뢰구간이 넓으니 값을 참고용으로만 보세요.';
+  else if(diff>=1.5) note='✅ 전체 156종 평균('+AVG.toFixed(1)+'세)보다 상당히 긴 편입니다. 다만 개체 관리에 따라 충분히 달라집니다.';
+  else if(diff<=-1.5) note='⚠ 평균('+AVG.toFixed(1)+'세)보다 짧은 편입니다. 그만큼 정기 검진과 체중 관리가 중요한 견종입니다.';
+  else note='전체 156종 평균은 '+AVG.toFixed(1)+'세입니다. 수명은 유전만이 아니라 체중·치과·검진 관리로 크게 달라집니다.';
+  $('p-note').textContent=note;
+
+  $('pick').classList.add('on');
+  render();
+  $('pick').scrollIntoView({behavior:'smooth',block:'center'});
+}
+render();
+</script>
+</body>
+</html>

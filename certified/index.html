@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>국제 인증 동물병원 지도 | 개알남</title>
+<meta name="description" content="AAHA, Fear Free, ISFM, VECCS 등 국제 인증을 받은 국내 동물병원을 지도에서 찾아보세요. 각 인증의 의미도 쉽게 설명합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-63FHYEGDJD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-63FHYEGDJD');
+</script>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--border:#30363d;--border2:#21262d;
+--cyan:#00d4c8;--cyan-dim:rgba(0,212,200,.12);--amber:#f5a623;--amber-dim:rgba(245,166,35,.12);
+--red:#ff6b6b;--red-dim:rgba(255,107,107,.12);--green:#56d17e;--green-dim:rgba(86,209,126,.12);
+--purple:#a371f7;--purple-dim:rgba(163,113,247,.12);--blue:#58a6ff;--blue-dim:rgba(88,166,255,.12);
+--accent:#4dabf7;--accent-dim:rgba(77,171,247,.13);--accent-glow:rgba(77,171,247,.25);--slate:#8b949e;--slate-dim:rgba(139,148,158,.12);
+--text:#e6edf3;--text2:#8b949e;--text3:#484f58;
+--mono:'DM Mono',monospace;--sans:'Noto Sans KR',sans-serif;--display:'Bebas Neue',sans-serif;
+--r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;word-break:keep-all;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+.gnav{position:sticky;top:0;z-index:900;background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border2);}
+.gnav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:0 12px;height:52px;overflow-x:auto;scrollbar-width:none;}
+.gnav-inner::-webkit-scrollbar{display:none;}
+.gnav-logo{font-family:var(--display);font-size:22px;letter-spacing:1px;color:var(--cyan);white-space:nowrap;margin-right:8px;flex-shrink:0;}
+.gnav a.gn{font-size:12.5px;font-weight:700;color:var(--text2);padding:7px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;transition:background .18s,color .18s;}
+.gnav a.gn:hover{color:var(--text);background:var(--surface2);}
+.gnav a.gn.on{color:var(--cyan);background:var(--cyan-dim);}
+.hero{padding:34px 20px 26px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(77,171,247,.16),transparent 62%);pointer-events:none;}
+.hero-in{position:relative;max-width:720px;margin:0 auto;}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:var(--display);font-size:clamp(32px,6.6vw,54px);letter-spacing:1px;line-height:1.05;color:#fff;}
+.hero-title span{color:var(--accent);}
+.hero-sub{font-size:13px;color:var(--text2);margin-top:10px;line-height:1.7;}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 60px;}
+.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin:26px 0 12px;display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ===== MAP ===== */
+.maparea{display:grid;grid-template-columns:1fr;gap:14px;align-items:start;}
+.mapbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;}
+.mapbox svg{display:block;width:100%;height:auto;max-height:58vh;margin:0 auto;}
+.rg{cursor:pointer;}
+.rg:hover .rg-dot{stroke:#fff;stroke-width:2.5;}
+.rg-dot{transition:r .2s,fill .2s;}
+.rg-num{font-family:var(--mono);font-weight:500;fill:#0d1117;pointer-events:none;}
+.rg-name{font-family:var(--sans);font-weight:700;fill:var(--text2);pointer-events:none;}
+.rg.sel .rg-dot{stroke:#fff;stroke-width:2.5;}
+.rg.sel .rg-name{fill:#fff;}
+.rg.zero{opacity:.3;}
+.map-legend{text-align:center;margin-top:8px;font-size:10.5px;color:var(--text3);font-family:var(--mono);}
+.map-reset{display:block;width:100%;margin-top:10px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:12px;font-weight:700;padding:10px;border-radius:var(--r-sm);cursor:pointer;font-family:var(--sans);transition:border-color .2s;}
+.map-reset:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ===== CONTROLS ===== */
+.searchbox{position:relative;margin-bottom:10px;}
+.searchbox input{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);color:var(--text);font-family:var(--sans);font-size:16px;font-weight:600;padding:14px 44px 14px 42px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.searchbox input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);}
+.searchbox input::placeholder{color:var(--text3);font-weight:400;}
+.s-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
+.s-clear{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:var(--surface2);border:1px solid var(--border);color:var(--text2);width:25px;height:25px;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;display:none;}
+.s-clear.on{display:block;}
+.fgroup{margin-bottom:10px;}
+.fglbl{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;}
+.filters{display:flex;gap:5px;flex-wrap:wrap;}
+.fbtn{font-size:11.5px;font-weight:700;padding:7px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .18s;font-family:var(--sans);}
+.fbtn:hover{border-color:var(--text3);}
+.fbtn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+.fbtn .cnt{font-family:var(--mono);font-size:10px;opacity:.65;margin-left:3px;}
+
+/* ===== HOSPITAL LIST ===== */
+.count{font-size:11.5px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;}
+.hlist{display:grid;grid-template-columns:1fr;gap:10px;}
+.hosp{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;transition:border-color .2s;}
+.hosp:hover{border-color:var(--accent);}
+.hosp-n{font-size:15px;font-weight:900;color:#fff;line-height:1.35;}
+.hosp-loc{font-size:11.5px;color:var(--text3);margin-top:2px;}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;}
+.bdg{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid;}
+.b-aaha{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim);}
+.b-ff{color:var(--amber);border-color:var(--amber);background:var(--amber-dim);}
+.b-isfm{color:var(--green);border-color:var(--green);background:var(--green-dim);}
+.b-veccs{color:var(--red);border-color:var(--red);background:var(--red-dim);}
+.b-acu{color:var(--purple);border-color:var(--purple);background:var(--purple-dim);}
+.b-cva{color:var(--slate);border-color:var(--slate);background:var(--slate-dim);}
+.hosp-note{font-size:11.5px;color:var(--text2);margin-top:9px;line-height:1.65;border-top:1px solid var(--border2);padding-top:8px;}
+.hosp-btns{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.hbtn{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:9px 13px;border-radius:var(--r-sm);border:1px solid var(--border);color:var(--text2);transition:all .2s;}
+.hbtn:hover{border-color:var(--text3);color:var(--text);}
+.hbtn.nav{border-color:#03c75a;color:#03c75a;background:rgba(3,199,90,.09);}
+.hbtn.nav:hover{background:rgba(3,199,90,.18);color:#03c75a;}
+.empty{text-align:center;padding:32px 20px;color:var(--text3);font-size:12.5px;line-height:1.9;}
+
+/* ===== CERT EXPLAINER (타일 + 단일 패널) ===== */
+.certs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px;}
+.ctile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);
+  padding:13px 7px;cursor:pointer;text-align:center;font-family:var(--sans);
+  transition:border-color .18s,background .18s,transform .12s;min-height:74px;}
+.ctile:hover{border-color:var(--text3);transform:translateY(-1px);}
+.ctile .ci{font-size:19px;line-height:1;}
+.ctile .cn{font-size:11px;font-weight:800;color:var(--text2);line-height:1.3;word-break:keep-all;}
+.ctile.on{background:var(--surface2);}
+.ctile.on .cn{color:#fff;}
+.ctile.k-aaha.on{border-color:var(--cyan);} .ctile.k-aaha.on .ci{filter:drop-shadow(0 0 6px var(--cyan));}
+.ctile.k-ff.on{border-color:var(--amber);}
+.ctile.k-isfm.on{border-color:var(--green);}
+.ctile.k-veccs.on{border-color:var(--red);}
+.ctile.k-acu.on{border-color:var(--purple);}
+.ctile.k-cva.on{border-color:var(--slate);}
+.cpanel{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:var(--r-md);padding:17px 18px;margin-bottom:6px;}
+.cpanel.k-aaha{border-left-color:var(--cyan);} .cpanel.k-ff{border-left-color:var(--amber);}
+.cpanel.k-isfm{border-left-color:var(--green);} .cpanel.k-veccs{border-left-color:var(--red);}
+.cpanel.k-acu{border-left-color:var(--purple);} .cpanel.k-cva{border-left-color:var(--slate);}
+.cp-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px;}
+.cp-ico{font-size:22px;line-height:1;flex-shrink:0;}
+.cp-h{font-size:14.5px;font-weight:900;color:#fff;line-height:1.35;}
+.cp-org{font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto;text-align:right;line-height:1.45;flex-shrink:0;}
+.cp-d{font-size:12.5px;color:var(--text2);line-height:1.75;}
+.cp-d b{color:var(--text);}
+.cp-why{font-size:11.5px;color:var(--text3);line-height:1.65;margin-top:10px;border-top:1px solid var(--border2);padding-top:9px;}
+@media(max-width:600px){.certs{grid-template-columns:repeat(3,1fr);gap:6px;}
+  .ctile{padding:11px 5px;min-height:68px;} .ctile .cn{font-size:10px;} .ctile .ci{font-size:17px;}}
+
+.submit{background:linear-gradient(135deg,rgba(77,171,247,.11),rgba(77,171,247,.04));border:1px solid var(--accent);border-radius:var(--r-lg);padding:22px;margin-top:16px;text-align:center;}
+.submit h3{font-size:15px;font-weight:900;color:#fff;margin-bottom:8px;}
+.submit p{font-size:12.5px;color:var(--text2);line-height:1.75;margin-bottom:14px;}
+.sbtn{display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);font-size:13px;font-weight:900;padding:12px 20px;border-radius:var(--r-sm);transition:background .2s;}
+.sbtn:hover{background:rgba(77,171,247,.24);}
+.disc{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:16px;margin-top:14px;}
+.disc h4{font-size:11.5px;font-weight:700;color:var(--red);margin-bottom:6px;}
+.disc p{font-size:11.5px;color:var(--text3);line-height:1.75;margin-bottom:7px;}
+.disc p:last-child{margin-bottom:0;}
+footer{border-top:1px solid var(--border2);padding:24px 16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;line-height:2;}
+footer a{color:var(--cyan);}
+@media(min-width:820px){
+  .maparea{grid-template-columns:330px 1fr;}
+  .mapbox{position:sticky;top:64px;}
+    .hlist{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<nav class="gnav"><div class="gnav-inner">
+  <a href="/" class="gnav-logo">개알남</a>
+  <a href="/" class="gn">홈</a>
+  <a href="/calorie/" class="gn">칼로리 계산기</a>
+  <a href="/lifespan/" class="gn">견종별 수명</a>
+  <a href="/certified/" class="gn on">인증 병원</a>
+</div></nav>
+
+<div class="hero"><div class="hero-in">
+  <div class="hero-eyebrow">INTERNATIONALLY CERTIFIED VET HOSPITALS</div>
+  <div class="hero-title">국제 인증 <span>동물병원</span></div>
+  <div class="hero-sub">AAHA · Fear Free · ISFM · VECCS 등 국제 기준을 통과한 국내 동물병원<br>지도에서 우리 지역 병원을 찾아보세요</div>
+</div></div>
+
+<div class="wrap">
+
+  <div class="sec-label">인증 종류 — 눌러서 설명 보기</div>
+  <div class="certs" id="ctiles"></div>
+  <div class="cpanel" id="cpanel"></div>
+
+  <div class="sec-label">지도에서 찾기</div>
+  <div class="maparea">
+    <div>
+      <div class="mapbox">
+        <svg viewBox="0 0 328 560" xmlns="http://www.w3.org/2000/svg" id="kmap">
+          <path d="M 77.8,94.8 L 98.5,75.7 L 110.1,61.5 L 140.8,49.1 L 179.2,47.3 L 208.4,33.0 L 225.4,56.7 L 248.4,94.8 L 263.8,132.7 L 288.4,171.7 L 292.2,208.7 L 289.1,256.2 L 299.9,267.7 L 292.2,294.2 L 289.1,313.2 L 273.0,341.7 L 257.6,356.0 L 233.0,365.5 L 211.5,384.5 L 186.9,375.0 L 163.9,384.5 L 140.8,396.9 L 110.1,403.5 L 87.0,427.2 L 64.0,413.0 L 52.4,379.8 L 48.6,351.2 L 60.1,327.5 L 60.1,299.0 L 67.8,267.7 L 62.4,246.7 L 56.3,223.0 L 47.0,208.7 L 35.5,185.0 L 52.4,172.7 L 71.6,180.2 L 67.8,161.2 L 73.2,142.3 L 67.8,128.0 L 67.8,113.7 L 77.8,94.8 Z"
+                fill="#1c2230" stroke="#30363d" stroke-width="1.5"/>
+          <path d="M 39.4,501.3 L 67.8,498.5 L 97.8,500.4 L 100.8,512.7 L 80.9,527.9 L 48.6,531.7 L 37.1,517.5 L 39.4,501.3 Z"
+                fill="#1c2230" stroke="#30363d" stroke-width="1.5"/>
+          <g id="pins"></g>
+        </svg>
+        <div class="map-legend">지역을 눌러 병원을 확인하세요</div>
+        <button class="map-reset" id="mreset" onclick="setRegion('all')" style="display:none;">✕ 지역 선택 해제 — 전국 보기</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="searchbox">
+        <span class="s-ico">🔍</span>
+        <input type="text" id="q" placeholder="병원명 · 지역 검색" autocomplete="off" oninput="render()">
+        <button class="s-clear" id="qclear" onclick="clearQ()">✕</button>
+      </div>
+
+      <div class="fgroup">
+        <div class="fglbl">인증별</div>
+        <div class="filters" id="certfilters"></div>
+      </div>
+
+      <div class="count" id="count"></div>
+      <div class="hlist" id="hlist"></div>
+    </div>
+  </div>
+
+
+
+  <div class="submit">
+    <h3>🏥 우리 병원도 등록해 주세요</h3>
+    <p>인증을 보유하셨는데 목록에 없다면 알려주세요.<br>보호자분들의 제보도 환영합니다. 확인 후 반영하겠습니다.</p>
+    <a href="mailto:vet_@naver.com?subject=%5B%EA%B0%9C%EC%95%8C%EB%82%A8%5D%20%EC%9D%B8%EC%A6%9D%20%EB%B3%91%EC%9B%90%20%EB%93%B1%EB%A1%9D%20%C2%B7%20%EC%88%98%EC%A0%95%20%EC%9A%94%EC%B2%AD&body=%EB%B3%91%EC%9B%90%EB%AA%85%3A%0A%EC%A7%80%EC%97%AD(%EC%8B%9C%EB%8F%84%20%2B%20%EC%8B%9C%EA%B5%B0%EA%B5%AC)%3A%0A%EB%B3%B4%EC%9C%A0%20%EC%9D%B8%EC%A6%9D%3A%20(AAHA%20%2F%20Fear%20Free%20%2F%20ISFM%20%2F%20VECCS%20%2F%20%EC%B9%A8%EC%B9%98%EB%A3%8C%20%2F%20%EA%B8%B0%ED%83%80)%0A%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80%3A%0A%ED%99%95%EC%9D%B8%20%EA%B0%80%EB%8A%A5%ED%95%9C%20%EC%9E%90%EB%A3%8C%3A%0A" class="sbtn">✉️ 병원 등록 · 수정 요청하기</a>
+  </div>
+
+  <div class="disc" style="border-color:var(--border);">
+    <h4 style="color:var(--text2);">📚 데이터 출처</h4>
+    <p>· <b>AAHA 인증</b> — 한국수의임상포럼 AAHA-KVMA 공식 목록<br>
+      &nbsp;&nbsp;<a href="https://vt-exam.or.kr/AAHA-KVMA/" target="_blank" rel="noopener" style="color:var(--cyan);">vt-exam.or.kr/AAHA-KVMA</a></p>
+    <p>· <b>Fear Free 인증</b> — Fear Free Korea<br>
+      &nbsp;&nbsp;<a href="https://fearfree.kr/" target="_blank" rel="noopener" style="color:var(--amber);">fearfree.kr</a></p>
+    <p>· <b>ISFM 캣프렌들리</b> — International Cat Care 공식 검색<br>
+      &nbsp;&nbsp;<a href="https://icatcare.org/cat-friendly-clinics" target="_blank" rel="noopener" style="color:var(--green);">icatcare.org/cat-friendly-clinics</a><br>
+      &nbsp;&nbsp;<span style="color:var(--text3);">국내 목록은 별도 정리 중입니다. 위 링크에서 직접 검색해 보실 수 있습니다.</span></p>
+    <p>· <b>VECCS 응급의료 인증</b> — VECCS 공식 시설 디렉토리<br>
+      &nbsp;&nbsp;<a href="https://veccs.org/certified-facility-directory/" target="_blank" rel="noopener" style="color:var(--red);">veccs.org/certified-facility-directory</a></p>
+    <p>· <b>침치료 인증</b> — 인증 수의사 보유 병원 정보를 취합해 정리했습니다.</p>
+  </div>
+
+  <div class="disc">
+    <h4>⚠ 목록에 대해 꼭 알아두실 점</h4>
+    <p>· 이 목록은 <b>공개된 정보와 제보를 바탕으로 정리한 참고 자료</b>이며, 특정 병원을 추천하거나 광고하는 것이 아닙니다.</p>
+    <p>· 인증은 갱신 주기가 있어 <b>시점에 따라 달라질 수 있습니다.</b> 방문 전 해당 병원이나 인증 기관에 직접 확인하시길 권합니다.</p>
+    <p>· 목록에 없는 병원이 인증이 없다는 뜻은 아닙니다. 아직 파악하지 못했을 수 있습니다.</p>
+    <p>· <b>인증 여부가 진료의 질을 전부 보장하지는 않습니다.</b> 병원 선택 시 참고 지표 중 하나로만 활용해 주세요.</p>
+    <p>· 지도의 표시는 <b>시·도 단위</b>이며 실제 병원 좌표가 아닙니다. 정확한 위치는 각 병원의 '네이버 지도' 버튼으로 확인해 주세요.</p>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원<br>
+  <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener">▶ 유튜브 채널 '개알남' 보러가기</a>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   병원 데이터 — 여기에만 추가하시면 지도·목록에 자동 반영됩니다.
+
+   name  : 병원명
+   loc   : '시도 시군구' 형식 (예: '서울 강남구', '경기 성남시')
+           → 앞부분(시도)으로 지도 위치가 자동 결정됩니다
+           → 전체 문자열이 네이버 지도 검색어로 쓰입니다
+   certs : 배열, 여러 개 가능
+           'aaha'  → AAHA 인증
+           'ff'    → Fear Free 인증
+           'isfm'  → ISFM 캣프렌들리
+           'veccs' → VECCS 응급의료 인증
+           'acu'   → 침치료 인증 수의사 보유
+           'cva'   → 기타 인증
+   note  : 부가 설명 (생략 가능)
+   url   : 병원 홈페이지 (생략 가능)
+
+   ※ 시도 표기는 다음 중 하나로 시작해야 지도에 표시됩니다:
+     서울 인천 경기 강원 충북 충남 대전 세종 전북 전남 광주 경북 대구 경남 부산 울산 제주
+   ═══════════════════════════════════════════════════════════════ */
+var HOSPITALS = [
+  {name:'대구24시바른동물의료센터', loc:'대구 달서구', certs:['aaha','ff','isfm','acu'], note:'아시아 최초 Fear Free 인증 · 서울 외 지역 최초 AAHA 인증 · ISFM 캣프렌들리 골드 · 침치료 인증 수의사: 이세원 이정석', url:''},
+  {name:'24시분당리더스동물의료원', loc:'경기 성남시 분당구', certs:['aaha','veccs','acu'], note:'VECCS Level II · 침치료 인증 수의사: 이정희 이선희', url:''},
+  {name:'고려동물메디컬센터', loc:'충북 청주시 서원구', certs:['aaha','veccs','acu'], note:'VECCS Level II · 침치료 인증 수의사: 송창언', url:''},
+  {name:'24시사람앤동물메디컬센터', loc:'경기 용인시 수지구', certs:['aaha','acu'], note:'침치료 인증 수의사: 한연희', url:''},
+  {name:'건국대학교 동물병원', loc:'서울 광진구', certs:['veccs','acu'], note:'VECCS Level II · 침치료 인증 수의사: 김철규', url:''},
+  {name:'경기동물의료원', loc:'경기 용인시 수지구', certs:['aaha','veccs'], note:'VECCS Level II', url:''},
+  {name:'로얄동물메디컬센터 강동', loc:'서울 강동구', certs:['aaha','acu'], note:'침치료 인증 수의사: 정유경', url:''},
+  {name:'본동물의료센터 수원점', loc:'경기 수원시 장안구', certs:['aaha','acu'], note:'침치료 인증 수의사: 최규석', url:''},
+  {name:'일산동물의료원', loc:'경기 고양시 일산서구', certs:['aaha','veccs'], note:'VECCS Level II', url:''},
+  {name:'해마루동물병원', loc:'경기 성남시 분당구', certs:['aaha','veccs'], note:'VECCS Level II', url:''},
+  {name:'24시 동탄 이음동물의료센터', loc:'경기 화성시 동탄구', certs:['acu'], note:'침치료 인증 수의사: 박세철', url:''},
+  {name:'24시 라이프동물의료센터', loc:'대구 달서구', certs:['acu'], note:'침치료 인증 수의사: 류창헌', url:''},
+  {name:'24시 범어동물의료센터', loc:'대구 수성구', certs:['acu'], note:'침치료 인증 수의사: 박성필 박준석', url:''},
+  {name:'24시 숨 동물의료센터', loc:'경기 수원시 권선구', certs:['acu'], note:'침치료 인증 수의사: 성윤정 이혜인', url:''},
+  {name:'24시 청주 이음동물의료센터', loc:'충북 청주시 흥덕구', certs:['acu'], note:'침치료 인증 수의사: 박세철', url:''},
+  {name:'24시 타임동물메디컬센터', loc:'대전 서구', certs:['acu'], note:'침치료 인증 수의사: 승영신 한성현', url:''},
+  {name:'24시 파티마동물의료센터', loc:'대구 동구', certs:['acu'], note:'침치료 인증 수의사: 김근영 김현지 박다솔 김수엽', url:''},
+  {name:'24시 해든동물메디컬센터', loc:'경기 부천시 원미구', certs:['acu'], note:'침치료 인증 수의사: 양준하', url:''},
+  {name:'24시 휴 동물의료센터', loc:'경기 성남시 수정구', certs:['acu'], note:'침치료 인증 수의사: 고기진', url:''},
+  {name:'24시나우동물메디컬센터', loc:'충남 천안시 서북구', certs:['acu'], note:'침치료 인증 수의사: 김민균', url:''},
+  {name:'24시부천이지동물의료센터', loc:'경기 부천시 원미구', certs:['acu'], note:'침치료 인증 수의사: 강은미', url:''},
+  {name:'24시블루밍동물병원', loc:'광주 북구', certs:['acu'], note:'침치료 인증 수의사: 김승현', url:''},
+  {name:'24시센트럴동물메디컬센터', loc:'서울 성동구', certs:['acu'], note:'침치료 인증 수의사: 강지훈', url:''},
+  {name:'24시송도힐동물메디컬센터', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 배범주', url:''},
+  {name:'24시포항이음동물의료센터', loc:'경북 포항시 남구', certs:['acu'], note:'침치료 인증 수의사: 박세철', url:''},
+  {name:'24아프리카동물메디컬센터', loc:'대전 서구', certs:['acu'], note:'침치료 인증 수의사: 권선정', url:''},
+  {name:'ACE동물병원', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 홍은지', url:''},
+  {name:'N동물의료센터 노원점', loc:'서울 노원구', certs:['acu'], note:'침치료 인증 수의사: 정효진', url:''},
+  {name:'SD동물의료센터 서울점', loc:'서울 중구', certs:['acu'], note:'침치료 인증 수의사: 이응호 장주필', url:''},
+  {name:'VIP동물의료센터 서초점', loc:'서울 서초구', certs:['acu'], note:'침치료 인증 수의사: 김관중', url:''},
+  {name:'VIP동물의료센터 성북점', loc:'서울 성북구', certs:['acu'], note:'침치료 인증 수의사: 임수정 이병희', url:''},
+  {name:'VIP동물의료센터 청담', loc:'서울 강남구', certs:['veccs'], note:'VECCS Level II', url:''},
+  {name:'VIP동물한방재활의학센터 by Dr.신사경', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 신사경 나상민 김수현 전은서', url:''},
+  {name:'건강하게동물병원', loc:'경기 하남시', certs:['acu'], note:'침치료 인증 수의사: 김성미', url:''},
+  {name:'검단탑동물의료센터', loc:'인천 검단구', certs:['acu'], note:'침치료 인증 수의사: 권주희', url:''},
+  {name:'경인동물의료센터', loc:'서울 영등포구', certs:['acu'], note:'침치료 인증 수의사: 박정연', url:''},
+  {name:'고강동물병원', loc:'경기 부천시 오정구', certs:['acu'], note:'침치료 인증 수의사: 김동후', url:''},
+  {name:'고래동물병원', loc:'경기 시흥시', certs:['acu'], note:'침치료 인증 수의사: 김담', url:''},
+  {name:'광명24아이디동물의료센터', loc:'경기 광명시', certs:['acu'], note:'침치료 인증 수의사: 이호현', url:''},
+  {name:'굿파파 24시 반려동물건강검진센터', loc:'서울 동작구', certs:['acu'], note:'침치료 인증 수의사: 이혜윤', url:''},
+  {name:'김태화종합동물병원', loc:'서울 강동구', certs:['acu'], note:'침치료 인증 수의사: 허태민', url:''},
+  {name:'김해 24시 르엘동물의료센터', loc:'경남 김해시', certs:['acu'], note:'침치료 인증 수의사: 김건우', url:''},
+  {name:'나눔양한방동물병원', loc:'세종', certs:['acu'], note:'침치료 인증 수의사: 정대욱', url:''},
+  {name:'나봄동물병원', loc:'충북 증평군', certs:['acu'], note:'침치료 인증 수의사: 전현성', url:''},
+  {name:'나은동물병원', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 이세희', url:''},
+  {name:'내손동물병원', loc:'경기 의왕시', certs:['acu'], note:'침치료 인증 수의사: 황정욱', url:''},
+  {name:'누리종합동물병원 원주 본점', loc:'강원 원주시', certs:['acu'], note:'침치료 인증 수의사: 김동균', url:''},
+  {name:'뉴로동물의료센터 24시동물병원', loc:'부산 연제구', certs:['acu'], note:'침치료 인증 수의사: 임도우', url:''},
+  {name:'늘봄동물병원', loc:'경기 용인시 수지구', certs:['acu'], note:'침치료 인증 수의사: 이준호', url:''},
+  {name:'늘사랑양한방동물병원', loc:'전남 여수시', certs:['acu'], note:'침치료 인증 수의사: 김종수', url:''},
+  {name:'다사랑동물병원', loc:'경기 안양시 동안구', certs:['acu'], note:'침치료 인증 수의사: 임희영 장혜영', url:''},
+  {name:'닥터펫동물의료센터', loc:'부산 부산진구', certs:['acu'], note:'침치료 인증 수의사: 권도형', url:''},
+  {name:'더독동물병원', loc:'서울 은평구', certs:['acu'], note:'침치료 인증 수의사: 이응현', url:''},
+  {name:'더독동물병원', loc:'경기 고양시 일산동구', certs:['acu'], note:'침치료 인증 수의사: 임배근', url:''},
+  {name:'더본외과동물의료센터', loc:'부산 남구', certs:['acu'], note:'침치료 인증 수의사: 오선주', url:''},
+  {name:'더오래동물병원', loc:'경기 고양시 일산서구', certs:['acu'], note:'침치료 인증 수의사: 송지홍', url:''},
+  {name:'더좋은동물병원', loc:'경기 시흥시', certs:['acu'], note:'침치료 인증 수의사: 조진연', url:''},
+  {name:'도그원 동물의료센터', loc:'서울 은평구', certs:['acu'], note:'침치료 인증 수의사: 이동열', url:''},
+  {name:'동물병원 그린숲', loc:'서울 서초구', certs:['acu'], note:'침치료 인증 수의사: 이태형', url:''},
+  {name:'동물병원 비헤이브', loc:'대전 서구', certs:['acu'], note:'침치료 인증 수의사: 이훈', url:''},
+  {name:'동물병원산책 내과외과재활센터', loc:'서울 은평구', certs:['acu'], note:'침치료 인증 수의사: 김미연', url:''},
+  {name:'동탄데이즈동물의료센터', loc:'경기 화성시 동탄구', certs:['acu'], note:'침치료 인증 수의사: 백수연', url:''},
+  {name:'로얄동물메디컬센터 W', loc:'서울 마포구', certs:['aaha'], note:'', url:''},
+  {name:'로얄동물메디컬센터 본원', loc:'서울 중랑구', certs:['aaha'], note:'', url:''},
+  {name:'리디아동물병원 압구정본점', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 김윤아 김정민', url:''},
+  {name:'리브동물의료센터', loc:'인천 검단구', certs:['acu'], note:'침치료 인증 수의사: 김현지', url:''},
+  {name:'리안동물병원', loc:'부산 해운대구', certs:['acu'], note:'침치료 인증 수의사: 안성아', url:''},
+  {name:'마음을 읽어주는 마음동물병원', loc:'대구 수성구', certs:['acu'], note:'침치료 인증 수의사: 황채영', url:''},
+  {name:'메이플동물의료센터', loc:'서울 강동구', certs:['acu'], note:'침치료 인증 수의사: 곽지윤', url:''},
+  {name:'모두애동물병원', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 공정희', url:''},
+  {name:'모모동물병원', loc:'서울 강서구', certs:['acu'], note:'침치료 인증 수의사: 최하진', url:''},
+  {name:'모모동물의료센터', loc:'인천 부평구', certs:['acu'], note:'침치료 인증 수의사: 유재성', url:''},
+  {name:'미소돌봄동물병원', loc:'경기 안산시 상록구', certs:['acu'], note:'침치료 인증 수의사: 황태하', url:''},
+  {name:'박동물병원', loc:'충북 충주시', certs:['acu'], note:'침치료 인증 수의사: 박헌무', url:''},
+  {name:'베리떼동물병원', loc:'인천 연수구', certs:['acu'], note:'침치료 인증 수의사: 이미희', url:''},
+  {name:'본동물의료센터 안양점', loc:'경기 안양시 동안구', certs:['aaha'], note:'', url:''},
+  {name:'봄나래재활한방동물병원', loc:'경기 수원시 영통구', certs:['acu'], note:'침치료 인증 수의사: 이우철', url:''},
+  {name:'봄날한방재활동물병원', loc:'울산 울주군', certs:['acu'], note:'침치료 인증 수의사: 서준영', url:''},
+  {name:'봄봄동물병원', loc:'서울 동대문구', certs:['acu'], note:'침치료 인증 수의사: 이성준', url:''},
+  {name:'부산 24시 연산동물의료센터', loc:'부산 연제구', certs:['acu'], note:'침치료 인증 수의사: 한경진', url:''},
+  {name:'브이동물메디컬센터', loc:'제주 제주시', certs:['acu'], note:'침치료 인증 수의사: 강수연 이은지', url:''},
+  {name:'사랑애동물메디컬센터', loc:'인천 미추홀구', certs:['acu'], note:'침치료 인증 수의사: 김연국', url:''},
+  {name:'산본중앙동물병원', loc:'경기 군포시', certs:['acu'], note:'침치료 인증 수의사: 김성태', url:''},
+  {name:'서울대학교 수의과대학 동물병원', loc:'서울 관악구', certs:['acu'], note:'침치료 인증 수의사: 이정하 김수환', url:''},
+  {name:'서울동물메디컬센터', loc:'경기 광주시', certs:['acu'], note:'침치료 인증 수의사: 김수빈', url:''},
+  {name:'숲속동물병원', loc:'충남 아산시', certs:['acu'], note:'침치료 인증 수의사: 허상영', url:''},
+  {name:'앙리 동물병원', loc:'서울 성북구', certs:['acu'], note:'침치료 인증 수의사: 곡경문(문추칭)', url:''},
+  {name:'양양동물병원', loc:'강원 양양군', certs:['acu'], note:'침치료 인증 수의사: 배주현', url:''},
+  {name:'여기로양한방동물병원', loc:'경기 과천시', certs:['acu'], note:'침치료 인증 수의사: 최은영 최우', url:''},
+  {name:'예은동물의료센터', loc:'서울 강남구', certs:['acu'], note:'침치료 인증 수의사: 민재연', url:''},
+  {name:'오리엔탈타이거 동물병원', loc:'인천 검단구', certs:['acu'], note:'침치료 인증 수의사: 이승철', url:''},
+  {name:'온솔양한방동물병원', loc:'대전 유성구', certs:['acu'], note:'침치료 인증 수의사: 이수빈', url:''},
+  {name:'온심동물병원 심장&내과 클리닉', loc:'경기 김포시', certs:['acu'], note:'침치료 인증 수의사: 이응호', url:''},
+  {name:'온정동물병원', loc:'부산 동래구', certs:['acu'], note:'침치료 인증 수의사: 방주환', url:''},
+  {name:'온하루동물의료센터', loc:'경기 용인시 수지구', certs:['acu'], note:'침치료 인증 수의사: 이승현', url:''},
+  {name:'올리브동물병원', loc:'경기 고양시 일산동구', certs:['acu'], note:'침치료 인증 수의사: 김기철 이향숙', url:''},
+  {name:'우리들외과동물의료센터', loc:'대구 중구', certs:['acu'], note:'침치료 인증 수의사: 배민지', url:''},
+  {name:'울산 이승진동물병원', loc:'울산 남구', certs:['acu'], note:'침치료 인증 수의사: 천봉수', url:''},
+  {name:'울산에스동물메디컬센터', loc:'울산 남구', certs:['acu'], note:'침치료 인증 수의사: 강재익 정준승', url:''},
+  {name:'월드펫동물병원', loc:'경기 부천시 원미구', certs:['acu'], note:'침치료 인증 수의사: 홍석휘 최혜숙', url:''},
+  {name:'위런한방재활동물병원', loc:'서울 용산구', certs:['acu'], note:'침치료 인증 수의사: 맹정우', url:''},
+  {name:'윤은채재활한방동물병원', loc:'부산 해운대구', certs:['acu'], note:'침치료 인증 수의사: 윤은채', url:''},
+  {name:'이든본스 외과 2차 동물의료원', loc:'경남 창원시 성산구', certs:['acu'], note:'침치료 인증 수의사: 황용현 정대현', url:''},
+  {name:'이을동물병원', loc:'서울 서초구', certs:['acu'], note:'침치료 인증 수의사: 황선희', url:''},
+  {name:'인방동물의료센터', loc:'경기 안양시 동안구', certs:['acu'], note:'침치료 인증 수의사: 조인성', url:''},
+  {name:'인천24시스카이동물메디컬센터', loc:'인천 남동구', certs:['acu'], note:'침치료 인증 수의사: 박설기 정태규 최아름 문종선', url:''},
+  {name:'일곡동물병원', loc:'광주 북구', certs:['acu'], note:'침치료 인증 수의사: 송인종', url:''},
+  {name:'장평종합동물병원', loc:'서울 동대문구', certs:['acu'], note:'침치료 인증 수의사: 박욱진', url:''},
+  {name:'정메디컬동물병원', loc:'경남 창원시 성산구', certs:['acu'], note:'침치료 인증 수의사: 정제형', url:''},
+  {name:'정샘동물병원', loc:'경기 부천시 원미구', certs:['acu'], note:'침치료 인증 수의사: 정종수', url:''},
+  {name:'제주대학교 아라캠퍼스 부설 동물병원', loc:'제주 제주시', certs:['acu'], note:'', url:''},
+  {name:'조이동물의료센터', loc:'경기 안산시 단원구', certs:['acu'], note:'침치료 인증 수의사: 장원정', url:''},
+  {name:'차이동물병원', loc:'부산 수영구', certs:['acu'], note:'침치료 인증 수의사: 변예은', url:''},
+  {name:'최지영 재활한방 동물병원', loc:'경기 고양시 일산서구', certs:['acu'], note:'침치료 인증 수의사: 최지영', url:''},
+  {name:'충남대학교 동물병원', loc:'대전 유성구', certs:['acu'], note:'침치료 인증 수의사: 권태형 김경빈', url:''},
+  {name:'카인드동물병원', loc:'경기 화성시 병점구', certs:['acu'], note:'침치료 인증 수의사: 황태하', url:''},
+  {name:'코리아동물병원', loc:'경기 평택시', certs:['acu'], note:'침치료 인증 수의사: 조용도', url:''},
+  {name:'쿨펫양한방동물병원', loc:'대전 유성구', certs:['acu'], note:'침치료 인증 수의사: 이수빈', url:''},
+  {name:'큰마음동물메디컬센터', loc:'부산 해운대구', certs:['acu'], note:'침치료 인증 수의사: 배윤지', url:''},
+  {name:'클리어동물병원', loc:'경기 수원시 권선구', certs:['acu'], note:'침치료 인증 수의사: 이혜인', url:''},
+  {name:'파리스동물병원', loc:'서울 양천구', certs:['acu'], note:'침치료 인증 수의사: 진서강', url:''},
+  {name:'하나로양한방동물병원', loc:'경기 김포시', certs:['acu'], note:'침치료 인증 수의사: 박정식', url:''},
+  {name:'한걸음더 재활한방 동물병원', loc:'서울 송파구', certs:['acu'], note:'침치료 인증 수의사: 이은구', url:''},
+  {name:'헬릭스동물메디컬센터', loc:'서울 서초구', certs:['aaha'], note:'', url:''}
+];
+
+/* ── 시·도 지도 좌표 (수정 불필요) ── */
+var REGIONS = [
+  {n:"서울",x:100.8,y:116.6},{n:"인천",x:76.3,y:128.0},{n:"경기",x:121.6,y:142.3},
+  {n:"강원",x:198.5,y:99.5},{n:"충북",x:163.9,y:185.0},{n:"충남",x:83.2,y:213.5},
+  {n:"대전",x:131.6,y:232.5},{n:"세종",x:122.4,y:211.6},{n:"전북",x:110.1,y:289.5},
+  {n:"전남",x:98.5,y:368.3},{n:"광주",x:90.9,y:345.6},{n:"경북",x:244.6,y:237.3},
+  {n:"대구",x:225.4,y:278.1},{n:"경남",x:202.3,y:327.5},{n:"부산",x:260.7,y:345.6},
+  {n:"울산",x:277.6,y:309.4},{n:"제주",x:67.8,y:514.6}
+];
+
+var LABEL = { aaha:'AAHA', ff:'Fear Free', isfm:'ISFM 캣프렌들리',
+              veccs:'VECCS 응급의료', acu:'침치료인증수의사', cva:'기타 인증' };
+var CERT_BTN = [
+  ['all','전체'],['aaha','🏥 AAHA'],['ff','🐾 Fear Free'],['isfm','🐈 ISFM'],
+  ['veccs','🚨 VECCS'],['acu','🪡 침치료인증수의사']
+];
+
+var certFilter = 'all', region = 'all';
+function $(id){ return document.getElementById(id); }
+function sido(loc){ return (loc||'').split(' ')[0]; }
+
+function drawMap(){
+  var svg = '';
+  REGIONS.forEach(function(r){
+    var c = HOSPITALS.filter(function(h){
+      return sido(h.loc) === r.n && (certFilter === 'all' || h.certs.indexOf(certFilter) !== -1);
+    }).length;
+    var rad = c === 0 ? 5 : Math.min(16, 7 + Math.sqrt(c) * 3);
+    var fill = c === 0 ? '#30363d' : '#4dabf7';
+    var cls = 'rg' + (c === 0 ? ' zero' : '') + (region === r.n ? ' sel' : '');
+    svg += '<g class="'+cls+'" data-r="'+r.n+'">'
+        +  '<circle class="rg-dot" cx="'+r.x+'" cy="'+r.y+'" r="'+rad.toFixed(1)+'" fill="'+fill+'" fill-opacity="'+(c?'0.9':'0.55')+'"/>'
+        +  (c ? '<text class="rg-num" x="'+r.x+'" y="'+(r.y+3.5)+'" font-size="'+(c>9?9:10)+'" text-anchor="middle">'+c+'</text>' : '')
+        +  '<text class="rg-name" x="'+r.x+'" y="'+(r.y - rad - 4).toFixed(1)+'" font-size="9" text-anchor="middle">'+r.n+'</text>'
+        +  '</g>';
+  });
+  $('pins').innerHTML = svg;
+  Array.prototype.forEach.call($('pins').querySelectorAll('.rg'), function(g){
+    g.addEventListener('click', function(){
+      var r = g.getAttribute('data-r');
+      setRegion(region === r ? 'all' : r);
+    });
+  });
+  $('mreset').style.display = (region === 'all') ? 'none' : 'block';
+}
+
+function drawCertFilters(){
+  var html = '';
+  CERT_BTN.forEach(function(b){
+    var key = b[0], lbl = b[1];
+    var c = key === 'all' ? HOSPITALS.length
+          : HOSPITALS.filter(function(h){ return h.certs.indexOf(key) !== -1; }).length;
+    html += '<button class="fbtn'+(certFilter===key?' on':'')+'" data-c="'+key+'">'
+          + lbl + '<span class="cnt">'+c+'</span></button>';
+  });
+  $('certfilters').innerHTML = html;
+  Array.prototype.forEach.call($('certfilters').querySelectorAll('.fbtn'), function(b){
+    b.addEventListener('click', function(){ setCert(b.getAttribute('data-c')); });
+  });
+}
+
+function setCert(c){ certFilter = c; drawCertFilters(); drawMap(); render(); }
+function setRegion(r){
+  region = r; drawMap(); render();
+  if(r !== 'all'){ $('count').scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+function clearQ(){ $('q').value=''; render(); }
+
+/* 네이버 지도 검색 링크 — 좌표 없이 이름만으로 동작 */
+function naverUrl(h){
+  return 'https://map.naver.com/p/search/' + encodeURIComponent(h.loc + ' ' + h.name);
+}
+
+function render(){
+  var q = $('q').value.trim().toLowerCase();
+  $('qclear').classList.toggle('on', q.length > 0);
+
+  var arr = HOSPITALS.filter(function(h){
+    if(certFilter !== 'all' && h.certs.indexOf(certFilter) === -1) return false;
+    if(region !== 'all' && sido(h.loc) !== region) return false;
+    if(q && h.name.toLowerCase().indexOf(q) === -1 && (h.loc||'').toLowerCase().indexOf(q) === -1) return false;
+    return true;
+  });
+
+  $('count').textContent = (region === 'all' ? '전국' : region) + ' · ' + arr.length + '곳';
+
+  if(!arr.length){
+    $('hlist').innerHTML = '<div class="empty">조건에 맞는 병원이 아직 목록에 없습니다.<br>알고 계신 병원이 있다면 아래로 알려주세요.</div>';
+    return;
+  }
+
+  $('hlist').innerHTML = arr.map(function(h){
+    var badges = h.certs.map(function(c){
+      return '<span class="bdg b-'+c+'">'+(LABEL[c]||c)+'</span>';
+    }).join('');
+    var note = h.note ? '<div class="hosp-note">'+h.note+'</div>' : '';
+    var home = h.url ? '<a href="'+h.url+'" target="_blank" rel="noopener" class="hbtn">🔗 홈페이지</a>' : '';
+    return '<div class="hosp">'
+      + '<div class="hosp-n">'+h.name+'</div>'
+      + '<div class="hosp-loc">📍 '+h.loc+'</div>'
+      + '<div class="badges">'+badges+'</div>'
+      + note
+      + '<div class="hosp-btns">'
+      +   '<a href="'+naverUrl(h)+'" target="_blank" rel="noopener" class="hbtn nav">📍 네이버 지도에서 보기</a>'
+      +   home
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+
+/* ── 인증 설명 데이터 (타일 클릭 → 아래 패널에 표시) ── */
+var CERTS = [
+ {k:'aaha', ico:'🏥', tile:'미국동물병원협회<br>(AAHA)', name:'미국동물병원협회(AAHA) 인증',
+  org:'American Animal<br>Hospital Association',
+  d:'미국동물병원협회가 <b>900여 개 항목</b>을 직접 실사해 부여하는 인증입니다. 마취 모니터링, 통증 관리, 수술실 위생, 의무기록, 응급 대응까지 병원 운영 전반을 점검합니다.',
+  why:'💡 북미에서도 동물병원의 약 12~15%만 보유합니다. 인증은 <b>자동 갱신되지 않고</b> 3년마다 재실사를 통과해야 유지됩니다.'},
+ {k:'ff', ico:'🐾', tile:'Fear Free<br>인증', name:'Fear Free 인증',
+  org:'Fear Free Pets<br>(USA)',
+  d:'반려동물이 병원에서 느끼는 <b>공포·불안·스트레스를 줄이는</b> 진료 방식에 대한 인증입니다. 보정 방법, 대기 환경, 냄새와 소음 관리, 진료 전 투약까지 다룹니다.',
+  why:'💡 겁이 많거나 병원만 가면 떠는 아이, 고양이 보호자에게 특히 의미가 큽니다. 스트레스는 혈압·혈당 수치까지 왜곡시켜 <b>검사 정확도</b>에도 영향을 줍니다.'},
+ {k:'isfm', ico:'🐈', tile:'ISFM<br>캣프렌들리', name:'ISFM 캣프렌들리 인증',
+  org:'International Society of<br>Feline Medicine (UK)',
+  d:'국제고양이의학회가 부여하는 <b>고양이 친화 병원</b> 인증입니다. 개와 분리된 대기·입원 공간, 고양이 전용 보정법, 고양이에 맞춘 통증 평가 기준을 갖춰야 합니다. 등급은 브론즈·실버·골드로 나뉩니다.',
+  why:'💡 고양이는 개와 통증 표현·약물 대사가 다릅니다. 고양이 보호자라면 이 인증을 먼저 확인해 보세요.'},
+ {k:'veccs', ico:'🚨', tile:'VECCS<br>응급의료', name:'VECCS 응급의료 인증',
+  org:'Veterinary Emergency &amp;<br>Critical Care Society (USA)',
+  d:'미국수의응급중환자의학회가 부여하는 <b>응급·중환자 진료 시설</b> 인증입니다. 응급 대응 인력과 진료 가능 시간, 산소·수혈·인공호흡 등 중환자 장비, 모니터링 체계를 실사해 <b>Level I·II·III</b> 등급으로 구분합니다.',
+  why:'💡 Level I이 가장 높은 등급으로, 24시간 상주 인력과 중환자 집중치료 역량을 갖춘 시설입니다. 야간·응급 상황이 잦은 노령견 보호자라면 미리 확인해 두시면 좋습니다.'},
+ {k:'acu', ico:'🪡', tile:'침치료<br>인증수의사', name:'침치료인증수의사',
+  org:'CVA · IVAS 등<br>침치료 인증 과정',
+  d:'수의사가 별도의 <b>침치료(Veterinary Acupuncture) 인증 과정</b>을 이수하고 자격을 취득한 경우입니다. 미국 Chi University의 CVA, 국제수의침술학회(IVAS) 인증 등이 대표적입니다.',
+  why:'💡 주로 <b>만성 통증, 관절염, 디스크·신경계 질환, 재활</b> 영역에서 보조 치료로 활용됩니다. 기존 치료를 대체하는 것이 아니라 함께 쓰는 방식입니다.'},
+ {k:'cva', ico:'📋', tile:'그 외<br>인증·수련', name:'그 외 인증·수련',
+  org:'전문의 · 수련병원 등',
+  d:'위 인증들 외에도 <b>진료과별 전문의(Diplomate)</b> 보유 여부, 수련병원 지정, 특정 분야 인증 등이 병원 선택의 기준이 될 수 있습니다.',
+  why:'💡 인증이 없다고 좋은 병원이 아닌 것은 결코 아닙니다. 인증은 <b>확인 가능한 최소 기준</b>일 뿐, 좋은 병원의 유일한 조건이 아닙니다.'}
+];
+var certOpen = 'aaha';
+
+function drawCerts(){
+  $('ctiles').innerHTML = CERTS.map(function(c){
+    return '<button class="ctile k-'+c.k+(certOpen===c.k?' on':'')+'" type="button" data-k="'+c.k+'">'
+         + '<span class="ci">'+c.ico+'</span><span class="cn">'+c.tile+'</span></button>';
+  }).join('');
+  Array.prototype.forEach.call($('ctiles').querySelectorAll('.ctile'), function(b){
+    b.addEventListener('click', function(){ certOpen = b.getAttribute('data-k'); drawCerts(); });
+  });
+  var c = null;
+  for(var i=0;i<CERTS.length;i++){ if(CERTS[i].k===certOpen){ c=CERTS[i]; break; } }
+  if(!c) return;
+  $('cpanel').className = 'cpanel k-'+c.k;
+  $('cpanel').innerHTML =
+      '<div class="cp-top"><span class="cp-ico">'+c.ico+'</span>'
+    + '<span class="cp-h">'+c.name+'</span>'
+    + '<span class="cp-org">'+c.org+'</span></div>'
+    + '<div class="cp-d">'+c.d+'</div>'
+    + '<div class="cp-why">'+c.why+'</div>';
+}
+
+drawCerts();
+drawCertFilters();
+drawMap();
+render();
+</script>
+</body>
+</html>
