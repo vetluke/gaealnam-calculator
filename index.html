@@ -42,6 +42,18 @@ a{color:inherit;text-decoration:none;}
 .gnav a.gn{font-size:12.5px;font-weight:700;color:var(--text2);padding:7px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;transition:background .18s,color .18s;}
 .gnav a.gn:hover{color:var(--text);background:var(--surface2);}
 .gnav a.gn.on{color:var(--cyan);background:var(--cyan-dim);}
+.gnav-count{margin-left:auto;display:flex;align-items:center;gap:5px;flex-shrink:0;
+  font-size:11px;color:var(--text3);font-family:var(--mono);padding:5px 10px;
+  border:1px solid var(--border2);border-radius:20px;background:var(--surface);white-space:nowrap;}
+.gnav-count strong{color:var(--cyan);font-size:12px;font-weight:500;}
+.gnav-count .gc-l{color:var(--text3);}
+.nlong{display:inline;} .nshort{display:none;}
+@media(max-width:620px){
+  .nlong{display:none;} .nshort{display:inline;}
+  .gnav a.gn{padding:7px 9px;font-size:12px;}
+  .gnav-count{padding:4px 8px;font-size:10px;}
+  .gnav-count .gc-l{display:none;}
+}
 
 /* ===== OLD-LINK BANNER ===== */
 .oldlink{background:var(--amber-dim);border-bottom:1px solid var(--amber);padding:10px 14px;text-align:center;font-size:12.5px;color:#f5c842;}
@@ -97,8 +109,6 @@ a{color:inherit;text-decoration:none;}
 .abtn:hover{border-color:var(--cyan);color:var(--cyan);}
 .abtn.yt{border-color:#ff4444;color:#ff6b6b;background:rgba(255,68,68,.08);}
 
-/* 방문 카운터 */
-.counter-strip{display:flex;align-items:center;justify-content:center;gap:10px;
   background:var(--surface2);border:1px solid var(--border);
   border-radius:var(--r-md);padding:13px 20px;margin:0 0 6px;text-align:center;}
 .counter-icon{font-size:18px;}
@@ -120,9 +130,10 @@ footer a{color:var(--cyan);}
 <nav class="gnav"><div class="gnav-inner">
   <a href="/" class="gnav-logo">개알남</a>
   <a href="/" class="gn on">홈</a>
-  <a href="/calorie/" class="gn">칼로리 계산기</a>
-  <a href="/lifespan/" class="gn">견종별 수명</a>
-  <a href="/certified/" class="gn">인증 병원</a>
+  <a href="/calorie/" class="gn"><span class="nlong">칼로리 계산기</span><span class="nshort">칼로리</span></a>
+  <a href="/lifespan/" class="gn"><span class="nlong">견종별 수명</span><span class="nshort">수명</span></a>
+  <a href="/certified/" class="gn"><span class="nlong">인증 병원</span><span class="nshort">병원</span></a>
+  <span class="gnav-count" title="총 방문수">🐾 <strong id="counter-num">···</strong><span class="gc-l">명 방문</span></span>
 </div></nav>
 
 <!-- 예전 링크로 들어온 분 안내 -->
@@ -143,11 +154,6 @@ footer a{color:var(--cyan);}
 </div></div>
 
 <div class="wrap">
-
-  <div class="counter-strip">
-    <span class="counter-icon">🐾</span>
-    <span class="counter-text">지금까지 <strong id="counter-num">···</strong>명이 개알남을 방문하였습니다</span>
-  </div>
 
   <div class="sec-label">반려견 건강 도구</div>
   <div class="tools">
@@ -223,31 +229,24 @@ footer a{color:var(--cyan);}
   }catch(e){}
 })();
 
-// ── 방문자 카운터 (Abacus) ────────────────────────────────
-// 계산기 페이지와 동일한 네임스페이스를 사용하므로 누적 수치가 이어집니다.
-// namespace: gaealnam-com / key: visits
-var _COUNTER_HIT = 'https://abacus.jasoncameron.dev/hit/gaealnam-com/visits';
 
-function updateCounterDisplay(count){
-  var el = document.getElementById('counter-num');
-  if (el && count != null && count > 0) {
-    el.textContent = Number(count).toLocaleString();
+/* ── 방문자 카운터 (Abacus) — 전 페이지 공통 ──────────────
+   모든 탭이 같은 네임스페이스(gaealnam-com/visits)를 사용하므로
+   어느 페이지로 들어와도 하나의 누적 수치로 집계됩니다. */
+(function(){
+  var HIT = 'https://abacus.jasoncameron.dev/hit/gaealnam-com/visits';
+  function show(n){
+    var el = document.getElementById('counter-num');
+    if (el && n != null && n > 0) el.textContent = Number(n).toLocaleString();
   }
-}
-
-(function countVisit(){
-  fetch(_COUNTER_HIT)
-    .then(function(res){
-      if(!res.ok) throw new Error('counter hit failed');
-      return res.json();
-    })
-    .then(function(data){ updateCounterDisplay(data.value); })
+  fetch(HIT)
+    .then(function(r){ if(!r.ok) throw new Error('hit fail'); return r.json(); })
+    .then(function(d){ show(d.value); })
     .catch(function(){
-      // 네트워크/서비스 오류 시 로컬 폴백 (해당 기기 표시용)
       try{
-        var local = parseInt(localStorage.getItem('gaealnam_visits') || '0') + 1;
-        localStorage.setItem('gaealnam_visits', local);
-        updateCounterDisplay(local);
+        var v = parseInt(localStorage.getItem('gaealnam_visits') || '0') + 1;
+        localStorage.setItem('gaealnam_visits', v);
+        show(v);
       }catch(_){}
     });
 })();

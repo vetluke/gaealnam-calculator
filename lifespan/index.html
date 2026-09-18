@@ -31,6 +31,18 @@ a{color:inherit;text-decoration:none;}
 .gnav a.gn{font-size:12.5px;font-weight:700;color:var(--text2);padding:7px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;transition:background .18s,color .18s;}
 .gnav a.gn:hover{color:var(--text);background:var(--surface2);}
 .gnav a.gn.on{color:var(--cyan);background:var(--cyan-dim);}
+.gnav-count{margin-left:auto;display:flex;align-items:center;gap:5px;flex-shrink:0;
+  font-size:11px;color:var(--text3);font-family:var(--mono);padding:5px 10px;
+  border:1px solid var(--border2);border-radius:20px;background:var(--surface);white-space:nowrap;}
+.gnav-count strong{color:var(--cyan);font-size:12px;font-weight:500;}
+.gnav-count .gc-l{color:var(--text3);}
+.nlong{display:inline;} .nshort{display:none;}
+@media(max-width:620px){
+  .nlong{display:none;} .nshort{display:inline;}
+  .gnav a.gn{padding:7px 9px;font-size:12px;}
+  .gnav-count{padding:4px 8px;font-size:10px;}
+  .gnav-count .gc-l{display:none;}
+}
 .hero{padding:38px 20px 30px;text-align:center;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,166,35,.13),transparent 62%);pointer-events:none;}
 .hero-in{position:relative;max-width:720px;margin:0 auto;}
@@ -41,7 +53,47 @@ a{color:inherit;text-decoration:none;}
 .wrap{max-width:1000px;margin:0 auto;padding:0 16px 60px;}
 .sec-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin:26px 0 12px;display:flex;align-items:center;gap:10px;}
 .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
-.searchbox{position:relative;margin-bottom:10px;}
+
+/* 검색 강조 */
+.searchwrap{background:linear-gradient(135deg,rgba(245,166,35,.09),rgba(245,166,35,.03));
+  border:1px solid var(--amber);border-radius:var(--r-lg);padding:16px;margin-bottom:12px;}
+.searchwrap .sw-lbl{font-size:12.5px;font-weight:900;color:var(--amber);margin-bottom:9px;text-align:center;}
+.searchbox input{font-size:16px;padding:16px 46px 16px 44px;}
+/* 인기견종 퀵칩 */
+.qchips{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+.qchip{font-size:11px;font-weight:700;padding:6px 11px;border-radius:20px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);cursor:pointer;font-family:var(--sans);transition:all .16s;}
+.qchip:hover{border-color:var(--amber);color:var(--amber);}
+/* 믹스견 안내 패널 */
+.mixnote{background:var(--surface);border:1px solid var(--cyan);border-left:3px solid var(--cyan);
+  border-radius:var(--r-md);padding:16px;margin-bottom:12px;display:none;}
+.mixnote.on{display:block;}
+.mixnote h4{font-size:13px;font-weight:900;color:var(--cyan);margin-bottom:7px;}
+.mixnote p{font-size:12.5px;color:var(--text2);line-height:1.75;}
+.mixnote b{color:var(--text);}
+/* 공유 버튼 */
+.pick-share{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  background:#f9e000;color:#1a1400;font-weight:900;font-size:13px;border:none;
+  border-radius:var(--r-sm);padding:13px;cursor:pointer;margin-top:12px;font-family:var(--sans);
+  transition:transform .15s;}
+.pick-share:hover{transform:translateY(-1px);}
+/* 공유 모달 */
+.smodal-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:none;
+  align-items:center;justify-content:center;padding:20px;}
+.smodal-ov.on{display:flex;}
+.smodal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:22px;width:100%;max-width:470px;max-height:82vh;display:flex;flex-direction:column;gap:11px;}
+.smodal h3{font-size:14px;font-weight:700;color:var(--text);}
+.smodal p{font-size:12px;color:var(--text2);}
+.smodal textarea{width:100%;height:200px;background:var(--bg);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);color:var(--text);font-family:var(--mono);font-size:11.5px;
+  line-height:1.6;padding:12px;outline:none;resize:none;}
+.smodal-btns{display:grid;grid-template-columns:1fr auto;gap:8px;}
+.btn-cp{background:#f9e000;color:#1a1400;font-weight:900;font-size:13px;border:none;
+  border-radius:var(--r-sm);padding:12px;cursor:pointer;font-family:var(--sans);}
+.btn-cl{background:var(--surface2);color:var(--text2);font-size:13px;border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:12px 16px;cursor:pointer;font-family:var(--sans);}
+.searchbox{position:relative;margin-bottom:0;}
 .searchbox input{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);color:var(--text);font-family:var(--sans);font-size:16px;font-weight:600;padding:15px 46px 15px 44px;outline:none;transition:border-color .2s,box-shadow .2s;}
 .searchbox input:focus{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-dim);}
 .searchbox input::placeholder{color:var(--text3);font-weight:400;}
@@ -108,9 +160,10 @@ footer a{color:var(--cyan);}
 <nav class="gnav"><div class="gnav-inner">
   <a href="/" class="gnav-logo">개알남</a>
   <a href="/" class="gn">홈</a>
-  <a href="/calorie/" class="gn">칼로리 계산기</a>
-  <a href="/lifespan/" class="gn on">견종별 수명</a>
-  <a href="/certified/" class="gn">인증 병원</a>
+  <a href="/calorie/" class="gn"><span class="nlong">칼로리 계산기</span><span class="nshort">칼로리</span></a>
+  <a href="/lifespan/" class="gn on"><span class="nlong">견종별 수명</span><span class="nshort">수명</span></a>
+  <a href="/certified/" class="gn"><span class="nlong">인증 병원</span><span class="nshort">병원</span></a>
+  <span class="gnav-count" title="총 방문수">🐾 <strong id="counter-num">···</strong><span class="gc-l">명 방문</span></span>
 </div></nav>
 
 <div class="hero"><div class="hero-in">
@@ -120,10 +173,14 @@ footer a{color:var(--cyan);}
 </div></div>
 
 <div class="wrap">
-  <div class="searchbox">
-    <span class="s-ico">🔍</span>
-    <input type="text" id="q" placeholder="견종 검색 (예: 말티즈, poodle)" autocomplete="off" oninput="render()">
-    <button class="s-clear" id="qclear" onclick="clearQ()">✕</button>
+  <div class="searchwrap">
+    <div class="sw-lbl">🐕 우리 아이 견종을 검색해 보세요</div>
+    <div class="searchbox">
+      <span class="s-ico">🔍</span>
+      <input type="text" id="q" placeholder="견종명 입력 (한글 또는 영문)" autocomplete="off" oninput="render()">
+      <button class="s-clear" id="qclear" onclick="clearQ()">✕</button>
+    </div>
+    <div class="qchips" id="qchips"></div>
   </div>
   <div class="filters">
     <button class="fbtn on" id="f-all" onclick="setF('all')">전체</button>
@@ -158,8 +215,10 @@ footer a{color:var(--cyan);}
       <div class="pm"><div class="pm-l">전체 평균 대비</div><div class="pm-v" id="p-diff">--</div></div>
     </div>
     <div class="pick-note" id="p-note"></div>
+    <button class="pick-share" onclick="openShare()">💬 카톡으로 공유하기</button>
   </div>
 
+  <div class="mixnote" id="mixnote"></div>
   <div class="count" id="count">156종 표시 중</div>
   <div class="list" id="list"></div>
 
@@ -186,6 +245,18 @@ footer a{color:var(--cyan);}
   </div>
 </div>
 
+<div class="smodal-ov" id="smodal" onclick="closeShareOut(event)">
+  <div class="smodal">
+    <h3>💬 카톡 공유용 텍스트</h3>
+    <p>아래 텍스트를 복사해서 카카오톡에 붙여넣기 해주세요.</p>
+    <textarea id="stext" readonly onclick="this.select()"></textarea>
+    <div class="smodal-btns">
+      <button class="btn-cp" onclick="copyShare()">📋 복사하기</button>
+      <button class="btn-cl" onclick="closeShare()">닫기</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   © 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원<br>
   <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener">▶ 유튜브 채널 '개알남' 보러가기</a>
@@ -204,21 +275,107 @@ function setF(f){
   ['all','pop','top'].forEach(function(k){ $('f-'+k).classList.toggle('on',k===f); });
   render();
 }
+var sortMode = 0; // 0:수명높은순 1:수명낮은순 2:가나다순
+var SORT_LBL = ['↕ 수명 높은순','↕ 수명 낮은순','↕ 가나다순'];
 function toggleSort(){
-  sortDesc=!sortDesc;
-  $('f-sort').textContent = sortDesc?'↕ 수명 높은순':'↕ 수명 낮은순';
+  sortMode = (sortMode + 1) % 3;
+  $('f-sort').textContent = SORT_LBL[sortMode];
   render();
+}
+function sortArr(arr){
+  if(sortMode === 2) return arr.sort(function(a,b){ return a.ko.localeCompare(b.ko,'ko'); });
+  return arr.sort(function(a,b){ return sortMode===0 ? b.life-a.life : a.life-b.life; });
+}
+
+/* ── 인기견종 퀵칩 ── */
+var QUICK = ['말티즈','푸들','포메라니안','시추','치와와','요크셔 테리어','비숑 프리제',
+             '펨브로크 웰시 코기','골든 리트리버','시바견','프렌치 불독','미니어처 슈나우저'];
+function drawChips(){
+  var el = $('qchips'); if(!el) return;
+  var avail = QUICK.filter(function(n){
+    for(var i=0;i<B.length;i++){ if(B[i].ko===n) return true; }
+    return false;
+  });
+  el.innerHTML = avail.map(function(n){
+    return '<button class="qchip" type="button" data-n="'+n+'">'+n+'</button>';
+  }).join('');
+  Array.prototype.forEach.call(el.querySelectorAll('.qchip'), function(b){
+    b.addEventListener('click', function(){
+      var n = b.getAttribute('data-n');
+      $('q').value = '';
+      pick((function(){ for(var i=0;i<B.length;i++){ if(B[i].ko===n) return B[i].en; } return ''; })());
+    });
+  });
+}
+
+/* ── 믹스견 안내 ── */
+var MIXKEY = ['믹스','믹스견','잡종','mix','mixed','혼종','mutt'];
+function checkMix(q){
+  var el = $('mixnote'); if(!el) return;
+  var hit = false;
+  for(var i=0;i<MIXKEY.length;i++){ if(q && q.indexOf(MIXKEY[i]) !== -1){ hit = true; break; } }
+  if(hit){
+    el.innerHTML = '<h4>🐕 믹스견은 목록에 없습니다</h4>'
+      + '<p>이 연구는 <b>순종 견종별</b>로 수명을 분석한 자료라 믹스견 항목이 없습니다. '
+      + '다만 여러 연구에서 믹스견은 순종보다 <b>유전 질환 위험이 낮은 경향</b>이 보고되며, '
+      + '수명도 비슷하거나 조금 더 긴 경우가 많습니다.<br><br>'
+      + '우리 아이가 어떤 견종을 닮았는지 아신다면 <b>그 견종과 체격이 비슷한 견종</b>을 참고하시고, '
+      + '무엇보다 수명은 견종보다 <b>체중 관리·치과 관리·정기 검진</b>에 훨씬 크게 좌우됩니다.</p>';
+    el.classList.add('on');
+  } else {
+    el.classList.remove('on');
+  }
+}
+
+/* ── 카톡 공유 ── */
+function buildShareText(){
+  var x = selected; if(!x) return '';
+  var diff = x.life - AVG;
+  return '[🐾 개알남 견종별 기대수명]\n\n'
+    + '■ ' + x.ko + ' (' + x.en + ')\n'
+    + '- 중앙수명: ' + x.life.toFixed(1) + '세\n'
+    + '- 156종 중 ' + (x.rank||'-') + '위\n'
+    + '- 95% 신뢰구간: ' + x.ci + '\n'
+    + '- 전체 평균(' + AVG.toFixed(1) + '세) 대비 ' + (diff>=0?'+':'') + diff.toFixed(1) + '년\n\n'
+    + '※ 중앙수명은 절반이 이 나이를 넘긴 시점입니다.\n'
+    + '수명은 견종보다 체중·치과·검진 관리로 더 크게 달라집니다.\n\n'
+    + '👉 우리 아이 견종도 확인해보세요\n'
+    + 'https://gaealnam.com/lifespan/';
+}
+function openShare(){
+  if(!selected){ alert('견종을 먼저 선택해주세요!'); return; }
+  $('stext').value = buildShareText();
+  $('smodal').classList.add('on');
+  setTimeout(function(){ $('stext').select(); }, 100);
+}
+function closeShare(){ $('smodal').classList.remove('on'); }
+function closeShareOut(e){ if(e.target === $('smodal')) closeShare(); }
+function copyShare(){
+  var ta = $('stext');
+  ta.select(); ta.setSelectionRange(0, 99999);
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(ta.value)
+      .then(function(){ alert('복사되었습니다!\n카카오톡에 붙여넣기 해주세요.'); closeShare(); })
+      .catch(function(){ fbCopy(ta); });
+  } else { fbCopy(ta); }
+}
+function fbCopy(ta){
+  try{
+    if(document.execCommand('copy')){ alert('복사되었습니다!\n카카오톡에 붙여넣기 해주세요.'); closeShare(); }
+    else alert('자동 복사가 지원되지 않습니다.\n텍스트를 직접 선택(Ctrl+A) 후 복사(Ctrl+C) 해주세요.');
+  }catch(e){ alert('자동 복사가 지원되지 않습니다.\n텍스트를 직접 선택(Ctrl+A) 후 복사(Ctrl+C) 해주세요.'); }
 }
 function clearQ(){ $('q').value=''; render(); }
 
 function render(){
   var q=$('q').value.trim().toLowerCase();
   $('qclear').classList.toggle('on', q.length>0);
+  checkMix(q);
   var arr=B.slice();
   if(filter==='pop') arr=arr.filter(function(x){return x.pop===1;});
   if(filter==='top') arr=arr.slice().sort(function(a,b){return b.life-a.life;}).slice(0,20);
   if(q) arr=arr.filter(function(x){return x.ko.toLowerCase().indexOf(q)!==-1||x.en.toLowerCase().indexOf(q)!==-1;});
-  arr.sort(function(a,b){ return sortDesc? b.life-a.life : a.life-b.life; });
+  sortArr(arr);
 
   $('count').textContent = arr.length+'종 표시 중';
   if(!arr.length){ $('list').innerHTML='<div class="empty">검색 결과가 없습니다.<br>다른 이름으로 찾아보세요 (한글 또는 영문)</div>'; return; }
@@ -268,7 +425,29 @@ function pick(en){
   render();
   $('pick').scrollIntoView({behavior:'smooth',block:'center'});
 }
+drawChips();
 render();
+
+/* ── 방문자 카운터 (Abacus) — 전 페이지 공통 ──────────────
+   모든 탭이 같은 네임스페이스(gaealnam-com/visits)를 사용하므로
+   어느 페이지로 들어와도 하나의 누적 수치로 집계됩니다. */
+(function(){
+  var HIT = 'https://abacus.jasoncameron.dev/hit/gaealnam-com/visits';
+  function show(n){
+    var el = document.getElementById('counter-num');
+    if (el && n != null && n > 0) el.textContent = Number(n).toLocaleString();
+  }
+  fetch(HIT)
+    .then(function(r){ if(!r.ok) throw new Error('hit fail'); return r.json(); })
+    .then(function(d){ show(d.value); })
+    .catch(function(){
+      try{
+        var v = parseInt(localStorage.getItem('gaealnam_visits') || '0') + 1;
+        localStorage.setItem('gaealnam_visits', v);
+        show(v);
+      }catch(_){}
+    });
+})();
 </script>
 </body>
 </html>
