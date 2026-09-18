@@ -2,9 +2,12 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>개알남 | 반려견 정밀 영양 계산기</title>
-<!-- ▼▼▼ Google Analytics 4 (GA4) — 개알남 계산기 ▼▼▼ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개알남 | 수의사 이세원 · 견생 20세 시대</title>
+<meta name="description" content="수의사가 직접 만든 반려견 건강 도구 모음. AAHA 가이드라인 기반 칼로리 계산기, 견종별 기대수명, 국제 인증 동물병원 리스트.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- ▼▼▼ Google Analytics 4 (GA4) — 개알남 ▼▼▼ -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-63FHYEGDJD"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -13,8 +16,6 @@
   gtag('config', 'G-63FHYEGDJD');
 </script>
 <!-- ▲▲▲ Google Analytics 4 끝 ▲▲▲ -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:#0d1117; --surface:#161b22; --surface2:#1c2230;
@@ -23,6 +24,7 @@
   --amber:#f5a623; --amber-dim:rgba(245,166,35,.12);
   --red:#ff6b6b; --red-dim:rgba(255,107,107,.12);
   --green:#56d17e; --green-dim:rgba(86,209,126,.12);
+  --purple:#a371f7; --purple-dim:rgba(163,113,247,.12);
   --text:#e6edf3; --text2:#8b949e; --text3:#484f58;
   --mono:'DM Mono',monospace; --sans:'Noto Sans KR',sans-serif; --display:'Bebas Neue',sans-serif;
   --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px;
@@ -30,1354 +32,225 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;word-break:keep-all;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
 
-/* HERO */
-.hero{position:relative;height:300px;overflow:hidden;display:flex;align-items:flex-end;}
-.hero-img{position:absolute;inset:0;background:url('https://yt3.googleusercontent.com/go0-Vq_8efO5a7cwwNzBoxEKQy3ZlTKUFGiBrOcEU3gwr_uK5ke5tmkR2sYVemrLkjVSkh2uuA=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj') center/cover no-repeat;filter:brightness(.4) saturate(.6);}
-.hero-grad{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%);}
-.hero-inner{position:relative;width:100%;max-width:900px;margin:0 auto;padding:0 20px 32px;}
-.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px;opacity:0;animation:fadeUp .6s .1s forwards;}
-.hero-title{font-family:var(--display);font-size:clamp(38px,7vw,68px);letter-spacing:2px;line-height:1.05;color:#fff;opacity:0;animation:fadeUp .6s .2s forwards;}
+/* ===== GLOBAL NAV ===== */
+.gnav{position:sticky;top:0;z-index:500;background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border2);}
+.gnav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:0 12px;height:52px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.gnav-inner::-webkit-scrollbar{display:none;}
+.gnav-logo{font-family:var(--display);font-size:22px;letter-spacing:1px;color:var(--cyan);white-space:nowrap;margin-right:8px;flex-shrink:0;}
+.gnav a.gn{font-size:12.5px;font-weight:700;color:var(--text2);padding:7px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;transition:background .18s,color .18s;}
+.gnav a.gn:hover{color:var(--text);background:var(--surface2);}
+.gnav a.gn.on{color:var(--cyan);background:var(--cyan-dim);}
+
+/* ===== OLD-LINK BANNER ===== */
+.oldlink{background:var(--amber-dim);border-bottom:1px solid var(--amber);padding:10px 14px;text-align:center;font-size:12.5px;color:#f5c842;}
+.oldlink a{color:var(--amber);font-weight:900;border-bottom:1px solid var(--amber);}
+
+/* ===== HERO ===== */
+.hero{position:relative;padding:56px 20px 44px;text-align:center;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,212,200,.13),transparent 62%);pointer-events:none;}
+.hero-in{position:relative;max-width:760px;margin:0 auto;}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:10px;}
+.hero-title{font-family:var(--display);font-size:clamp(42px,9vw,74px);letter-spacing:2px;line-height:1;color:#fff;}
 .hero-title span{color:var(--cyan);}
-.hero-sub{font-size:13px;color:var(--text2);margin-top:10px;font-weight:500;opacity:0;animation:fadeUp .6s .35s forwards;}
-.aaha-pill{display:inline-flex;align-items:center;gap:5px;background:var(--cyan-dim);border:1px solid var(--cyan);color:var(--cyan);font-family:var(--mono);font-size:10px;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-top:10px;opacity:0;animation:fadeUp .6s .45s forwards;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.hero-slogan{font-size:clamp(15px,3.4vw,19px);font-weight:900;color:#fff;margin-top:14px;letter-spacing:-.3px;}
+.hero-sub{font-size:13.5px;color:var(--text2);margin-top:8px;line-height:1.7;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:16px;}
+.chip{font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:20px;border:1px solid;}
+.c-cy{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim);}
+.c-am{color:var(--amber);border-color:var(--amber);background:var(--amber-dim);}
+.c-gr{color:var(--green);border-color:var(--green);background:var(--green-dim);}
 
-/* LAYOUT */
-.wrap{max-width:900px;margin:0 auto;padding:0 16px 60px;}
-
-/* PROFILE */
-.profile-strip{display:flex;align-items:center;gap:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 26px;margin:24px 0 28px;position:relative;overflow:hidden;}
-.profile-strip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--cyan),#0077b6);}
-.profile-avatar{width:60px;height:60px;border-radius:14px;flex-shrink:0;background:url('https://yt3.googleusercontent.com/go0-Vq_8efO5a7cwwNzBoxEKQy3ZlTKUFGiBrOcEU3gwr_uK5ke5tmkR2sYVemrLkjVSkh2uuA=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj') center/cover;border:2px solid var(--border);}
-.profile-text h2{font-size:15px;font-weight:900;color:#fff;margin-bottom:2px;}
-.profile-text p{font-size:12px;color:var(--text2);line-height:1.5;}
-.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
-.chip{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid;display:inline-flex;align-items:center;gap:3px;}
-.chip-cyan{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim);}
-.chip-amber{color:var(--amber);border-color:var(--amber);background:var(--amber-dim);}
-.chip-green{color:var(--green);border-color:var(--green);background:var(--green-dim);}
-
-/* SEC LABEL */
-.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+/* ===== LAYOUT ===== */
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 60px;}
+.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin:34px 0 14px;display:flex;align-items:center;gap:10px;}
 .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* CALC SHELL */
-.calc-shell{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+/* ===== TOOL CARDS ===== */
+.tools{display:grid;grid-template-columns:1fr;gap:12px;}
+.tool{display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
+.tool:hover{border-color:var(--cyan);transform:translateY(-2px);}
+.tool::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cyan);}
+.tool.t-amber::before{background:var(--amber);}
+.tool.t-purple::before{background:var(--purple);}
+.tool-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.tool-ico{font-size:30px;line-height:1;flex-shrink:0;}
+.tool-h{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.3px;}
+.tool-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--cyan);color:var(--cyan);background:var(--cyan-dim);margin-left:auto;flex-shrink:0;}
+.tool.t-amber .tool-tag{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+.tool.t-purple .tool-tag{border-color:var(--purple);color:var(--purple);background:var(--purple-dim);}
+.tool-d{font-size:13px;color:var(--text2);line-height:1.65;}
+.tool-go{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:900;color:var(--cyan);margin-top:12px;}
+.tool.t-amber .tool-go{color:var(--amber);}
+.tool.t-purple .tool-go{color:var(--purple);}
+.tool.soon{opacity:.55;pointer-events:none;}
 
-/* PANEL */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:22px;}
-.panel-title{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px;}
-.panel-title span{color:var(--cyan);}
+/* ===== ABOUT ===== */
+.about{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;}
+.about h3{font-size:15px;font-weight:900;color:#fff;margin-bottom:10px;}
+.about p{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:10px;}
+.about p:last-child{margin-bottom:0;}
+.about b{color:var(--text);}
+.about-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.abtn{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:10px 15px;border-radius:var(--r-sm);border:1px solid var(--border);color:var(--text2);transition:border-color .2s,color .2s;}
+.abtn:hover{border-color:var(--cyan);color:var(--cyan);}
+.abtn.yt{border-color:#ff4444;color:#ff6b6b;background:rgba(255,68,68,.08);}
 
-/* FORM */
-.fg{margin-bottom:18px;}
-.flbl{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text2);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
-.src-tag{font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--cyan);padding:1px 6px;border-radius:4px;font-weight:400;}
-.iw{position:relative;display:flex;align-items:center;}
-.iw input,.iw select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 46px 13px 14px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;-moz-appearance:none;}
-.iw input:focus,.iw select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px var(--cyan-glow);}
-.iw input::placeholder{color:var(--text3);font-weight:400;}
-.unit{position:absolute;right:14px;font-family:var(--mono);font-size:12px;color:var(--text3);pointer-events:none;}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;padding-right:38px !important;cursor:pointer;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* 방문 카운터 */
+.counter-strip{display:flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:13px 20px;margin:0 0 6px;text-align:center;}
+.counter-icon{font-size:18px;}
+.counter-text{font-size:13px;color:var(--text2);}
+.counter-text strong{color:var(--cyan);font-family:var(--mono);font-size:15px;}
 
-/* RADIO */
-.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-input[type="radio"]{display:none;}
-.rc{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 8px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:all .18s;background:var(--bg);min-height:54px;}
-.rc:hover{border-color:var(--text3);}
-.rc .rm{font-size:12.5px;font-weight:700;color:var(--text2);line-height:1.3;}
-.rc .rs{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:3px;}
-input[type="radio"]:checked+.rc{border-color:var(--cyan);background:var(--cyan-dim);}
-input[type="radio"]:checked+.rc .rm{color:var(--cyan);}
-input[type="radio"]:checked+.rc .rs{color:var(--cyan);opacity:.7;}
+footer{border-top:1px solid var(--border2);padding:24px 16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;line-height:2;}
+footer a{color:var(--cyan);}
 
-/* INFO BOX */
-.info-box{border-radius:var(--r-sm);padding:11px 13px;margin-top:9px;font-size:12px;line-height:1.55;display:none;}
-.info-box.on{display:block;}
-.info-box.amber{background:var(--amber-dim);border:1px solid var(--amber);color:#f5c842;}
-.info-box.warn{background:var(--red-dim);border:1px solid var(--red);color:#ff8f8f;}
-
-/* MODE BANNER — 자동 판정 모드 표시 */
-.mode-banner{display:flex;align-items:center;gap:10px;border-radius:var(--r-md);padding:13px 15px;margin-bottom:18px;border:1px solid var(--cyan);background:var(--cyan-dim);}
-.mode-banner.loss{border-color:var(--amber);background:var(--amber-dim);}
-.mode-banner .mb-icon{font-size:20px;flex-shrink:0;}
-.mode-banner .mb-text{display:flex;flex-direction:column;gap:1px;}
-.mode-banner .mb-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);}
-.mode-banner .mb-value{font-size:13.5px;font-weight:900;color:var(--cyan);}
-.mode-banner.loss .mb-value{color:var(--amber);}
-
-/* PRESET BOX */
-.preset-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px;margin-bottom:18px;}
-
-/* BCS */
-.bcs-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.bcs-big{font-family:var(--display);font-size:56px;color:var(--cyan);line-height:1;}
-.bcs-badge-el{font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;}
-.bcs-thin{background:var(--red-dim);color:var(--red);border:1px solid var(--red);}
-.bcs-ideal{background:var(--green-dim);color:var(--green);border:1px solid var(--green);}
-.bcs-heavy{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber);}
-input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer;display:block;}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--cyan);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--cyan);cursor:pointer;transition:transform .15s;}
-input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
-.bcs-ticks {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-  padding: 0 4px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text3);
+@media(min-width:760px){
+  .tools{grid-template-columns:1fr 1fr;}
+  .tool.wide{grid-column:1 / -1;}
 }
-.t-ideal{color:var(--green);}.t-ext{color:var(--red);}
-.bcs-guide{margin-top:12px;font-size:12px;color:var(--text2);line-height:1.55;padding:12px 14px;background:var(--surface2);border-radius:var(--r-sm);border-left:3px solid var(--border);}
-.ideal-wt-tag{align-items:center;justify-content:space-between;background:var(--green-dim);border:1px solid var(--green);border-radius:var(--r-sm);padding:9px 13px;margin-top:10px;display:none;}
-.ideal-wt-tag .lbl{font-size:11px;font-weight:700;color:var(--green);}
-.ideal-wt-tag .val{font-family:var(--mono);font-size:13px;color:var(--green);}
-
-/* RESULT PANEL */
-.result-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:22px;}
-.result-hdr{text-align:center;padding-bottom:16px;border-bottom:1px solid var(--border2);margin-bottom:16px;}
-.result-name{font-size:13px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:4px;}
-.result-stage{font-family:var(--mono);font-size:10.5px;color:var(--amber);background:var(--amber-dim);border:1px solid var(--amber);display:inline-block;padding:2px 10px;border-radius:20px;margin-top:5px;}
-
-/* DER */
-.der-block{background:linear-gradient(135deg,rgba(0,212,200,.08),rgba(0,212,200,.04));border:1px solid var(--cyan);border-radius:var(--r-md);padding:18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
-.der-block::before{content:'DER';position:absolute;top:8px;right:12px;font-family:var(--display);font-size:44px;color:var(--cyan);opacity:.07;line-height:1;}
-.der-lbl{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
-.der-val{font-family:var(--mono);font-size:38px;font-weight:500;color:var(--cyan);line-height:1.1;}
-.der-unit{font-size:12px;color:var(--text2);}
-.der-mid{font-size:11px;color:var(--text2);margin-top:6px;font-family:var(--mono);display:none;}
-.der-mid.on{display:block;}
-
-/* Split bars */
-.split-bar{background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;}
-.split-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.split-lbl{font-size:11px;font-weight:700;}
-.split-v{font-family:var(--mono);font-size:13px;}
-.split-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.split-fill{height:100%;border-radius:3px;}
-
-/* Detail rows */
-.drow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border2);font-size:12.5px;}
-.drow:last-child{border-bottom:none;}
-.drow .dl{color:var(--text2);font-weight:600;}
-.drow .dv{font-family:var(--mono);font-size:12.5px;color:var(--text);}
-.drow .dv.cyan{color:var(--cyan);}.drow .dv.green{color:var(--green);}
-
-/* Feed block */
-.feed-block{background:var(--red-dim);border:1px solid var(--red);border-radius:var(--r-md);padding:16px;text-align:center;margin-top:12px;}
-.feed-total{font-family:var(--mono);font-size:34px;color:var(--red);line-height:1.1;}
-.feed-each{font-size:12px;color:#ff9e9e;margin-top:3px;font-weight:600;}
-.feed-note{font-size:11px;color:var(--text3);margin-top:3px;}
-
-/* Btn row */
-.btn-row{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:13px;}
-.btn-share{display:flex;align-items:center;justify-content:center;gap:6px;background:#f9e000;color:#1a1400;font-weight:900;font-size:13px;border:none;border-radius:var(--r-sm);padding:13px;cursor:pointer;transition:transform .15s;}
-.btn-share:hover{transform:translateY(-1px);}
-.btn-reset{background:var(--surface2);color:var(--text2);font-size:13px;border:1px solid var(--border);border-radius:var(--r-sm);padding:13px 16px;cursor:pointer;transition:border-color .2s;}
-.btn-reset:hover{border-color:var(--text3);}
-
-/* 카톡 공유 모달 */
-.share-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
-.share-modal-overlay.on{display:flex;}
-.share-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;width:100%;max-width:480px;max-height:80vh;display:flex;flex-direction:column;gap:12px;}
-.share-modal h3{font-size:14px;font-weight:700;color:var(--text);}
-.share-modal p{font-size:12px;color:var(--text2);}
-.share-modal textarea{width:100%;height:220px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:var(--mono);font-size:11.5px;line-height:1.6;padding:12px;outline:none;resize:none;}
-.share-modal-btns{display:grid;grid-template-columns:1fr auto;gap:8px;}
-.btn-copy{background:#f9e000;color:#1a1400;font-weight:900;font-size:13px;border:none;border-radius:var(--r-sm);padding:12px;cursor:pointer;}
-.btn-close{background:var(--surface2);color:var(--text2);font-size:13px;border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 16px;cursor:pointer;}
-
-/* Evidence */
-.ev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px;}
-.ev-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;transition:border-color .2s;}
-.ev-card:hover{border-color:var(--cyan);}
-.ev-num{font-family:var(--display);font-size:28px;color:var(--cyan);opacity:.4;line-height:1;margin-bottom:5px;}
-.ev-card h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;}
-.ev-card p{font-size:11.5px;color:var(--text2);line-height:1.55;}
-.ev-card code{font-family:var(--mono);font-size:11px;background:var(--cyan-dim);color:var(--cyan);padding:1px 5px;border-radius:3px;}
-
-/* Disclaimer */
-.disc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:40px;}
-.disc-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-md);padding:16px;}
-.disc-card h4{font-size:12px;font-weight:700;color:var(--red);margin-bottom:5px;}
-.disc-card p{font-size:11.5px;color:var(--text2);line-height:1.55;}
-
-footer{border-top:1px solid var(--border2);padding:22px 16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;}
-
-/* Desktop 2-col */
-@media(min-width:780px){
-  .wrap{padding:0 24px 80px;}
-  .hero{height:340px;}
-  .calc-shell{flex-direction:row;align-items:start;}
-  .calc-shell .panel{flex:1;}
-  .result-panel{width:360px;flex-shrink:0;position:sticky;top:20px;}
-  .ev-grid{grid-template-columns:repeat(4,1fr);}
-  .disc-grid{grid-template-columns:repeat(3,1fr);}
-}
-
-/* Mobile */
-@media(max-width:480px){
-  .profile-strip{flex-direction:column;text-align:center;padding:18px 16px;}
-  .chip-row{justify-content:center;}
-  .g2{grid-template-columns:1fr;}
-  .iw input,.iw select{font-size:16px;}
-  .bcs-big{font-size:48px;}
-  .der-val{font-size:32px;}
-  .feed-total{font-size:28px;}
-}
-/* Contact strip */
-.contact-strip{display:flex;align-items:center;gap:12px;background:var(--surface);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:14px 20px;max-width:900px;margin:0 auto 0;}
-.contact-icon{font-size:20px;flex-shrink:0;}
-.contact-text{display:flex;flex-direction:column;gap:2px;}
-.contact-text strong{font-size:12.5px;color:var(--text);font-weight:700;}
-.contact-text span{font-size:12px;color:var(--cyan);font-family:var(--mono);letter-spacing:.3px;}
-.contact-link{font-size:12px;color:var(--cyan);font-family:var(--mono);letter-spacing:.3px;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;}
-.contact-link:hover{border-bottom-color:var(--cyan);}
-.footer-link{color:var(--cyan);text-decoration:none;transition:opacity .2s;}
-.footer-link:hover{opacity:.7;text-decoration:underline;}
-
-/* Water block */
-.water-block{display:flex;align-items:center;justify-content:space-between;background:rgba(56,139,253,.1);border:1px solid rgba(56,139,253,.4);border-radius:var(--r-md);padding:13px 16px;margin-top:10px;}
-.water-block .wl{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:#79c0ff;}
-.water-block .wv{font-family:var(--mono);font-size:15px;font-weight:500;color:#79c0ff;}
-.water-block .ws{font-size:10px;color:rgba(121,192,255,.6);margin-top:1px;}
-
-/* Treat hint */
-.treat-hint{background:var(--surface2);border:1px solid var(--amber);border-radius:var(--r-md);padding:14px;margin-top:10px;}
-.treat-hint-title{font-size:11.5px;font-weight:700;color:var(--amber);margin-bottom:10px;}
-.treat-note{font-size:10.5px;color:var(--text3);margin-top:8px;border-top:1px solid var(--border2);padding-top:6px;}
-/* Treat picker (간식 종류 선택 → g수 계산) */
-.treat-picker{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
-.treat-picker select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:var(--sans);font-size:13px;font-weight:600;padding:11px 38px 11px 12px;outline:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;transition:border-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:13px;}
-.treat-picker select:focus{border-color:var(--amber);}
-.treat-manual-row{display:flex;align-items:center;gap:8px;}
-.treat-manual-lbl{font-size:10.5px;color:var(--text3);white-space:nowrap;}
-.treat-manual-row .iw input{font-size:13px;padding:10px 70px 10px 12px;}
-.treat-result{background:var(--amber-dim);border:1px solid var(--amber);border-radius:var(--r-sm);padding:13px 14px;text-align:center;margin-bottom:8px;}
-.treat-result-food{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:4px;}
-.treat-result-amt{font-family:var(--mono);font-size:30px;font-weight:500;color:var(--amber);line-height:1.1;}
-.treat-result-unit{font-size:13px;font-weight:400;margin-left:3px;}
-.treat-result-sub{font-size:10.5px;color:var(--text3);margin-top:4px;}
-
-/* 레인보우 슬라이더 */
-.bcs-slider-track-wrap {
-  position: relative;
-  margin: 8px 0 4px;
-  padding: 0;
-}
-.bcs-slider-gradient {
-  position: absolute;
-  top: 50%; left: 11px; right: 11px;
-  height: 8px;
-  transform: translateY(-50%);
-  border-radius: 4px;
-  pointer-events: none;
-  background: linear-gradient(to right,
-    #ff4444 0%, #ff6b6b 11%,
-    #ffa040 22%, #ffc040 33%,
-    #ffe040 44%, #c8e840 50%,
-    #56d17e 55%, #ffe040 66%,
-    #ffc040 77%, #ff8c40 88%,
-    #ff4444 100%);
-  z-index: 0;
-}
-.bcs-slider-track-wrap input[type="range"] {
-  position: relative;
-  z-index: 1;
-  background: transparent !important;
-  height: 8px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-.bcs-slider-track-wrap input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  border: 3px solid var(--cyan);
-  box-shadow: 0 0 0 2px var(--cyan), 0 3px 8px rgba(0,0,0,.4);
-  cursor: pointer;
-  transition: transform .15s;
-  z-index: 2;
-}
-.bcs-slider-track-wrap input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-}
-
-/* 프로필 메인 타이틀 */
-.profile-main-title {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: clamp(17px, 2.8vw, 24px);
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-  line-height: 1.3;
-  margin-bottom: 12px;
-}
-
-/* BCS 가이드 링크 버튼 */
-.bcs-ref-btn {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--cyan-dim);
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  font-size: 12px;
-  font-weight: 700;
-  padding: 9px 14px;
-  border-radius: var(--r-sm);
-  text-decoration: none;
-  margin-bottom: 14px;
-  transition: background .2s, opacity .2s;
-  letter-spacing: .2px;
-}
-.bcs-ref-btn:hover {
-  background: rgba(0,212,200,.22);
-  opacity: .9;
-}
-
-/* 토스트 알림 */
-.toast {
-  position: fixed;
-  bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-  background: var(--surface); border: 1px solid var(--border);
-  color: var(--text); font-size: 12.5px; font-weight: 600;
-  padding: 11px 20px; border-radius: 30px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.4);
-  opacity: 0; transition: opacity .3s, transform .3s;
-  z-index: 9999; white-space: nowrap; pointer-events: none;
-  max-width: 90vw; text-align: center;
-}
-.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* 사용 카운터 */
-.counter-strip {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--r-md); padding: 13px 20px;
-  margin-bottom: 24px; text-align: center;
-}
-.counter-icon { font-size: 18px; }
-.counter-text { font-size: 13px; color: var(--text2); }
-.counter-text strong { color: var(--cyan); font-family: var(--mono); font-size: 15px; }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-img"></div>
-  <div class="hero-grad"></div>
-  <div class="hero-inner">
-    <div class="hero-eyebrow">VETERINARY NUTRITION ENGINE</div>
-    <div class="hero-title">개알남<br><span>CALORIE CALCULATOR</span></div>
-    <div class="hero-sub">수의사가 직접 설계한 반려견 정밀 영양 처방 시스템</div>
-    <div class="aaha-pill">● BASED ON AAHA 2021 NUTRITION GUIDELINES</div>
-  </div>
+<!-- GLOBAL NAV -->
+<nav class="gnav"><div class="gnav-inner">
+  <a href="/" class="gnav-logo">개알남</a>
+  <a href="/" class="gn on">홈</a>
+  <a href="/calorie/" class="gn">칼로리 계산기</a>
+  <a href="/lifespan/" class="gn">견종별 수명</a>
+  <a href="/certified/" class="gn">인증 병원</a>
+</div></nav>
+
+<!-- 예전 링크로 들어온 분 안내 -->
+<div class="oldlink" id="oldlink" style="display:none;">
+  🔥 칼로리 계산기를 찾으셨나요? 주소가 바뀌었습니다 → <a href="/calorie/">계산기 바로가기</a>
 </div>
+
+<div class="hero"><div class="hero-in">
+  <div class="hero-eyebrow">VETERINARY HEALTH TOOLS</div>
+  <div class="hero-title">개알남<span>.</span></div>
+  <div class="hero-slogan">"반려견의 건강한 20세 시대를 연구합니다"</div>
+  <div class="hero-sub">개 알려주는 남자 · 수의사 이세원<br>근거 기반 반려견 건강 도구를 무료로 제공합니다</div>
+  <div class="hero-chips">
+    <span class="chip c-cy">🩺 수의사 직접 설계</span>
+    <span class="chip c-am">📚 국제 가이드라인 기반</span>
+    <span class="chip c-gr">💸 전부 무료</span>
+  </div>
+</div></div>
 
 <div class="wrap">
 
-  <!-- PROFILE -->
-  <div class="profile-strip">
-    <div class="profile-text">
-      <p class="profile-main-title">"반려견의 건강한 20세 시대를 연구합니다"<br>BCS·생애단계·중성화 교차 반영 정밀 급여량 처방 계산기</p>
-      <div class="chip-row">
-        <span class="chip chip-cyan">🩺 수의사 설계</span>
-        <span class="chip chip-amber">📚 AAHA 2021</span>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- 사용 카운터 -->
   <div class="counter-strip">
     <span class="counter-icon">🐾</span>
-    <span class="counter-text">지금까지 <strong id="counter-num">···</strong>명이 개알남 계산기를 방문하였습니다</span>
+    <span class="counter-text">지금까지 <strong id="counter-num">···</strong>명이 개알남을 방문하였습니다</span>
   </div>
-  <!-- CALCULATOR -->
-  <div class="sec-label">맞춤형 칼로리 & 처방 급여량 계산기</div>
 
-  <div class="calc-shell">
-    <div class="panel">
-      <div class="panel-title">입력 정보 <span>→ 결과 실시간 반영</span></div>
+  <div class="sec-label">반려견 건강 도구</div>
+  <div class="tools">
 
-      <!-- 이름 -->
-      <div class="fg">
-        <div class="flbl">✏️ 이름</div>
-        <div class="iw"><input type="text" id="pet-name" placeholder="예: 조아" oninput="updateName()"></div>
+    <a href="/calorie/" class="tool wide">
+      <div class="tool-top">
+        <span class="tool-ico">🔥</span>
+        <span class="tool-h">반려견 칼로리 계산기</span>
+        <span class="tool-tag">AAHA 2021</span>
       </div>
+      <div class="tool-d">체중과 체형(BCS)만 넣으면 하루 필요 칼로리와 사료 급여량(g)이 바로 나옵니다. 과체중이면 자동으로 감량 모드로 전환되고, 간식 허용량까지 계산해 줍니다. 미국동물병원협회(AAHA) 2021 영양 가이드라인을 그대로 구현했습니다.</div>
+      <span class="tool-go">계산하러 가기 →</span>
+    </a>
 
-      <!-- 나이 — 년 + 개월 분리 입력 -->
-      <div class="fg">
-        <div class="flbl">🎂 나이 <span class="src-tag">아는 만큼만 입력</span></div>
-        <div class="g2">
-          <div class="iw">
-            <input type="number" id="pet-age-y" placeholder="0" min="0" max="30" step="1" inputmode="numeric" oninput="updateStage()">
-            <span class="unit">년</span>
-          </div>
-          <div class="iw">
-            <input type="number" id="pet-age-m" placeholder="0" min="0" max="11" step="1" inputmode="numeric" oninput="updateStage()">
-            <span class="unit">개월</span>
-          </div>
-        </div>
-        <div style="font-size:10.5px;color:var(--text3);margin-top:6px;line-height:1.5;">예) 5개월 → 년 0 · 개월 5 &nbsp;|&nbsp; 3살 2개월 → 년 3 · 개월 2</div>
+    <a href="/lifespan/" class="tool t-amber">
+      <div class="tool-top">
+        <span class="tool-ico">⏳</span>
+        <span class="tool-h">견종별 기대수명</span>
+        <span class="tool-tag">156종</span>
       </div>
+      <div class="tool-d">영국 반려견 58만 마리를 추적한 대규모 연구 데이터입니다. 우리 아이 견종의 중앙수명이 몇 살인지, 전체 순위에서 어디쯤인지 확인해 보세요.</div>
+      <span class="tool-go">수명 확인하기 →</span>
+    </a>
 
-      <!-- 중성화 여부 — 사실만 입력 -->
-      <div class="fg">
-        <div class="flbl">✂️ 중성화 여부 <span class="src-tag">AAHA 2021 Box 1</span></div>
-        <div class="rc-grid">
-          <label><input type="radio" name="neuter" value="yes" checked onchange="updateStage()"><div class="rc"><div class="rm">중성화 했어요</div><div class="rs">성견 기준 ×1.4~1.6</div></div></label>
-          <label><input type="radio" name="neuter" value="no" onchange="updateStage()"><div class="rc"><div class="rm">안 했어요</div><div class="rs">성견 기준 ×1.6~1.8</div></div></label>
-        </div>
+    <a href="/certified/" class="tool t-purple">
+      <div class="tool-top">
+        <span class="tool-ico">🏅</span>
+        <span class="tool-h">국제 인증 동물병원</span>
+        <span class="tool-tag">AAHA · Fear Free</span>
       </div>
+      <div class="tool-d">AAHA, Fear Free, ISFM 등 국제 인증을 받은 국내 동물병원을 정리합니다. 각 인증이 무슨 뜻인지도 쉽게 풀어 설명합니다.</div>
+      <span class="tool-go">병원 찾아보기 →</span>
+    </a>
 
-      <!-- 특수 생리 상태 -->
-      <div class="fg">
-        <div class="flbl">🤰 특수 생리 상태 <span class="src-tag">해당 시에만 선택</span></div>
-        <div class="iw">
-          <select id="special-state" onchange="updateStage()">
-            <option value="none" selected>해당 없음</option>
-            <option value="pregnant">임신 중 — 임신 후기 (MER × 3.0)</option>
-            <option value="lactating">수유 중 (MER × 3.0~6.0)</option>
-          </select>
-        </div>
-      </div>
+  </div>
 
-      <!-- BCS -->
-      <div class="fg">
-        <div class="flbl">📊 비만도 (BCS)</div>
-
-        <a href="https://www.aaha.org/wp-content/uploads/globalassets/02-guidelines/2021-nutrition-and-weight-management/resourcepdfs/nutritiongl_bcs.pdf" target="_blank" rel="noopener" class="bcs-ref-btn">
-          📋 BCS 체형 평가 가이드 보기 (AAHA 공식 PDF)
-        </a>
-
-        <div class="bcs-hdr">
-          <div class="bcs-big" id="bcs-num">5</div>
-          <div class="bcs-badge-el bcs-ideal" id="bcs-badge">이상적인 체형</div>
-        </div>
-
-        <!-- 레인보우 그라디언트 슬라이더 -->
-        <div class="bcs-slider-track-wrap">
-          <input type="range" id="bcs-slider" min="1" max="9" value="5" oninput="onBcs(this.value)">
-          <div class="bcs-slider-gradient"></div>
-        </div>
-
-        <div class="bcs-ticks">
-          <span class="t-ext">1</span><span>2</span><span>3</span><span>4</span>
-          <span class="t-ideal">5</span>
-          <span>6</span><span>7</span><span>8</span><span class="t-ext">9</span>
-        </div>
-        <div class="bcs-guide" id="bcs-guide">갈비뼈가 과도한 지방 없이 잘 만져집니다. 허리선이 명확하게 보이며 건강한 체형입니다.</div>
-        <div class="ideal-wt-tag" id="ideal-tag">
-          <span class="lbl">📌 AAHA 기준 목표 이상체중</span>
-          <span class="val" id="ideal-val">-- kg</span>
-        </div>
-      </div>
-
-      <!-- 자동 판정 모드 배너 + 안내 -->
-      <div class="mode-banner" id="mode-banner">
-        <span class="mb-icon" id="mb-icon">🦮</span>
-        <div class="mb-text">
-          <div class="mb-label">계산기 자동 판정 모드</div>
-          <div class="mb-value" id="mb-value">성견 · 중성화 (MER × 1.4~1.6)</div>
-        </div>
-      </div>
-      <div class="info-box amber" id="stage-info"></div>
-      <div class="info-box warn" id="stage-warn"></div>
-
-      <!-- 품종 — 알파벳순 정렬 -->
-      <div class="fg">
-        <div class="flbl">🧬 품종 (알파벳순)</div>
-        <div class="iw">
-          <select id="pet-breed" onchange="calc()">
-            <option value="">품종을 선택해 주세요</option>
-            <option value="아펜핀셔">아펜핀셔 (Affenpinscher)</option>
-            <option value="아프간 하운드">아프간 하운드 (Afghan Hound)</option>
-            <option value="에어데일 테리어">에어데일 테리어 (Airedale Terrier)</option>
-            <option value="아키타">아키타 (Akita)</option>
-            <option value="알래스칸 말라뮤트">알래스칸 말라뮤트 (Alaskan Malamute)</option>
-            <option value="아메리칸 에스키모">아메리칸 에스키모 (American Eskimo Dog)</option>
-            <option value="아나톨리안 셰퍼드">아나톨리안 셰퍼드 (Anatolian Shepherd)</option>
-            <option value="오스트레일리안 캐틀 독">오스트레일리안 캐틀 독 (Australian Cattle Dog)</option>
-            <option value="오스트레일리안 켈피">오스트레일리안 켈피 (Australian Kelpie)</option>
-            <option value="오스트레일리안 셰퍼드">오스트레일리안 셰퍼드 (Australian Shepherd)</option>
-            <option value="오스트레일리안 테리어">오스트레일리안 테리어 (Australian Terrier)</option>
-            <option value="바센지">바센지 (Basenji)</option>
-            <option value="바셋 하운드">바셋 하운드 (Basset Hound)</option>
-            <option value="비글">비글 (Beagle)</option>
-            <option value="비어디드 콜리">비어디드 콜리 (Bearded Collie)</option>
-            <option value="보세롱">보세롱 (Beauceron)</option>
-            <option value="베들링턴 테리어">베들링턴 테리어 (Bedlington Terrier)</option>
-            <option value="벨기에 말리노이즈">벨기에 말리노이즈 (Belgian Malinois)</option>
-            <option value="벨기에 테르뷰렌">벨기에 테르뷰렌 (Belgian Tervuren)</option>
-            <option value="버니즈 마운틴 독">버니즈 마운틴 독 (Bernese Mountain Dog)</option>
-            <option value="비숑 프리제">비숑 프리제 (Bichon Frisé)</option>
-            <option value="블러드하운드">블러드하운드 (Bloodhound)</option>
-            <option value="볼로네즈">볼로네즈 (Bolognese)</option>
-            <option value="보더 콜리">보더 콜리 (Border Collie)</option>
-            <option value="보더 테리어">보더 테리어 (Border Terrier)</option>
-            <option value="보조이">보르조이 (Borzoi)</option>
-            <option value="보스턴 테리어">보스턴 테리어 (Boston Terrier)</option>
-            <option value="부비에 데 플란드르">부비에 데 플란드르 (Bouvier des Flandres)</option>
-            <option value="복서">복서 (Boxer)</option>
-            <option value="보이킨 스패니얼">보이킨 스패니얼 (Boykin Spaniel)</option>
-            <option value="브리타니">브리타니 (Brittany)</option>
-            <option value="브뤼셀 그리폰">브뤼셀 그리폰 (Brussels Griffon)</option>
-            <option value="불마스티프">불마스티프 (Bullmastiff)</option>
-            <option value="카발리에 킹 찰스 스패니얼">카발리에 킹 찰스 스패니얼 (Cavalier King Charles Spaniel)</option>
-            <option value="체사피크 베이 리트리버">체사피크 베이 리트리버 (Chesapeake Bay Retriever)</option>
-            <option value="치와와">치와와 (Chihuahua)</option>
-            <option value="차우차우">차우차우 (Chow Chow)</option>
-            <option value="코커 스패니얼">코커 스패니얼 (Cocker Spaniel)</option>
-            <option value="콜리">콜리 (Collie)</option>
-            <option value="꼬똥 드 툴레아">꼬똥 드 툴레아 (Coton de Tuléar)</option>
-            <option value="닥스훈트">닥스훈트 (Dachshund)</option>
-            <option value="달마시안">달마시안 (Dalmatian)</option>
-            <option value="도베르만 핀셔">도베르만 핀셔 (Dobermann)</option>
-            <option value="도그 드 보르도">도그 드 보르도 (Dogue de Bordeaux)</option>
-            <option value="잉글리시 불독">잉글리시 불독 (English Bulldog)</option>
-            <option value="잉글리시 세터">잉글리시 세터 (English Setter)</option>
-            <option value="잉글리시 스프링거 스패니얼">잉글리시 스프링거 스패니얼 (English Springer Spaniel)</option>
-            <option value="핀란드 스피츠">핀란드 스피츠 (Finnish Spitz)</option>
-            <option value="플랫코티드 리트리버">플랫코티드 리트리버 (Flat-Coated Retriever)</option>
-            <option value="프렌치 불독">프렌치 불독 (French Bulldog)</option>
-            <option value="저먼 핀셔">저먼 핀셔 (German Pinscher)</option>
-            <option value="저먼 셰퍼드">저먼 셰퍼드 (German Shepherd Dog)</option>
-            <option value="저먼 쇼트헤어드 포인터">저먼 쇼트헤어드 포인터 (German Shorthaired Pointer)</option>
-            <option value="골든 리트리버">골든 리트리버 (Golden Retriever)</option>
-            <option value="그레이트 데인">그레이트 데인 (Great Dane)</option>
-            <option value="그레이트 피레니즈">그레이트 피레니즈 (Great Pyrenees)</option>
-            <option value="그레이터 스위스 마운틴 독">그레이터 스위스 마운틴 독 (Greater Swiss Mountain Dog)</option>
-            <option value="그레이하운드">그레이하운드 (Greyhound)</option>
-            <option value="하바니즈">하바니즈 (Havanese)</option>
-            <option value="아이리시 세터">아이리시 세터 (Irish Setter)</option>
-            <option value="아이리시 테리어">아이리시 테리어 (Irish Terrier)</option>
-            <option value="아이리시 워터 스패니얼">아이리시 워터 스패니얼 (Irish Water Spaniel)</option>
-            <option value="아이리시 울프하운드">아이리시 울프하운드 (Irish Wolfhound)</option>
-            <option value="이탈리안 그레이하운드">이탈리안 그레이하운드 (Italian Greyhound)</option>
-            <option value="잭 러셀 테리어">잭 러셀 테리어 (Jack Russell Terrier)</option>
-            <option value="진돗개">진돗개 (Jindo)</option>
-            <option value="케리 블루 테리어">케리 블루 테리어 (Kerry Blue Terrier)</option>
-            <option value="킹 찰스 스패니얼">킹 찰스 스패니얼 (King Charles Spaniel)</option>
-            <option value="코몬도르">코몬도르 (Komondor)</option>
-            <option value="쿠바즈">쿠바즈 (Kuvasz)</option>
-            <option value="라브라도 리트리버">라브라도 리트리버 (Labrador Retriever)</option>
-            <option value="라사압소">라사압소 (Lhasa Apso)</option>
-            <option value="레온베르거">레온베르거 (Leonberger)</option>
-            <option value="로첸">로첸 (Löwchen)</option>
-            <option value="마스티프">마스티프 (Mastiff)</option>
-            <option value="말티즈">말티즈 (Maltese)</option>
-            <option value="미니어처 슈나우저">미니어처 슈나우저 (Miniature Schnauzer)</option>
-            <option value="믹스견">믹스견 (Mixed Breed)</option>
-            <option value="네아폴리탄 마스티프">네아폴리탄 마스티프 (Neapolitan Mastiff)</option>
-            <option value="뉴펀들랜드">뉴펀들랜드 (Newfoundland)</option>
-            <option value="노르웨이 엘크하운드">노르웨이 엘크하운드 (Norwegian Elkhound)</option>
-            <option value="올드 잉글리시 쉽독">올드 잉글리시 쉽독 (Old English Sheepdog)</option>
-            <option value="파피용">파피용 (Papillon)</option>
-            <option value="페키니즈">페키니즈 (Pekingese)</option>
-            <option value="포메라니안">포메라니안 (Pomeranian)</option>
-            <option value="푸들 (스탠다드)">푸들 스탠다드 (Standard Poodle)</option>
-            <option value="푸들 (미니어처)">푸들 미니어처 (Miniature Poodle)</option>
-            <option value="푸들 (토이)">푸들 토이 (Toy Poodle)</option>
-            <option value="포르투갈 워터 독">포르투갈 워터 독 (Portuguese Water Dog)</option>
-            <option value="퍼그">퍼그 (Pug)</option>
-            <option value="풀리">풀리 (Puli)</option>
-            <option value="래트 테리어">래트 테리어 (Rat Terrier)</option>
-            <option value="로도시안 리지백">로도시안 리지백 (Rhodesian Ridgeback)</option>
-            <option value="로트와일러">로트와일러 (Rottweiler)</option>
-            <option value="세인트 버나드">세인트 버나드 (Saint Bernard)</option>
-            <option value="살루키">살루키 (Saluki)</option>
-            <option value="사모예드">사모예드 (Samoyed)</option>
-            <option value="샤페이">샤페이 (Shar-Pei)</option>
-            <option value="셔틀랜드 쉽독">셔틀랜드 쉽독 / 셸티 (Shetland Sheepdog)</option>
-            <option value="시바 이누">시바 이누 (Shiba Inu)</option>
-            <option value="시추">시추 (Shih Tzu)</option>
-            <option value="시베리안 허스키">시베리안 허스키 (Siberian Husky)</option>
-            <option value="실키 테리어">실키 테리어 (Silky Terrier)</option>
-            <option value="스코티시 테리어">스코티시 테리어 (Scottish Terrier)</option>
-            <option value="소프트 코티드 휘튼 테리어">소프트 코티드 휘튼 테리어 (Soft Coated Wheaten Terrier)</option>
-            <option value="스피노네 이탈리아노">스피노네 이탈리아노 (Spinone Italiano)</option>
-            <option value="스태퍼드셔 불 테리어">스태퍼드셔 불 테리어 (Staffordshire Bull Terrier)</option>
-            <option value="스탠다드 슈나우저">스탠다드 슈나우저 (Standard Schnauzer)</option>
-            <option value="티베탄 마스티프">티베탄 마스티프 (Tibetan Mastiff)</option>
-            <option value="티베탄 스패니얼">티베탄 스패니얼 (Tibetan Spaniel)</option>
-            <option value="티베탄 테리어">티베탄 테리어 (Tibetan Terrier)</option>
-            <option value="비즐라">비즐라 (Vizsla)</option>
-            <option value="바이마라너">바이마라너 (Weimaraner)</option>
-            <option value="웰시 코기 (카디건)">웰시 코기 카디건 (Cardigan Welsh Corgi)</option>
-            <option value="웰시 코기 (펨브로크)">웰시 코기 펨브로크 (Pembroke Welsh Corgi)</option>
-            <option value="웨스트 하이랜드 화이트 테리어">웨스트 하이랜드 화이트 테리어 (West Highland White Terrier)</option>
-            <option value="휘핏">휘핏 (Whippet)</option>
-            <option value="와이어 폭스 테리어">와이어 폭스 테리어 (Wire Fox Terrier)</option>
-            <option value="요크셔 테리어">요크셔 테리어 / 요키 (Yorkshire Terrier)</option>
-            <option value="자이언트 슈나우저">자이언트 슈나우저 (Giant Schnauzer)</option>
-            <option value="기타">기타 품종 (Other Breed)</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- 체중 -->
-      <div class="fg" style="margin-top:18px;">
-        <div class="flbl">🐾 현재 체중</div>
-        <div class="iw">
-          <input type="number" id="weight" placeholder="0.0" min="0" step="0.1" inputmode="decimal" oninput="calc()">
-          <span class="unit">kg</span>
-        </div>
-      </div>
-
-      <!-- 사료 -->
-      <div class="preset-box">
-        <div class="flbl" style="margin-bottom:9px;">🔍 처방 사료 칼로리 <span class="src-tag">DB 수록</span></div>
-        <div class="iw" style="margin-bottom:10px;">
-          <select id="feed-preset" onchange="applyPreset()">
-            <option value="manual">사료 칼로리 직접 입력 (선택사항)</option>
-            <optgroup label="로얄캐닌 (Royal Canin)">
-              <option value="3850">로얄캐닌 유리너리 스몰독 (3,850 kcal/kg)</option>
-              <option value="3909">로얄캐닌 헤파틱 (3,909 kcal/kg)</option>
-              <option value="3984">로얄캐닌 레날 (3,984 kcal/kg)</option>
-              <option value="4080">로얄캐닌 하이포 (4,080 kcal/kg)</option>
-              <option value="3890">로얄캐닌 하이포 스몰독 (3,890 kcal/kg)</option>
-              <option value="4000">로얄캐닌 아날러제닉 (4,000 kcal/kg)</option>
-              <option value="4120">로얄캐닌 인테스티날 (4,120 kcal/kg)</option>
-              <option value="3465">로얄캐닌 인테스티날 로우펫 (3,465 kcal/kg)</option>
-              <option value="3508">로얄캐닌 하이포+인테로우펫 (3,508 kcal/kg)</option>
-            </optgroup>
-            <optgroup label="힐스 (Hill's)">
-              <option value="3991">힐스 K/D (3,991 kcal/kg)</option>
-              <option value="3121">힐스 메타볼릭 (3,121 kcal/kg)</option>
-              <option value="3327">힐스 GI 바이옴 (3,327 kcal/kg)</option>
-              <option value="3589">힐스 I/D (3,589 kcal/kg)</option>
-              <option value="3311">힐스 I/D 로우펫 (3,311 kcal/kg)</option>
-              <option value="3820">힐스 C/D (3,820 kcal/kg)</option>
-              <option value="3198">힐스 Z/D 로우펫 (3,198 kcal/kg)</option>
-            </optgroup>
-            <optgroup label="힐메딕스 (Healmedix)">
-              <option value="3980">힐메딕스 D/H (3,980 kcal/kg)</option>
-              <option value="3350">힐메딕스 H/DI (3,350 kcal/kg)</option>
-              <option value="3757">힐메딕스 D/C (3,757 kcal/kg)</option>
-              <option value="3973">힐메딕스 H/U (3,973 kcal/kg)</option>
-              <option value="4068">힐메딕스 H/A (4,068 kcal/kg)</option>
-              <option value="4040">힐메딕스 U/K (4,040 kcal/kg)</option>
-              <option value="3600">힐메딕스 W/C (3,600 kcal/kg)</option>
-              <option value="2900">힐메딕스 S/L (2,900 kcal/kg)</option>
-              <option value="3880">힐메딕스 D/UT (3,880 kcal/kg)</option>
-            </optgroup>
-            <optgroup label="V.O.M">
-              <option value="3297">V.O.M G/H (3,297 kcal/kg)</option>
-              <option value="3876">V.O.M C/R (3,876 kcal/kg)</option>
-              <option value="3260">V.O.M J/W (3,260 kcal/kg)</option>
-              <option value="3857">V.O.M R/H (3,857 kcal/kg)</option>
-            </optgroup>
-            <optgroup label="벨릭서 (Velixer)">
-              <option value="3270">벨릭서 US/F (3,270 kcal/kg)</option>
-              <option value="2975">벨릭서 USF/로우펫 (2,975 kcal/kg)</option>
-              <option value="3205">벨릭서 USF/웨이트컨트롤 (3,205 kcal/kg)</option>
-              <option value="3340">벨릭서 USF/유리너리 (3,340 kcal/kg)</option>
-              <option value="3874">벨릭서 USF/소프트알러제닉 (3,874 kcal/kg)</option>
-            </optgroup>
-            <optgroup label="와이즈벳 (Wisevet)">
-              <option value="3160">와이즈벳 RH/C (3,160 kcal/kg)</option>
-              <option value="3204">와이즈벳 U/C (3,204 kcal/kg)</option>
-            </optgroup>
-          </select>
-        </div>
-        <div class="flbl" style="margin-bottom:7px;">🥣 또는 직접 입력 · 수정</div>
-        <div class="iw">
-          <input type="number" id="feed-cal" placeholder="kcal/kg 직접 입력" min="0" inputmode="numeric" oninput="onFeedCalInput()">
-          <span class="unit">kcal/kg</span>
-        </div>
-      </div>
-
-      <!-- 급여 횟수 -->
-      <div class="fg">
-        <div class="flbl">⏰ 하루 급여 횟수</div>
-        <div class="rc-grid">
-          <label><input type="radio" name="ftimes" value="2" checked onchange="calc()"><div class="rc"><div class="rm">하루 2회</div></div></label>
-          <label><input type="radio" name="ftimes" value="3" onchange="calc()"><div class="rc"><div class="rm">하루 3회</div></div></label>
-        </div>
-      </div>
-
-    </div><!-- /panel -->
-
-    <!-- RESULT -->
-    <div class="result-panel">
-      <div class="result-hdr">
-        <div class="result-name" id="r-name">우리 아이의 처방 리포트</div>
-        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);">PRESCRIPTION REPORT</div>
-        <div class="result-stage" id="r-stage">성견 · 중성화</div>
-      </div>
-
-      <div class="der-block">
-        <div class="der-lbl">일일 권장 에너지 (DER)</div>
-        <div class="der-val" id="r-der">--</div>
-        <div class="der-unit">kcal / day</div>
-        <div class="der-mid" id="r-der-mid"></div>
-      </div>
-
-      <div class="split-bar">
-        <div class="split-hdr">
-          <div class="split-lbl" style="color:var(--green);">🥣 사료 (90%)</div>
-          <div class="split-v" style="color:var(--green);" id="r-feed-kcal">-- kcal</div>
-        </div>
-        <div class="split-track"><div class="split-fill" style="width:90%;background:var(--green);"></div></div>
-      </div>
-      <div class="split-bar">
-        <div class="split-hdr">
-          <div class="split-lbl" style="color:var(--amber);">🍖 간식 (10%)</div>
-          <div class="split-v" style="color:var(--amber);" id="r-treat-kcal">-- kcal</div>
-        </div>
-        <div class="split-track"><div class="split-fill" style="width:10%;background:var(--amber);"></div></div>
-      </div>
-
-      <div style="margin:14px 0 0;">
-        <div class="drow"><span class="dl">체형 평가</span><span class="dv" id="r-status">정상 체형</span></div>
-        <div class="drow" id="row-ideal" style="display:none;"><span class="dl">목표 이상체중</span><span class="dv green" id="r-ideal">-- kg</span></div>
-        <div class="drow"><span class="dl">계산 기준 체중</span><span class="dv cyan" id="r-calcw">--</span></div>
-        <div class="drow"><span class="dl">기초 휴식 에너지 (RER)</span><span class="dv" id="r-rer">-- kcal</span></div>
-      </div>
-
-      <div class="feed-block">
-        <div style="font-size:10px;color:#ff9e9e;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">하루 총 급여량</div>
-        <div class="feed-total" id="r-total">-- g</div>
-        <div class="feed-each" id="r-each">-- g / 끼</div>
-        <div class="feed-note">*간식 10% 제외 · 중간값 기준 산출</div>
-      </div>
-
-      <div class="water-block" id="water-block" style="display:none;">
-        <div class="wl">
-          <span>💧</span>
-          <div>
-            <div>권장 음수량</div>
-            <div class="ws">체중 × 60 ml/day 기준</div>
-          </div>
-        </div>
-        <div class="wv" id="r-water">-- ml</div>
-      </div>
-
-      <div class="treat-hint" id="treat-hint" style="display:none;">
-        <div class="treat-hint-title">🍖 간식 허용량 <span id="treat-kcal-display">--</span> kcal 으로 줄 수 있는 양</div>
-        <div class="treat-picker">
-          <select id="treat-select" onchange="onTreatSelect()">
-            <option value="">🥬 간식 종류를 선택하세요</option>
-            <optgroup label="채소 (저칼로리)">
-              <option value="15">오이 (15 kcal/100g)</option>
-              <option value="15">상추 (15 kcal/100g)</option>
-              <option value="18">토마토 · 잘 익은 것만 (18 kcal/100g)</option>
-              <option value="25">양배추 (25 kcal/100g)</option>
-              <option value="25">콜리플라워 (25 kcal/100g)</option>
-              <option value="31">그린빈/껍질콩 (31 kcal/100g)</option>
-              <option value="35">브로콜리 · 송이만 (35 kcal/100g)</option>
-              <option value="41">당근 · 익혀서 (41 kcal/100g)</option>
-              <option value="85">단호박 · 찐 것 (85 kcal/100g)</option>
-              <option value="145">고구마 · 찐 것 (145 kcal/100g)</option>
-            </optgroup>
-            <optgroup label="과일 (소량씩)">
-              <option value="30">수박 · 씨 제거 (30 kcal/100g)</option>
-              <option value="32">딸기 (32 kcal/100g)</option>
-              <option value="55">사과 · 씨 제거 (55 kcal/100g)</option>
-              <option value="57">블루베리 (57 kcal/100g)</option>
-              <option value="89">바나나 · 소량 (89 kcal/100g)</option>
-            </optgroup>
-            <optgroup label="단백질 간식">
-              <option value="127">닭가슴살 · 삶은 것 (127 kcal/100g)</option>
-            </optgroup>
-          </select>
-          <div class="treat-manual-row">
-            <span class="treat-manual-lbl">또는 직접 입력 →</span>
-            <div class="iw" style="flex:1;">
-              <input type="number" id="treat-manual-cal" placeholder="간식 kcal/100g" min="0" inputmode="numeric" oninput="onTreatManual()">
-              <span class="unit">kcal/100g</span>
-            </div>
-          </div>
-        </div>
-        <div class="treat-result" id="treat-result" style="display:none;">
-          <div class="treat-result-food" id="treat-result-food">--</div>
-          <div class="treat-result-amt"><span id="treat-result-g">--</span><span class="treat-result-unit">g 까지</span></div>
-          <div class="treat-result-sub" id="treat-result-sub">하루 간식 허용량 기준</div>
-        </div>
-        <div class="treat-note">USDA 표준 식품성분 기준 · 조미 없는 것 · 강아지 급여 가능 식품만 · 고구마·닭가슴살은 조리법에 따라 편차 있음</div>
-      </div>
-
-
-      <div class="btn-row">
-        <button class="btn-share" onclick="openShareModal()">💬 카톡 공유 복사</button>
-        <button class="btn-reset" onclick="resetAll()">초기화</button>
-      </div>
-    </div>
-  </div><!-- /calc-shell -->
-
-  <!-- EVIDENCE —— AAHA 2021 -->
-  <div class="sec-label">계산 근거 — 2021 AAHA Nutrition & Weight Management Guidelines</div>
-  <div class="ev-grid">
-    <div class="ev-card">
-      <div class="ev-num">01</div>
-      <h4>RER 공식</h4>
-      <p>기초휴식에너지(Resting Energy Requirement)<br><code>RER = 70 × BW(kg)^0.75</code><br>WSAVA 공인, AAHA 2021 Box 1 명시. 모든 체중에 적용 가능한 단일 공식.</p>
-    </div>
-    <div class="ev-card">
-      <div class="ev-num">02</div>
-      <h4>생애단계 MER 팩터 (Box 1)</h4>
-      <p>
-        자견 ~4개월 <code>× 3.0</code><br>
-        자견 4개월~1세 <code>× 2.0</code><br>
-        성견 중성화 <code>× 1.4~1.6</code><br>
-        성견 비중성화 <code>× 1.6~1.8</code><br>
-        노령견 7세+ <code>× 1.4</code><br>
-        체중감량 처방 <code>이상체중 RER × 1.0</code><br>
-        <em style="font-size:10.5px;color:var(--text3);">※ 생애단계는 입력하신 나이·중성화·BCS를 바탕으로 계산기가 자동 판정합니다. 성견은 AAHA 원문의 팩터 범위를 그대로 범위로 제시합니다.</em>
-      </p>
-    </div>
-    <div class="ev-card">
-      <div class="ev-num">03</div>
-      <h4>이상체중 적용 원칙 (Table 2 + Box 1)</h4>
-      <p>BCS 5/9 초과 시 1단계당 10% 과체중<br><code>이상체중 = BW ÷ (1+(BCS-5)×0.1)</code><br><br>
-      <strong style="color:var(--amber)">BCS 6 이상</strong>의 성견·노령견은 계산기가 자동으로 <strong style="color:var(--amber)">체중 관리 모드</strong>(이상체중 기반 RER × 1.0)로 전환합니다. BCS 6은 경증 과체중, 7~9는 본격 감량 처방으로 강도를 구분합니다.<br>
-      BCS 5 이하의 모든 생애단계는 <strong>현재체중 기반 RER</strong>을 사용합니다.<br>
-      ➡ AAHA 2021 정의: 과체중 = 이상체중 10% 초과 또는 BCS ≥ 6/9. 일반 유지 급여는 현재체중 기준, 체중 관리가 필요한 경우 이상체중 기준으로 전환.<br>
-      <em style="font-size:10.5px;color:var(--text3);">AAHA 2021 Box 1 + Table 2</em></p>
-    </div>
-    <div class="ev-card">
-      <div class="ev-num">04</div>
-      <h4>간식 10% 규칙</h4>
-      <p>완전균형식(complete & balanced)이 일일 칼로리의 <code>≥ 90%</code>를 차지해야 영양 균형 유지.<br>간식·보조식품·투약용 음식 합계 <code>≤ 10%</code><br><em style="font-size:10.5px;color:var(--text3);">AAHA 2021 본문 직접 인용</em></p>
+  <div class="sec-label">개알남은</div>
+  <div class="about">
+    <h3>🐾 개 알려주는 남자, 수의사 이세원</h3>
+    <p>반려견이 <b>스무 살까지 건강하게</b> 사는 방법을 연구하고 알립니다. 유튜브 채널 <b>개알남</b>에서 보호자가 실제로 궁금해하는 반려견 건강 이야기를, 논문과 국제 가이드라인에 근거해 쉽게 풀어드립니다.</p>
+    <p>이곳의 도구들은 진료실에서 보호자분들께 매번 설명드리던 내용을, <b>집에서도 직접 확인하실 수 있게</b> 만든 것입니다. 전부 무료이고 앞으로도 계속 추가됩니다.</p>
+    <div class="about-links">
+      <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener" class="abtn yt">▶ 유튜브 채널 개알남</a>
+      <a href="mailto:vet_@naver.com?subject=%5B%EA%B0%9C%EC%95%8C%EB%82%A8%5D%20%EB%AC%B8%EC%9D%98" class="abtn">✉️ 문의 · 오류 신고</a>
     </div>
   </div>
 
-  <!-- DISCLAIMER -->
-  <div class="sec-label">주의사항 및 면책 조항</div>
-  <div class="disc-grid">
-    <div class="disc-card"><h4>⚠ 수치의 한계</h4><p>AAHA 2021 및 WSAVA 공인 공식 기반이나, 유전적 요인·개별 대사율을 완벽히 대변하지 못하는 통계적 권장치입니다. 성견 결과는 범위로 제시되며, 실제 급여량은 체중·BCS 변화를 보며 조정하세요.</p></div>
-    <div class="disc-card"><h4>⚠ 기저질환 보유견</h4><p>만성 신부전, 당뇨병, 췌장염, 단백소실성 장병증(PLE) 등 기저질환이 있는 경우 반드시 주치 수의사의 처방을 최우선으로 따르십시오.</p></div>
-    <div class="disc-card"><h4>⚠ 변 상태 모니터링</h4><p>급여 후 분변을 관찰하세요. 연변 → 급여량 감소 / 건조·딱딱 → 급여량 또는 음수량 증가를 고려하십시오.</p></div>
-    <div class="disc-card"><h4>⚠ 성장기 강아지</h4><p>성장기 강아지는 발육에 충분한 에너지가 필요하며, 임의로 급여를 제한하면 발육 부전을 초래할 수 있습니다. 자견은 체중·성장 곡선을 정기적으로 확인하세요.</p></div>
-    <div class="disc-card"><h4>⚠ 점진적 사료 전환 · 재평가</h4><p>사료 변경은 4~7일에 걸쳐 기존 사료와 섞어 점진적으로 전환하세요. 모든 결과는 시작 기준이며, 4~8주 간격으로 체중·BCS를 재평가해 급여량을 조정해야 합니다.</p></div>
-    <div class="disc-card"><h4>⚠ 법적 면책</h4><p>본 산출 결과는 참고 자료이며 대면 수의학 진료를 대체하지 않습니다. 자의적 해석·적용으로 인한 결과에 법적 책임을 지지 않습니다.</p></div>
+  <div class="sec-label">함께 봐주세요</div>
+  <div class="about">
+    <h3>⚠️ 이곳의 정보는 참고 자료입니다</h3>
+    <p>모든 도구는 국제 가이드라인과 학술 연구에 근거해 만들었지만, <b>대면 수의학 진료를 대체할 수 없습니다.</b> 반려견에게 증상이 있거나 기저질환이 있다면 반드시 주치 수의사와 상의하세요.</p>
+    <p>계산 결과와 수치는 통계적 권장치이며, 개별 반려동물의 유전·대사·건강 상태를 완벽히 반영하지 못합니다. 자의적 해석과 적용으로 인한 결과에 대해서는 법적 책임을 지지 않습니다.</p>
   </div>
 
 </div>
 
-<!-- 카톡 공유 모달 -->
-<div class="share-modal-overlay" id="share-modal" onclick="closeModalOutside(event)">
-  <div class="share-modal">
-    <h3>💬 카톡 공유용 리포트</h3>
-    <p>아래 텍스트를 전체 선택(Ctrl+A) 후 복사(Ctrl+C)하거나, 버튼을 눌러 복사하세요.</p>
-    <textarea id="share-textarea" readonly onclick="this.select()"></textarea>
-    <div class="share-modal-btns">
-      <button class="btn-copy" onclick="copyText()">📋 복사하기</button>
-      <button class="btn-close" onclick="closeModal()">닫기</button>
-    </div>
-  </div>
-</div>
-
-<div class="contact-strip"><span class="contact-icon">✉️</span><div class="contact-text"><strong>계산기 오류 신고와 수정 요청, 사료 · 간식 · 품종 추가 요청 언제든 환영합니다</strong><a href="mailto:vet_@naver.com?subject=%5B%EA%B0%9C%EC%95%8C%EB%82%A8%20%EA%B3%84%EC%82%B0%EA%B8%B0%5D%20%EC%98%A4%EB%A5%98%20%EC%8B%A0%EA%B3%A0%20%C2%B7%20%EC%88%98%EC%A0%95%20%EC%9A%94%EC%B2%AD%20/%20%EC%82%AC%EB%A3%8C%C2%B7%EA%B0%84%EC%8B%9D%C2%B7%ED%92%88%EC%A2%85%20%EC%B6%94%EA%B0%80%20%EC%9A%94%EC%B2%AD" class="contact-link">vet_@naver.com 으로 보내주세요</a></div></div>
-<footer>© 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원 &nbsp;·&nbsp; <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener" class="footer-link">▶ 유튜브 채널 '개알남' 보러가기</a><br>BASED ON 2021 AAHA NUTRITION AND WEIGHT MANAGEMENT GUIDELINES</footer>
+<footer>
+  © 2026 개알남 — 대구24시바른동물의료센터 대표원장 이세원<br>
+  <a href="http://youtube.com/c/vetluke" target="_blank" rel="noopener">▶ 유튜브 채널 '개알남' 보러가기</a>
+</footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-// 입력 축 분리 (PNA 스타일 + AAHA 2021 로직)
-// ─ 보호자는 "사실"만 입력: 나이 / 중성화 / 특수상태 / BCS
-// ─ 생애단계·팩터·계산모드는 계산기가 자동 판정 (deriveStage)
-// ─ 성견은 AAHA 원문 팩터 범위(중성화 1.4~1.6 / 비중성화 1.6~1.8)를
-//   그대로 범위로 제시. 그램 수는 중간값으로 산출.
-// ─ BCS 6+ 성견·노령견 → 체중감량 처방 모드 자동 전환(단일값 ×1.0)
-// ─ (활동량 입력 제거 — BCS가 결과로서의 활동량 부족을 이미 반영)
-// ═══════════════════════════════════════════════════════════════
-
-const BCS_DATA = {
-  1:{ badge:'심각한 저체중', cls:'bcs-thin',  status:'극심한 저체중',       guide:'뼈가 도드라져 보이며 지방이 전혀 없습니다. 고단백 영양 보충이 시급합니다.' },
-  2:{ badge:'저체중',       cls:'bcs-thin',  status:'저체중',              guide:'갈비뼈와 골반뼈가 쉽게 눈에 띕니다. 피하지방 증량이 필요합니다.' },
-  3:{ badge:'약간 마름',    cls:'bcs-thin',  status:'약간 마름',           guide:'갈비뼈가 쉽게 만져지며 피하지방이 부족합니다. 균형 잡힌 영양 공급이 필요합니다.' },
-  4:{ badge:'정상',         cls:'bcs-ideal', status:'정상 체형 (유지)',     guide:'갈비뼈가 얇은 지방층에 덮여 잘 만져집니다. 위에서 볼 때 허리선이 선명합니다.' },
-  5:{ badge:'이상적',       cls:'bcs-ideal', status:'정상 체형 (완벽)',     guide:'가장 건강한 상태입니다. 갈비뼈가 과도한 지방 없이 잘 만져지며 허리 라인이 예쁩니다.' },
-  6:{ badge:'과체중',       cls:'bcs-heavy', status:'경증 과체중 (관리 필요)',  guide:'약간의 지방 축적이 느껴지며 허리선이 희미해집니다. AAHA 기준 약 10% 과체중으로, 이미 체중 관리가 필요한 단계입니다.' },
-  7:{ badge:'과체중',       cls:'bcs-heavy', status:'감량 필요',            guide:'갈비뼈가 두꺼운 지방층에 덮여 잘 만져지지 않습니다. AAHA 기준 약 20% 과체중.' },
-  8:{ badge:'비만',         cls:'bcs-heavy', status:'비만 (다이어트 필수)', guide:'세게 눌러야 갈비뼈가 겨우 느껴집니다. AAHA 기준 약 30% 과체중.' },
-  9:{ badge:'고도 비만',    cls:'bcs-heavy', status:'고도 비만',            guide:'전신에 거대한 지방층이 있습니다. AAHA 기준 약 40% 과체중. 즉각적 처방 관리 필요.' }
-};
-
-const $=id=>document.getElementById(id);
-const set=(id,v)=>{const e=$(id);if(e)e.innerText=v;};
-
-function getInputs(){
-  // 년 + 개월 → 살(소수) 단위로 환산. 둘 다 비어 있으면 null(성견 가정)
-  const yRaw = parseInt($('pet-age-y').value);
-  const mRaw = parseInt($('pet-age-m').value);
-  const hasY = !isNaN(yRaw) && yRaw >= 0;
-  const hasM = !isNaN(mRaw) && mRaw >= 0;
-  let age = null;
-  if (hasY || hasM) {
-    age = (hasY ? yRaw : 0) + (hasM ? mRaw : 0) / 12;
-  }
-  return {
-    age: age, // null = 나이 미입력 → 성견 가정
-    bcs: parseInt($('bcs-slider').value),
-    neutered: document.querySelector('input[name="neuter"]:checked').value === 'yes',
-    special: $('special-state').value
-  };
-}
-
-// 나이 자연어 표기 — 공유 리포트용 ("5개월", "3살 2개월", "3살")
-function formatAge(){
-  const y = parseInt($('pet-age-y').value);
-  const m = parseInt($('pet-age-m').value);
-  const hasY = !isNaN(y) && y > 0;
-  const hasM = !isNaN(m) && m > 0;
-  if (!hasY && !hasM) return '미지정';
-  if (hasY && hasM) return y + '살 ' + m + '개월';
-  if (hasY) return y + '살';
-  return m + '개월';
-}
-
-// ── 핵심: 생애단계 + 계산모드 자동 판정 (AAHA 2021 Box 1) ──────
-// 우선순위: 특수상태 > 자견(성장기) > BCS 6+ 감량모드 > 노령견 > 성견(범위)
-function deriveStage(){
-  const i = getInputs();
-
-  // 1) 특수 생리 상태 최우선 — 감량모드 적용 금지
-  if (i.special === 'pregnant') return {
-    key:'pregnant', label:'임신견 (임신 후기)', icon:'🤰', factor:3.0, useIdealBW:false, loss:false,
-    info:'임신 후기(약 6주 이후) 암컷에 적용합니다. 현재체중 기반 RER × 3.0. 태아 성장에 따른 고에너지 요구 구간입니다. (AAHA 2021 Box 1)'
-  };
-  if (i.special === 'lactating') return {
-    key:'lactating', label:'수유견', icon:'🍼', factor:null, useIdealBW:false, loss:false,
-    info:'수유 중인 어미견에 적용합니다. 새끼 수에 따라 RER × 3.0~6.0 범위로 차이가 크며(새끼가 많으면 6.0을 넘을 수 있음), 아래 결과는 범위로 제시되며 급여량은 중간값(×4.5)으로 산출됩니다. 실제 급여량은 주치 수의사와 상담하세요. (AAHA 2021 Box 1)'
-  };
-
-  // 2) 자견 — 성장기에는 감량모드 적용 금지 (단일값)
-  if (i.age !== null && i.age < 4/12) return {
-    key:'puppy_young', label:'자견 (~4개월)', icon:'🐶', factor:3.0, useIdealBW:false, loss:false,
-    info:'생후 4개월 이하 자견은 급격한 성장을 위해 성견 대비 약 3배의 에너지가 필요합니다. (AAHA 2021 Box 1 — MER × 3.0, 현재체중 기준)'
-  };
-  if (i.age !== null && i.age < 1) return {
-    key:'puppy_old', label:'자견 (4개월~1세)', icon:'🐕', factor:2.0, useIdealBW:false, loss:false,
-    info:'골격 성장이 지속되므로 약 2배의 에너지가 필요합니다. 대형·초대형견은 1.5세까지 연장될 수 있습니다. (AAHA 2021 Box 1 — MER × 2.0, 현재체중 기준)'
-  };
-
-  const isSenior = i.age !== null && i.age >= 7;
-
-  // 3) BCS 6 이상 성견·노령견 → 체중감량 모드 자동 전환 (단일값 ×1.0)
-  //    ※ AAHA 정의: 과체중 = 이상체중 10% 초과 또는 BCS ≥ 6/9
-  //    강도 구분 — BCS 6: 경증(급여량 조절) / BCS 7~9: 본격 처방
-  if (i.bcs >= 6) {
-    const mild = i.bcs === 6;
-    return {
-      key:'weight_loss',
-      label: mild ? '체중 관리 (경증 과체중)' : '체중 감량 처방 (자동 적용)',
-      icon:'⚖️', factor:1.0, useIdealBW:true, loss:true,
-      info: mild
-        ? 'BCS 6 — AAHA 기준 경증 과체중(이상체중 약 10% 초과)으로 판정되었습니다. 처방 사료 전환보다 현재 사료의 급여량 조절이 우선이며, 이상체중 기반 RER × 1.0으로 계산했습니다. 간식을 줄이고 4~6주 단위로 체중을 재평가하세요. (AAHA 2021 — 과체중 = BCS ≥ 6/9)'
-        : 'BCS ' + i.bcs + ' — AAHA 기준 과체중으로 판정되어 체중 감량 처방 모드가 자동 적용되었습니다. 이상체중(현재체중 ÷ (1+(BCS−5)×0.1)) 기반 RER × 1.0으로 계산하며, 이 모드에서는 감량 처방 단일 팩터가 적용됩니다. (AAHA 2021 Box 1 + Table 2)'
-    };
-  }
-
-  // 4) 노령견 (7세 이상) — 단일값
-  if (isSenior) return {
-    key:'senior', label:'노령견 (7세 이상)', icon:'🐾', factor:1.4, useIdealBW:false, loss:false,
-    info:'대사율 감소로 에너지 요구량이 줄어듭니다. 근육량 손실(sarcopenia) 위험에 주의하세요. 현재체중 기반 RER × 1.4. (AAHA 2021 — MER × 1.4)'
-  };
-
-  // 5) 성견 — 중성화 유무 (AAHA 2021 Box 1 팩터를 범위로 제시)
-  //    중성화 1.4~1.6 / 비중성화 1.6~1.8 — 그램 수는 중간값으로 산출
-  return i.neutered
-    ? { key:'adult_neutered', label:'성견 · 중성화 (MER × 1.4~1.6)', icon:'🦮',
-        factorRange:[1.4, 1.5, 1.6], useIdealBW:false, loss:false, info:'' }
-    : { key:'adult_intact',   label:'성견 · 비중성화 (MER × 1.6~1.8)', icon:'🦮',
-        factorRange:[1.6, 1.7, 1.8], useIdealBW:false, loss:false, info:'' };
-}
-
-// 모드 변경 토스트용 추적
-let _prevStageKey = null;
-
-function updateStage(){
-  const cfg = deriveStage();
-
-  // 결과 패널 + 자동 판정 배너
-  set('r-stage', cfg.label);
-  set('mb-value', cfg.label);
-  set('mb-icon', cfg.icon);
-  const banner = $('mode-banner');
-  banner.classList.toggle('loss', cfg.loss);
-
-  // 안내 박스
-  const ib = $('stage-info');
-  if (cfg.info) { ib.textContent = cfg.info; ib.classList.add('on'); }
-  else ib.classList.remove('on');
-
-  // 모드 진입/해제 토스트
-  if (_prevStageKey !== null && _prevStageKey !== cfg.key) {
-    if (cfg.key === 'weight_loss') {
-      const bcs = getInputs().bcs;
-      showToast(bcs === 6
-        ? '⚖️ BCS 6 — 경증 과체중. 체중 관리 모드가 자동 적용되었습니다.'
-        : '⚖️ BCS ' + bcs + ' — 체중 감량 처방 모드가 자동 적용되었습니다.');
-    }
-    else if (_prevStageKey === 'weight_loss') showToast('✅ 체중 감량 모드 해제 — ' + cfg.label + ' 기준으로 계산합니다.');
-  }
-  _prevStageKey = cfg.key;
-
-  checkWarn(cfg);
-  calc();
-}
-
-function checkWarn(cfg){
-  const i = getInputs(), w = $('stage-warn');
-  let msg = '';
-  if (i.bcs >= 6 && (cfg.key === 'puppy_young' || cfg.key === 'puppy_old'))
-    msg = '⚠ 성장기 자견의 과체중은 단순 감량 대상이 아닙니다. 성장 곡선 평가가 필요하니 반드시 주치 수의사와 상담하세요.';
-  else if (i.bcs >= 6 && (cfg.key === 'pregnant' || cfg.key === 'lactating'))
-    msg = '⚠ 임신·수유 중에는 체중 감량을 시도하지 않습니다. 과체중 관리는 이유(離乳) 후 주치 수의사와 상의하세요.';
-  else if (i.bcs >= 6 && i.age !== null && i.age >= 7)
-    msg = '⚠ 노령견 + 과체중 조합입니다. 노령견은 근육 손실(sarcopenia) 위험이 높아 급격한 감량보다 점진적 관리가 우선입니다. 반드시 주치 수의사와 상담 후 급여량을 결정하세요. (AAHA 2021)';
-  if (msg) { w.textContent = msg; w.classList.add('on'); } else w.classList.remove('on');
-}
-
-function updateName(){ const n=$('pet-name').value.trim(); set('r-name',n?`${n}의 처방 리포트`:'우리 아이의 처방 리포트'); }
-
-function onBcs(v){
-  const d = BCS_DATA[v];
-  set('bcs-num', v);
-  const b = $('bcs-badge');
-  b.textContent = d.badge;
-  b.className = 'bcs-badge-el ' + d.cls;
-  set('bcs-guide', d.guide);
-  set('r-status', d.status);
-  updateStage(); // BCS 변화 → 모드 자동 재판정 (calc 포함)
-}
-
-function applyPreset(){
-  const v=$('feed-preset').value;
-  if(v!=='manual'){
-    $('feed-cal').value=v;
-  } else {
-    $('feed-cal').value='';
-  }
-  calc();
-}
-
-// 입력창을 직접 수정하면 드롭다운을 '직접 입력' 항목으로 복귀
-function onFeedCalInput(){
-  const preset=$('feed-preset');
-  if(preset.value!=='manual') preset.value='manual';
-  calc();
-}
-
-// ── CORE CALC — AAHA 2021 Box 1 + Table 2 ────────────
-function calc(){
-  const weight=parseFloat($('weight').value);
-  const bcs=parseInt($('bcs-slider').value);
-  const cfg=deriveStage();
-  const isOver = bcs > 5;
-  // 이상체중 계산 (AAHA 2021 Table 2): 참고용 + 체중감량 처방 모드 전용
-  const ideal = (isOver && weight > 0) ? weight / (1 + (bcs-5) * 0.1) : null;
-
-  // 이상체중 UI — 참고값으로 항상 표시 (BCS > 5이면)
-  const tag = $('ideal-tag');
-  if (ideal) {
-    tag.style.display = 'flex';
-    set('ideal-val', ideal.toFixed(1) + ' kg');
-    $('row-ideal').style.display = 'flex';
-    set('r-ideal', ideal.toFixed(1) + ' kg');
-  } else {
-    tag.style.display = 'none';
-    $('row-ideal').style.display = 'none';
-  }
-
-  if (!weight || weight <= 0) { clearR(); return; }
-
-  // ── AAHA 2021 Box 1 원칙 ──────────────────────────────────────
-  // 체중감량 처방(자동 판정)만 이상체중 기반 RER 적용
-  // 나머지 모든 모드는 현재체중 기반 RER 사용 (이중 보정 방지)
-  const calcW = (cfg.useIdealBW && isOver && ideal) ? ideal : weight;
-
-  // RER: 70 × BW^0.75 (AAHA 2021 Box 1, WSAVA 공인)
-  const rer = 70 * Math.pow(calcW, 0.75);
-
-  // DER 산출:
-  //  - 수유견: 범위 3.0~6.0, 그램수는 중간값(4.5)
-  //  - 성견(factorRange): 범위 lo~hi, 그램수는 중간값(mid)
-  //  - 그 외(자견·노령·임신·감량): 단일 factor
-  let der, derDisplay, derMid = '';
-  if (cfg.key === 'lactating') {
-    const derLow  = rer * 3.0;
-    const derHigh = rer * 6.0;
-    der = rer * 4.5;
-    derDisplay = Math.round(derLow).toLocaleString() + ' ~ ' + Math.round(derHigh).toLocaleString();
-    derMid = '권장 시작점 약 ' + Math.round(der).toLocaleString() + ' kcal (중간값)';
-  } else if (cfg.factorRange) {
-    const [lo, mid, hi] = cfg.factorRange;
-    const derLow  = rer * lo;
-    const derHigh = rer * hi;
-    der = rer * mid; // 급여 그램 수는 중간값 기준
-    derDisplay = Math.round(derLow).toLocaleString() + ' ~ ' + Math.round(derHigh).toLocaleString();
-    derMid = '권장 시작점 약 ' + Math.round(der).toLocaleString() + ' kcal (중간값)';
-  } else {
-    der = rer * cfg.factor;
-    derDisplay = Math.round(der).toLocaleString();
-    derMid = '';
-  }
-
-  const feedK = der * 0.9, treatK = der * 0.1;
-
-  set('r-der', derDisplay);
-  const midEl = $('r-der-mid');
-  if (derMid) { midEl.textContent = derMid; midEl.classList.add('on'); }
-  else { midEl.textContent = ''; midEl.classList.remove('on'); }
-
-  set('r-rer', Math.round(rer).toLocaleString() + ' kcal');
-  set('r-feed-kcal', Math.round(feedK).toLocaleString() + ' kcal');
-  set('r-treat-kcal', Math.round(treatK).toLocaleString() + ' kcal');
-
-  const cw = $('r-calcw');
-  if (calcW !== weight) {
-    const mode = (bcs === 6) ? '체중 관리' : '체중 감량';
-    cw.textContent = calcW.toFixed(1) + ' kg (이상체중 기준 — ' + mode + ')';
-    cw.style.color = 'var(--green)';
-  } else {
-    cw.textContent = weight + ' kg (현재체중 기준)';
-    cw.style.color = 'var(--cyan)';
-  }
-
-  const fck=parseFloat($('feed-cal').value);
-  const ft=parseInt(document.querySelector('input[name="ftimes"]:checked').value);
-  if(fck>0){
-    const tg=(feedK/fck)*1000;
-    set('r-total',Math.round(tg).toLocaleString()+' g');
-    set('r-each',Math.round(tg/ft).toLocaleString()+' g / 끼');
-  }else{set('r-total','사료 칼로리 입력 필요');set('r-each','-- g / 끼');}
-  updateTreatHint(treatK);
-
-  // 권장 음수량: 실제 체중 × 60 ml
-  const waterMl = Math.round(weight * 60);
-  set('r-water', waterMl.toLocaleString() + ' ml');
-  $('water-block').style.display = 'flex';
-}
-
-
-// ── 간식 허용량(10%)으로 줄 수 있는 g수 계산 ──
-// 출처: USDA 표준 식품성분 / 조미 없는 것 기준 / 강아지 급여 가능 식품만
-// 흐름: calc()가 treatK(허용 칼로리)를 _currentTreatKcal에 저장 →
-//       보호자가 간식 선택/직접입력 → onTreatSelect/onTreatManual이 g수 재계산
-let _currentTreatKcal = 0;
-
-function updateTreatHint(treatKcal){
-  const hint=document.getElementById('treat-hint');
-  if(!hint||treatKcal<=0){
-    if(hint)hint.style.display='none';
-    _currentTreatKcal=0;
-    return;
-  }
-  _currentTreatKcal=treatKcal;
-  const kcalDisp=document.getElementById('treat-kcal-display');
-  if(kcalDisp)kcalDisp.textContent=Math.round(treatKcal);
-  hint.style.display='block';
-  // 이미 간식이 선택/입력된 상태면 g수도 갱신
-  renderTreatGrams();
-}
-
-// 드롭다운 선택 → 직접입력칸 비우고 g수 계산
-function onTreatSelect(){
-  const manual=$('treat-manual-cal');
-  if(manual)manual.value='';
-  renderTreatGrams();
-}
-
-// 직접입력 → 드롭다운 초기화하고 g수 계산
-function onTreatManual(){
-  const sel=$('treat-select');
-  if(sel)sel.value='';
-  renderTreatGrams();
-}
-
-// 현재 선택/입력된 간식 칼로리(kcal/100g)로 g수 산출 후 표시
-function renderTreatGrams(){
-  const resultEl=$('treat-result');
-  if(!resultEl)return;
-
-  // 직접입력 우선, 없으면 드롭다운 값
-  const manualVal=parseFloat($('treat-manual-cal').value);
-  const selEl=$('treat-select');
-  const selVal=parseFloat(selEl.value);
-
-  let kcalPer100g=null, foodLabel='';
-  if(manualVal>0){
-    kcalPer100g=manualVal;
-    foodLabel='입력하신 간식';
-  } else if(selVal>0){
-    kcalPer100g=selVal;
-    // 옵션 텍스트에서 식품명만 추출 (괄호 앞부분)
-    const txt=selEl.options[selEl.selectedIndex].text;
-    foodLabel=txt.split('(')[0].replace(/[🥬🍗]/g,'').trim();
-  }
-
-  if(!kcalPer100g || kcalPer100g<=0 || _currentTreatKcal<=0){
-    resultEl.style.display='none';
-    return;
-  }
-
-  const grams=Math.round(_currentTreatKcal / kcalPer100g * 100);
-  set('treat-result-food', foodLabel);
-  set('treat-result-g', grams.toLocaleString());
-  set('treat-result-sub', '하루 간식 허용량(' + Math.round(_currentTreatKcal) + ' kcal) 기준 · 이 양을 넘지 마세요');
-  resultEl.style.display='block';
-}
-
-
-function clearR(){
-  const th=document.getElementById('treat-hint'); if(th) th.style.display='none';
-  set('r-der','--');set('r-rer','-- kcal');set('r-feed-kcal','-- kcal');set('r-treat-kcal','-- kcal');
-  set('r-total','-- g');set('r-each','-- g / 끼');
-  const midEl=$('r-der-mid');if(midEl){midEl.textContent='';midEl.classList.remove('on');}
-  const cw=$('r-calcw');cw.textContent='--';cw.style.color='var(--cyan)';
-  set('r-water','-- ml');
-  const wb=$('water-block');if(wb)wb.style.display='none';
-}
-
-// ── 카톡 공유 모달 — textarea 폴백 방식 ─────────────
-function buildReportText(){
-  const name=$('pet-name').value.trim()||'우리 아이';
-  const age=formatAge();
-  const wt=$('weight').value?$('weight').value+'kg':'미지정';
-  const breedEl=$('pet-breed');
-  const breed=breedEl.value?breedEl.options[breedEl.selectedIndex].text:'미지정';
-  const cfg=deriveStage();
-  const neuter=document.querySelector('input[name="neuter"]:checked').value==='yes'?'중성화 완료':'비중성화';
-  const bcs=$('bcs-slider').value;
-  const idealLine=$('row-ideal').style.display!=='none'?'\n- 목표 이상체중: '+$('r-ideal').innerText:'';
-  // DER 줄 — 범위 모드면 중간값 안내를 함께 표기
-  const derMidEl=$('r-der-mid');
-  const derMidLine=(derMidEl && derMidEl.classList.contains('on') && derMidEl.textContent)
-      ? '\n  · '+derMidEl.textContent : '';
-  // 간식 정보 — 보호자가 간식을 선택/입력한 경우에만 포함
-  let treatLine='';
-  const treatResultEl=$('treat-result');
-  if(treatResultEl && treatResultEl.style.display!=='none'){
-    const food=$('treat-result-food').innerText;
-    const grams=$('treat-result-g').innerText;
-    if(food && food!=='--' && grams && grams!=='--'){
-      treatLine='\n- 🍖 선택 간식: '+food+' → 하루 '+grams+'g 까지 (허용량 내)';
-    }
-  }
-  return `[🐾 개알남 맞춤 처방 급여 리포트]
-(AAHA 2021 Nutrition & Weight Management Guidelines 기반)
-
-■ 기본 정보
-- 이름: ${name} / 품종: ${breed}
-- 나이: ${age} / 체중: ${wt} / ${neuter}
-- 적용 모드: ${cfg.label}
-
-■ BCS 진단
-- 비만도: BCS ${bcs}단계 (${$('r-status').innerText})${idealLine}
-- 계산 기준 체중: ${$('r-calcw').innerText}
-
-■ 칼로리 처방
-- 기초 휴식 에너지(RER): ${$('r-rer').innerText}
-- 일일 권장 에너지(DER): ${$('r-der').innerText} kcal/day${derMidLine}
-- 사료 할당 칼로리 (90%): ${$('r-feed-kcal').innerText}
-- 간식 허용 칼로리 (10%): ${$('r-treat-kcal').innerText}
-
-■ 급여 가이드
-- 하루 총 사료 급여량: ${$('r-total').innerText}
-- 한 끼당 급여량: ${$('r-each').innerText}
-- 💧 권장 음수량: ${$('r-water').innerText} (체중 × 60 ml/day)${treatLine}
-
-👉 개알남 칼로리 계산기에서 직접 확인해보세요!
-https://gaealnam.com/`;
-}
-
-function openShareModal(){
-  if(!$('weight').value){alert('체중을 먼저 입력해주세요!');return;}
-  $('share-textarea').value=buildReportText();
-  $('share-modal').classList.add('on');
-  setTimeout(()=>$('share-textarea').select(),100);
-}
-
-function closeModal(){ $('share-modal').classList.remove('on'); }
-function closeModalOutside(e){ if(e.target===$('share-modal')) closeModal(); }
-
-function copyText(){
-  const ta=$('share-textarea');
-  ta.select();
-  ta.setSelectionRange(0,99999); // 모바일
-  if(navigator.clipboard&&window.isSecureContext){
-    navigator.clipboard.writeText(ta.value)
-      .then(()=>{ alert('복사되었습니다!\n카카오톡에 붙여넣기(Ctrl+V / 길게 누르기) 해주세요.'); closeModal(); })
-      .catch(()=>fallbackCopy(ta));
-  } else {
-    fallbackCopy(ta);
-  }
-}
-
-function fallbackCopy(ta){
+// 예전에 공유된 gaealnam.com 링크(계산기 기대)로 들어온 분께 안내 배너 노출
+// - 외부에서 유입되었고(레퍼러가 우리 도메인이 아님) 사이트 내 이동이 아닌 경우에만 표시
+(function(){
   try{
-    const ok=document.execCommand('copy');
-    if(ok){ alert('복사되었습니다!\n카카오톡에 붙여넣기(Ctrl+V / 길게 누르기) 해주세요.'); closeModal(); }
-    else   { alert('자동 복사가 지원되지 않습니다.\n텍스트를 직접 선택(Ctrl+A) 후 복사(Ctrl+C) 해주세요.'); }
-  }catch(e){ alert('자동 복사가 지원되지 않습니다.\n텍스트를 직접 선택(Ctrl+A) 후 복사(Ctrl+C) 해주세요.'); }
-}
+    var internal = document.referrer && document.referrer.indexOf(location.host) !== -1;
+    var seen = sessionStorage.getItem('gaealnam_oldlink_seen');
+    if(!internal && !seen){
+      document.getElementById('oldlink').style.display = 'block';
+      sessionStorage.setItem('gaealnam_oldlink_seen','1');
+    }
+  }catch(e){}
+})();
 
-
-// 토스트 알림
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('on');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => t.classList.remove('on'), 3000);
-}
-
-// ── 방문자 카운터 (Abacus — 무료·등록불필요·CORS지원·안정적) ────
-// /hit/ 엔드포인트: 호출 시 +1 하면서 현재 총 방문수를 반환
+// ── 방문자 카운터 (Abacus) ────────────────────────────────
+// 계산기 페이지와 동일한 네임스페이스를 사용하므로 누적 수치가 이어집니다.
 // namespace: gaealnam-com / key: visits
-// (counterapi.dev 대비 안정성이 높아 교체. 폴백은 그대로 유지)
-const _COUNTER_HIT = 'https://abacus.jasoncameron.dev/hit/gaealnam-com/visits';
+var _COUNTER_HIT = 'https://abacus.jasoncameron.dev/hit/gaealnam-com/visits';
 
-async function countVisit() {
-  try {
-    const res  = await fetch(_COUNTER_HIT);
-    if (!res.ok) throw new Error('counter hit failed');
-    const data = await res.json();
-    // Abacus 응답 구조: { value: Number }
-    updateCounterDisplay(data.value);
-  } catch(e) {
-    // 네트워크/서비스 오류 시 로컬 폴백 (해당 기기 세션 내 표시용)
-    try {
-      const local = parseInt(localStorage.getItem('gaealnam_visits') || '0') + 1;
-      localStorage.setItem('gaealnam_visits', local);
-      updateCounterDisplay(local);
-    } catch(_) {}
-  }
-}
-
-function updateCounterDisplay(count) {
-  const el = document.getElementById('counter-num');
+function updateCounterDisplay(count){
+  var el = document.getElementById('counter-num');
   if (el && count != null && count > 0) {
     el.textContent = Number(count).toLocaleString();
   }
 }
-function resetAll(){
-  ['weight','pet-name','pet-age-y','pet-age-m','feed-cal'].forEach(id=>$(id).value='');
-  $('pet-breed').value='';$('feed-preset').value='manual';
-  $('bcs-slider').value=5;$('special-state').value='none';
-  const ts=$('treat-select');if(ts)ts.value='';
-  const tm=$('treat-manual-cal');if(tm)tm.value='';
-  _currentTreatKcal=0;
-  document.querySelector('input[name="neuter"][value="yes"]').checked=true;
-  document.querySelector('input[name="ftimes"][value="2"]').checked=true;
-  _prevStageKey=null;
-  updateName();onBcs(5);clearR();
-}
 
-// 초기화
-onBcs(5);   // BCS 기본값 → updateStage() → calc() 까지 연쇄 호출
-countVisit(); // 페이지 방문 시 1회 집계 + 현재 방문수 표시
+(function countVisit(){
+  fetch(_COUNTER_HIT)
+    .then(function(res){
+      if(!res.ok) throw new Error('counter hit failed');
+      return res.json();
+    })
+    .then(function(data){ updateCounterDisplay(data.value); })
+    .catch(function(){
+      // 네트워크/서비스 오류 시 로컬 폴백 (해당 기기 표시용)
+      try{
+        var local = parseInt(localStorage.getItem('gaealnam_visits') || '0') + 1;
+        localStorage.setItem('gaealnam_visits', local);
+        updateCounterDisplay(local);
+      }catch(_){}
+    });
+})();
 </script>
-<div class="toast" id="toast"></div>
 </body>
 </html>
