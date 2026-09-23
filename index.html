@@ -122,6 +122,93 @@ footer a{color:var(--cyan);}
   .tools{grid-template-columns:1fr 1fr;}
   .tool.wide{grid-column:1 / -1;}
 }
+
+/* ===== HERO v2 : 견생 20세 시대 ===== */
+.hero2{position:relative;padding:54px 20px 40px;text-align:center;overflow:hidden;}
+.hero2::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 55% at 50% 38%,rgba(0,212,200,.16),transparent 70%);}
+.hero2 .rings{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:520px;height:520px;pointer-events:none;opacity:.5;}
+.hero2 .rings span{position:absolute;inset:0;border:1px solid rgba(0,212,200,.12);border-radius:50%;animation:ring 6s ease-out infinite;}
+.hero2 .rings span:nth-child(2){animation-delay:2s;} .hero2 .rings span:nth-child(3){animation-delay:4s;}
+@keyframes ring{0%{transform:scale(.35);opacity:0;}30%{opacity:1;}100%{transform:scale(1);opacity:0;}}
+.h2-in{position:relative;max-width:780px;margin:0 auto;}
+.h2-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+.h2-title{display:flex;align-items:center;justify-content:center;gap:4px;margin:10px 0 4px;
+  font-weight:900;color:#fff;font-size:clamp(34px,7.4vw,58px);letter-spacing:-1.5px;line-height:1;}
+.h2-20{font-family:var(--display);font-weight:400;font-size:clamp(96px,22vw,168px);line-height:.82;letter-spacing:0;
+  background:linear-gradient(180deg,#7ff5ee 0%,#00d4c8 55%,#008f87 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 28px rgba(0,212,200,.35));padding:0 4px;}
+.h2-slogan{font-size:clamp(15px,3.6vw,20px);font-weight:900;color:#fff;margin-top:14px;letter-spacing:-.3px;}
+.h2-sub{font-size:13px;color:var(--text2);margin-top:8px;line-height:1.75;}
+
+/* YouTube 실시간 통계 */
+.yt{max-width:640px;margin:26px auto 0;background:rgba(22,27,34,.8);backdrop-filter:blur(6px);
+  border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 14px 14px;}
+.yt-top{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
+.yt-logo{display:inline-flex;align-items:center;justify-content:center;width:26px;height:18px;background:#ff0033;border-radius:5px;}
+.yt-logo::after{content:'';border-left:7px solid #fff;border-top:4.5px solid transparent;border-bottom:4.5px solid transparent;margin-left:2px;}
+.yt-name{font-size:13px;font-weight:900;color:#fff;}
+.yt-live{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;color:#ff5c5c;
+  border:1px solid rgba(255,92,92,.45);border-radius:20px;padding:2px 8px;}
+.yt-live i{width:6px;height:6px;border-radius:50%;background:#ff3b3b;animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+.yt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.yt-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:13px 6px 11px;}
+.yt-n{font-family:var(--mono);font-size:clamp(20px,5.2vw,28px);font-weight:500;color:#fff;line-height:1.1;}
+.yt-card.main .yt-n{color:#ff5c5c;}
+.yt-l{font-size:10.5px;color:var(--text3);font-weight:700;margin-top:5px;}
+.yt-foot{font-size:10px;color:var(--text3);margin-top:10px;font-family:var(--mono);}
+.h2-ctas{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+.cta-yt{display:inline-flex;align-items:center;gap:7px;background:#ff0033;color:#fff;font-weight:900;font-size:13.5px;
+  padding:13px 20px;border-radius:var(--r-sm);transition:transform .15s,box-shadow .15s;box-shadow:0 6px 20px rgba(255,0,51,.25);}
+.cta-yt:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(255,0,51,.35);}
+.cta-tools{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);color:var(--text2);font-weight:700;font-size:13px;
+  padding:13px 18px;border-radius:var(--r-sm);transition:border-color .2s,color .2s;}
+.cta-tools:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* ===== 철학 섹션 ===== */
+.phil{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px 22px;position:relative;overflow:hidden;}
+.phil::before{content:'20';position:absolute;right:-6px;top:-34px;font-family:var(--display);font-size:190px;color:var(--cyan);opacity:.05;line-height:1;pointer-events:none;}
+.phil-h{font-size:clamp(19px,4.6vw,24px);font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.35;}
+.phil-h em{font-style:normal;color:var(--cyan);}
+.phil-lead{font-size:13.5px;color:var(--text2);line-height:1.85;margin-top:12px;}
+.phil-lead b{color:var(--text);}
+/* 게이지 */
+.gauge{margin:22px 0 6px;}
+.g-track{position:relative;height:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;overflow:visible;}
+.g-now{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:8px;background:linear-gradient(90deg,#f5a623,#ffc55c);transition:width 1.6s cubic-bezier(.2,.8,.2,1);}
+.g-gap{position:absolute;top:0;bottom:0;border-radius:0 8px 8px 0;
+  background:repeating-linear-gradient(45deg,rgba(0,212,200,.28) 0 6px,rgba(0,212,200,.1) 6px 12px);opacity:0;transition:opacity .8s 1.4s;}
+.gauge.on .g-gap{opacity:1;}
+.g-marks{position:relative;height:40px;margin-top:6px;}
+.g-mk{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap;}
+.g-mk b{display:block;font-family:var(--mono);font-size:15px;font-weight:500;}
+.g-mk span{font-size:10px;color:var(--text3);font-weight:700;}
+.g-mk.now b{color:var(--amber);} .g-mk.goal b{color:var(--cyan);}
+.g-mk.goal{transform:translateX(-100%);text-align:right;}
+.g-gaplbl{text-align:center;font-size:12.5px;color:var(--text2);margin-top:2px;}
+.g-gaplbl b{color:var(--cyan);font-family:var(--mono);}
+/* 근거 박스 */
+.evid{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,rgba(0,212,200,.1),rgba(0,212,200,.03));
+  border:1px solid rgba(0,212,200,.4);border-radius:var(--r-md);padding:16px;margin-top:18px;}
+.evid-n{font-family:var(--display);font-size:52px;line-height:.9;color:var(--cyan);flex-shrink:0;}
+.evid-n small{font-size:20px;}
+.evid-t{font-size:12.5px;color:var(--text2);line-height:1.7;}
+.evid-t b{color:#fff;}
+.evid-t cite{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--text3);margin-top:4px;}
+/* 5가지 기둥 */
+.pillars{display:grid;grid-template-columns:1fr;gap:8px;margin-top:18px;}
+.pil{display:flex;gap:12px;align-items:flex-start;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:14px;}
+.pil-i{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;background:var(--cyan-dim);}
+.pil-no{font-family:var(--mono);font-size:9.5px;color:var(--cyan);letter-spacing:1px;}
+.pil-h{font-size:13.5px;font-weight:900;color:#fff;margin:1px 0 3px;}
+.pil-d{font-size:12px;color:var(--text2);line-height:1.65;}
+.pil-d a{color:var(--cyan);font-weight:700;border-bottom:1px solid rgba(0,212,200,.4);}
+.phil-close{text-align:center;margin-top:22px;padding-top:18px;border-top:1px solid var(--border2);}
+.phil-close p{font-size:clamp(15px,3.8vw,18px);font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.5;}
+.phil-close p em{font-style:normal;color:var(--cyan);}
+.phil-close span{display:block;font-size:12px;color:var(--text3);margin-top:6px;}
+@media(min-width:760px){.pillars{grid-template-columns:1fr 1fr;} .pil.wide{grid-column:1 / -1;}}
 </style>
 </head>
 <body>
@@ -141,21 +228,101 @@ footer a{color:var(--cyan);}
   🔥 칼로리 계산기를 찾으셨나요? 주소가 바뀌었습니다 → <a href="/calorie/">계산기 바로가기</a>
 </div>
 
-<div class="hero"><div class="hero-in">
-  <div class="hero-eyebrow">VETERINARY HEALTH TOOLS</div>
-  <div class="hero-title">개알남<span>.</span></div>
-  <div class="hero-slogan">"반려견의 건강한 20세 시대를 연구합니다"</div>
-  <div class="hero-sub">개 알려주는 남자 · 수의사 이세원<br>근거 기반 반려견 건강 도구를 무료로 제공합니다</div>
-  <div class="hero-chips">
-    <span class="chip c-cy">🩺 수의사 직접 설계</span>
-    <span class="chip c-am">📚 국제 가이드라인 기반</span>
-    <span class="chip c-gr">💸 전부 무료</span>
+<div class="hero2">
+  <div class="rings"><span></span><span></span><span></span></div>
+  <div class="h2-in">
+    <div class="h2-eyebrow">개알남 · 수의사 이세원</div>
+    <div class="h2-title">견생<span class="h2-20">20</span>세 시대</div>
+    <div class="h2-slogan">반려견이 스무 살까지 건강하게 사는 세상을 연구합니다</div>
+    <div class="h2-sub">논문과 국제 가이드라인에 근거한 반려견 건강 이야기</div>
+
+    <div class="yt" id="yt">
+      <div class="yt-top">
+        <span class="yt-logo"></span>
+        <span class="yt-name">유튜브 개알남</span>
+        <span class="yt-live" id="yt-live"><i></i>LIVE</span>
+      </div>
+      <div class="yt-grid">
+        <div class="yt-card main"><div class="yt-n" id="yt-subs">···</div><div class="yt-l">구독자</div></div>
+        <div class="yt-card"><div class="yt-n" id="yt-views">···</div><div class="yt-l">총 조회수</div></div>
+        <div class="yt-card"><div class="yt-n" id="yt-videos">···</div><div class="yt-l">영상</div></div>
+      </div>
+      <div class="yt-foot" id="yt-foot">YouTube 공식 데이터 기준</div>
+    </div>
+
+    <div class="h2-ctas">
+      <a class="cta-yt" href="https://www.youtube.com/c/vetluke?sub_confirmation=1" target="_blank" rel="noopener">▶ 유튜브 구독하기</a>
+      <a class="cta-tools" href="#tools">🧰 건강 도구 둘러보기</a>
+    </div>
   </div>
-</div></div>
+</div>
 
 <div class="wrap">
 
-  <div class="sec-label">반려견 건강 도구</div>
+  <div class="sec-label">견생 20세 시대란</div>
+  <div class="phil">
+    <div class="phil-h">스무 살은 꿈이 아니라<br><em>방향</em>입니다</div>
+    <p class="phil-lead">
+      지금 반려견의 기대수명은 평균 <b>12~13년</b> 남짓입니다. 스무 살은 멀어 보이지만, 수명은 유전만으로 정해지지 않습니다.
+      <b>무엇을, 얼마나 먹이고, 언제 발견하고, 어떻게 움직이게 하느냐</b> — 보호자가 매일 내리는 선택이 그 차이를 만듭니다.
+    </p>
+
+    <div class="gauge" id="gauge">
+      <div class="g-track">
+        <div class="g-now" id="g-now"></div>
+        <div class="g-gap" id="g-gap"></div>
+      </div>
+      <div class="g-marks">
+        <div class="g-mk now" id="g-mk-now"><b>12.5세</b><span>156개 견종 평균</span></div>
+        <div class="g-mk goal" style="left:100%"><b>20세</b><span>우리의 목표</span></div>
+      </div>
+      <div class="g-gaplbl">그 사이 <b>7.5년</b>, 함께 채워가는 시간입니다</div>
+    </div>
+
+    <div class="evid">
+      <div class="evid-n">+1.8<small>년</small></div>
+      <div class="evid-t">
+        같은 래브라도 리트리버 48마리를 평생 추적한 연구에서, <b>적정 체중을 유지한 그룹의 중앙수명이 1.8년 더 길었습니다.</b>
+        약도, 수술도 아닌 <b>급여량 관리</b>만으로요.
+        <cite>Kealy RD et al. JAVMA 2002;220:1315-1320</cite>
+      </div>
+    </div>
+
+    <div class="pillars">
+      <div class="pil">
+        <div class="pil-i">⚖️</div>
+        <div><div class="pil-no">PILLAR 01</div><div class="pil-h">적정 체중</div>
+        <div class="pil-d">수명을 늘리는 가장 확실한 근거가 있는 방법입니다. <a href="/calorie/">칼로리 계산기</a>로 우리 아이 적정 급여량부터 확인하세요.</div></div>
+      </div>
+      <div class="pil">
+        <div class="pil-i">🦷</div>
+        <div><div class="pil-no">PILLAR 02</div><div class="pil-h">치아 관리</div>
+        <div class="pil-d">치주질환은 입 안에서 끝나지 않고 전신 건강에 영향을 줍니다. 매일의 양치가 가장 값싼 보험입니다.</div></div>
+      </div>
+      <div class="pil">
+        <div class="pil-i">🩺</div>
+        <div><div class="pil-no">PILLAR 03</div><div class="pil-h">조기 발견</div>
+        <div class="pil-d">개는 아파도 숨깁니다. 증상이 보일 때는 이미 늦은 경우가 많아, 정기 검진이 곧 치료의 시작입니다.</div></div>
+      </div>
+      <div class="pil">
+        <div class="pil-i">🦴</div>
+        <div><div class="pil-no">PILLAR 04</div><div class="pil-h">관절과 근육</div>
+        <div class="pil-d">잘 걷는 개가 오래 삽니다. 노령기 근육 손실을 막는 운동과 통증 관리가 삶의 질을 지킵니다.</div></div>
+      </div>
+      <div class="pil wide">
+        <div class="pil-i">📚</div>
+        <div><div class="pil-no">PILLAR 05</div><div class="pil-h">근거 기반 정보</div>
+        <div class="pil-d">인터넷 속설이 아닌 논문과 국제 가이드라인으로 판단합니다. 개알남의 모든 영상과 도구가 이 원칙 위에서 만들어집니다.</div></div>
+      </div>
+    </div>
+
+    <div class="phil-close">
+      <p>오늘의 한 끼, 오늘의 산책이<br><em>스무 살의 우리 아이</em>를 만듭니다</p>
+      <span>— 수의사 이세원, 개알남</span>
+    </div>
+  </div>
+
+  <div class="sec-label" id="tools">반려견 건강 도구</div>
   <div class="tools">
 
     <a href="/calorie/" class="tool wide">
@@ -249,6 +416,102 @@ footer a{color:var(--cyan);}
         show(v);
       }catch(_){}
     });
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   유튜브 실시간 통계 — 설정은 여기만 바꾸시면 됩니다
+   apiKey    : Google Cloud에서 발급한 YouTube Data API v3 키
+               (반드시 'HTTP 리퍼러 = gaealnam.com/*' 로 제한해서 사용)
+   channelId : UC로 시작하는 채널 ID (비워두면 handle로 조회)
+   handle    : 채널 핸들 (@로 시작)
+   fallback  : API 연결 전/실패 시 보여줄 수치 (모르면 null 그대로)
+   ═══════════════════════════════════════════════════════════ */
+var YT = {
+  apiKey   : '',
+  channelId: '',
+  handle   : '@vetluke',
+  cacheMin : 60,
+  fallback : { subs:null, views:null, videos:null, asOf:'' }
+};
+
+function fmtKo(n){
+  if(n == null || isNaN(n)) return '···';
+  if(n >= 1e8) return (n/1e8).toFixed(n>=1e9?0:1).replace(/\.0$/,'') + '억';
+  if(n >= 1e4) return (n/1e4).toFixed(n>=1e5?0:1).replace(/\.0$/,'') + '만';
+  return Math.round(n).toLocaleString();
+}
+function countUp(el, target, ms){
+  if(!el || target == null) return;
+  var t0 = null;
+  function step(t){
+    if(!t0) t0 = t;
+    var p = Math.min(1, (t - t0) / ms);
+    var e = 1 - Math.pow(1 - p, 3);          // easeOutCubic
+    el.textContent = fmtKo(target * e);
+    if(p < 1) requestAnimationFrame(step); else el.textContent = fmtKo(target);
+  }
+  requestAnimationFrame(step);
+}
+function showStats(s, live, note){
+  countUp(document.getElementById('yt-subs'),   s.subs,   1400);
+  countUp(document.getElementById('yt-views'),  s.views,  1700);
+  countUp(document.getElementById('yt-videos'), s.videos, 1100);
+  var lv = document.getElementById('yt-live');
+  if(lv) lv.style.display = live ? '' : 'none';
+  var ft = document.getElementById('yt-foot');
+  if(ft) ft.textContent = note;
+}
+function loadYT(){
+  // 1) 캐시 (쿼터 절약 + 빠른 표시)
+  try{
+    var c = JSON.parse(localStorage.getItem('gaealnam_yt') || 'null');
+    if(c && (Date.now() - c.t) < YT.cacheMin * 60000){
+      showStats(c.s, true, 'YouTube 공식 데이터 · ' + new Date(c.t).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 기준');
+      return;
+    }
+  }catch(e){}
+  // 2) API 키가 없으면 대체 수치
+  if(!YT.apiKey){ fallback(); return; }
+  var q = YT.channelId ? ('id=' + YT.channelId) : ('forHandle=' + encodeURIComponent(YT.handle));
+  fetch('https://www.googleapis.com/youtube/v3/channels?part=statistics&' + q + '&key=' + YT.apiKey)
+    .then(function(r){ if(!r.ok) throw new Error('yt ' + r.status); return r.json(); })
+    .then(function(d){
+      var st = d.items && d.items[0] && d.items[0].statistics;
+      if(!st) throw new Error('no channel');
+      var s = { subs: st.hiddenSubscriberCount ? null : +st.subscriberCount,
+                views: +st.viewCount, videos: +st.videoCount };
+      try{ localStorage.setItem('gaealnam_yt', JSON.stringify({t:Date.now(), s:s})); }catch(e){}
+      showStats(s, true, 'YouTube 공식 데이터 · 방금 전 기준');
+    })
+    .catch(fallback);
+}
+function fallback(){
+  var f = YT.fallback;
+  if(f.subs == null && f.views == null){
+    var ft = document.getElementById('yt-foot');
+    if(ft) ft.textContent = '채널에서 최신 수치를 확인하세요';
+    var lv = document.getElementById('yt-live'); if(lv) lv.style.display = 'none';
+    return;
+  }
+  showStats(f, false, f.asOf ? (f.asOf + ' 기준') : '');
+}
+loadYT();
+
+/* 수명 게이지 — 화면에 보일 때 채워짐 */
+(function(){
+  var g = document.getElementById('gauge'); if(!g) return;
+  var NOW = 12.5, GOAL = 20;
+  var pct = (NOW / GOAL) * 100;
+  var gap = document.getElementById('g-gap');
+  gap.style.left = pct + '%'; gap.style.width = (100 - pct) + '%';
+  document.getElementById('g-mk-now').style.left = pct + '%';
+  function run(){ document.getElementById('g-now').style.width = pct + '%'; g.classList.add('on'); }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ run(); io.disconnect(); } });
+    }, {threshold:.4});
+    io.observe(g);
+  } else run();
 })();
 </script>
 </body>
