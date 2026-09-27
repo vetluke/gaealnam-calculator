@@ -421,9 +421,19 @@ button .ui-icon,a .ui-icon { width:18px; height:18px; }
 @media(max-width:620px) { .page-home .ab-ava { width:min(100%,200px); } }
 .page-home .ab-head { grid-row:1/4; }
 
+/* Keep every result in the normal page scroll, including water and treats. */
+.page-calorie .result-panel { position:static; top:auto; height:auto; max-height:none; overflow:visible; }
+.page-calorie .water-block { flex-direction:column; align-items:stretch; gap:14px; margin-top:24px; padding:22px; background:#eaf5f8; border:1px solid #8dbbc8; border-left:4px solid #24677a; border-radius:14px; }
+.page-calorie .water-block .wl { gap:10px; color:#164e60; font-size:17px; font-weight:800; line-height:1.5; }
+.page-calorie .water-block .wl>span { display:grid; place-items:center; width:40px; height:40px; flex:0 0 40px; border-radius:12px; background:#fff; }
+.page-calorie .water-block .ui-icon { width:25px; height:25px; }
+.page-calorie .water-block .wv { font-family:var(--display); font-size:32px; font-weight:800; line-height:1.25; letter-spacing:-.5px; color:#103f50; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.page-calorie .water-block .ws { margin-top:4px; color:#426574; font-family:var(--sans); font-size:13px; font-weight:500; line-height:1.6; }
+@media(max-width:620px) { .page-calorie .water-block { padding:18px; } .page-calorie .water-block .wv { font-size:30px; } }
+
 </style>
 </head>
-<body class="page-lifespan tool-page"><a class="skip-link" href="#main">본문으로 바로가기</a><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html" aria-label="개 알려주는 남자 홈"><span class="brand-mark"><span class="brand-digits">20</span><span class="brand-plus">+</span></span><span class="brand-type">개 알려주는 남자<small>수의사 이세원</small></span></a><nav class="site-nav" aria-label="주 메뉴"><a href="../index.html" class="gn ">홈</a><a href="../calorie/index.html" class="gn ">칼로리 계산기</a><a href="index.html" class="gn on" aria-current="page">견종별 수명</a><a href="../certified/index.html" class="gn ">인증 병원</a></nav></div></header>
+<body class="page-lifespan tool-page"><a class="skip-link" href="#main">본문으로 바로가기</a><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html" aria-label="개 알려주는 남자 홈"><span class="brand-mark"><span class="brand-digits">20</span></span><span class="brand-type">개 알려주는 남자<small>수의사 이세원</small></span></a><nav class="site-nav" aria-label="주 메뉴"><a href="../index.html" class="gn ">홈</a><a href="../calorie/index.html" class="gn ">칼로리 계산기</a><a href="index.html" class="gn on" aria-current="page">견종별 수명</a><a href="../certified/index.html" class="gn ">인증 병원</a></nav></div></header>
 
 
 
