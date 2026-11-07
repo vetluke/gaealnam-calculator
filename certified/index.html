@@ -461,7 +461,7 @@ button .ui-icon,a .ui-icon { width:18px; height:18px; }
 
 
 
-<main class="wrap" id="main"><section class="page-heading"><div><h1>국제 인증 동물병원</h1><p class="page-description">지역과 인증으로 병원을 찾고, 병원 인증과 수의사 개인 자격의 차이를 확인하세요.</p></div></section><section class="cert-explainer"><div class="section-heading"><div><h2>이 인증은 무엇을 의미할까요?</h2></div></div><div class="certs" id="ctiles"></div><div class="cpanel" id="cpanel"></div></section><p class="directory-note"><b>전국 등록 현황</b> · 병원별 인증·자격과 출처를 확인하세요.</p><div class="summary" id="summary"></div><div id="maptop"></div><div class="maparea">
+<main class="wrap" id="main"><section class="page-heading"><div><h1>국제 인증 동물병원</h1><p class="page-description">지역과 인증으로 병원을 찾고, 병원 인증과 수의사 개인 자격의 차이를 확인하세요.</p></div></section><section class="cert-explainer"><div class="section-heading"><div><h2>이 인증은 무엇을 의미할까요?</h2></div></div><div class="certs" id="ctiles"></div><div class="cpanel" id="cpanel"></div></section><p class="directory-note"><b>전국 등록 현황</b> · 병원별 인증·자격과 출처를 확인하세요.<br>VECCS는 공식 명단 등재 기준으로 표시하며, 표기 만료일이 지난 병원도 포함합니다. 병원별 공식 표기 만료일을 함께 확인하세요.</p><div class="summary" id="summary"></div><div id="maptop"></div><div class="maparea">
     <div>
       <div class="mapbox"><div class="map-heading"><span class="eyebrow">REGION</span><h2>우리 동네 병원 찾기</h2></div><label class="region-select">지역 선택<select id="region-select" onchange="setRegion(this.value)" aria-label="지역 선택"><option value="all">전국</option><option>서울</option><option>인천</option><option>경기</option><option>강원</option><option>충북</option><option>충남</option><option>대전</option><option>세종</option><option>전북</option><option>전남</option><option>광주</option><option>경북</option><option>대구</option><option>경남</option><option>부산</option><option>울산</option><option>제주</option></select></label>
         <svg viewbox="0 0 328 560" xmlns="http://www.w3.org/2000/svg" id="kmap" aria-label="시도별 등록 병원 지도">
@@ -1340,7 +1340,7 @@ for(const row of AAHA_CLINICS){let item=HOSPITALS.find(h=>h.name===row.name);if(
  if(!item.certs.includes('aaha'))item.certs.push('aaha');item.aaha=row;item.aliases=[row.en,...(row.name.startsWith('FM')?[row.name.replace('FM','에프엠')]:[])];if(row.website)item.url=row.website;
 }
 for(const hospital of HOSPITALS){let proofs=CLINIC_PROOFS[hospital.name]||{};hospital.proofs=proofs;
- for(const [key,proof] of Object.entries(proofs)){if(proof.past){hospital.certs=hospital.certs.filter(c=>c!==key);}else if(!hospital.certs.includes(key))hospital.certs.push(key);}
+ for(const [key,proof] of Object.entries(proofs)){if(proof.past&&key!=='veccs'){hospital.certs=hospital.certs.filter(c=>c!==key);}else if(!hospital.certs.includes(key))hospital.certs.push(key);}
  hospital.certs.sort((a,b)=>CERT_ORDER.indexOf(a)-CERT_ORDER.indexOf(b));
 }
 function proofLine(h,c){const p=c==='aaha'&&h.aaha?{status:'공식 명단 등재',date:h.aaha.checked,url:DIRECTORY_URL.aaha,extra:'최초인증일 '+h.aaha.first,type:'official'}:h.proofs[c];
@@ -1348,7 +1348,7 @@ function proofLine(h,c){const p=c==='aaha'&&h.aaha?{status:'공식 명단 등재
  let extra=p?.extra||'';
  if(!p && c==='isfm' && /ISFM 캣프렌들리 골드/.test(h.note||''))extra='기존 등록 등급: Gold · 현재 등급 미확인';
  if(c==='acu'&&!extra&&h.note){const m=h.note.match(/침치료 인증 수의사[:：]?\s*([^·]+)/);if(m)extra='기존 등록 수의사: '+m[1].trim();}
- const status=c==='acu'?'':(p?.status||'');
+ const status=c==='acu'?'':c==='veccs'?'공식 명단 등재':(p?.status||'');
  const url=c==='acu'?DIRECTORY_URL.acu:(p?.url||DIRECTORY_URL[c]);const text=c==='acu'?'치대학 한국지사 지도':p?.url?'근거 보기':'기관 안내';
  return `<div class="entry-proof ${p?.past?'past':p?.type==='official'?'official':''}"><span class="proof-name">${escClinic(label)}</span>${status?`<span class="proof-label">${escClinic(status)}</span>`:''}${extra?`<span class="proof-extra">${escClinic(extra)}</span>`:''}${url&&text?` <a href="${clinicHref(url)}" target="_blank" rel="noopener noreferrer">${text} ↗</a>`:''}</div>`;
 }
